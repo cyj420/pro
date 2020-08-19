@@ -15,9 +15,10 @@ public class MemberService {
 	@Autowired
 	private MailService mailService;
 
-	public void join(Map<String, Object> param) {
-		memberDao.join(param);
+	public int join(Map<String, Object> param) {
+		int id = memberDao.join(param);
 		sendJoinCompleteMail((String) param.get("email"));
+		return id;
 	}
 
 	public Member login(Map<String, Object> param) {
@@ -37,12 +38,20 @@ public class MemberService {
 	}
 	
 	private void sendJoinCompleteMail(String email) {
-		String mailTitle = String.format("[%s] 가입이 완료되었습니다.", "사이트 이름");
+		String mailTitle = String.format("[%s] 가입이 완료되었습니다.", "~사이트 이름~");
 
 		StringBuilder mailBodySb = new StringBuilder();
 		mailBodySb.append("<h1>가입이 완료되었습니다.</h1>");
 		mailBodySb.append(String.format("<p><a href=\"%s\" target=\"_blank\">%s</a>로 이동</p>", "http://localhost:8085/home/main", "[사이트 이름]"));
 
 		mailService.send(email, mailTitle, mailBodySb.toString());
+	}
+
+	public Member getMemberByLoginId(String loginId) {
+		return memberDao.getMemberByLoginId(loginId);
+	}
+
+	public Member getMemberByEmail(String email) {
+		return memberDao.getMemberByEmail(email);
 	}
 }

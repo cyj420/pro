@@ -27,15 +27,10 @@ public class MemberController {
 	@RequestMapping("/member/doJoin")
 	@ResponseBody
 	public String doJoin(@RequestParam Map<String, Object> param, Model model) {
-		String pw = (String) param.get("loginPw");
-		if(pw != null) {
-			if(pw.trim().length()!=0) {
-				System.out.println("pw.trim().length()!=0");
-				//여기서 아웃
-			}
-			if(param.get("loginPw").equals(param.get("loginPwConfirm")) && pw.trim().length()!=0) {
-				memberService.join(param);
-				return "<script> alert('회원가입 성공'); location.replace('../home/main'); </script>";
+		if(memberService.getMemberByLoginId((String)param.get("loginId"))==null) {
+			if(memberService.getMemberByEmail((String)param.get("email"))==null) {
+				int id = memberService.join(param);
+				return "<script> alert('" + id + "번째 회원입니다.'); location.replace('../home/main'); </script>";
 			}
 		}
 		return "<script> alert('회원가입 실패'); history.back(); </script>";
@@ -52,7 +47,7 @@ public class MemberController {
 		Member member = memberService.login(param);
 		
 		if(member==null) {
-			return "<script> alert('로그인 실패'); location.replace('../home/main'); </script>";
+			return "<script> alert('로그인 실패'); history.back(); </script>";
 		}
 		
 		session.setAttribute("loginedMember", member);

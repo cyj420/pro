@@ -15,13 +15,12 @@
 		}
 
 		form.loginId.value = form.loginId.value.trim();
-		/* 여기서 문제 발생. 
+		/* 여기서 문제 발생. 왜???
 		form.loginId.value = form.loginId.value.replaceAll('-', '');
 		form.loginId.value = form.loginId.value.replaceAll('_', '');
 		form.loginId.value = form.loginId.value.replaceAll(' ', '');
 		 */
 
-		alert('form.loginId.value.length : '+form.loginId.value.length);
 		if (form.loginId.value.length == 0) {
 			form.loginId.focus();
 			alert('로그인 아이디를 입력해주세요.');
@@ -87,7 +86,7 @@
 		MemberJoinForm__submitDone = true;
 	}
 </script>
-<form method="POST" class="table-box con form1" action="doJoin"
+<form method="POST" action="doJoin"
 	onsubmit="MemberJoinForm__submit(this); return false;">
 	<input name="loginPwReal" hidden="hidden">
 	<table>
@@ -98,7 +97,7 @@
 			<tr>
 				<th>로그인 아이디</th>
 				<td>
-					<div class="form-control-box">
+					<div>
 						<input type="text" placeholder="로그인 아이디 입력해주세요." name="loginId"
 							maxlength="30" />
 					</div>
@@ -107,7 +106,7 @@
 			<tr>
 				<th>로그인 비번</th>
 				<td>
-					<div class="form-control-box">
+					<div>
 						<input type="password" placeholder="로그인 비밀번호를 입력해주세요."
 							name="loginPw" maxlength="30" />
 					</div>
@@ -116,7 +115,7 @@
 			<tr>
 				<th>로그인 비번 확인</th>
 				<td>
-					<div class="form-control-box">
+					<div>
 						<input type="password" placeholder="로그인 비밀번호 확인을 입력해주세요."
 							name="loginPwConfirm" maxlength="30" />
 					</div>
@@ -125,7 +124,7 @@
 			<tr>
 				<th>이름</th>
 				<td>
-					<div class="form-control-box">
+					<div>
 						<input type="text" placeholder="이름을 입력해주세요." name="name"
 							maxlength="20" />
 					</div>
@@ -134,7 +133,7 @@
 			<tr>
 				<th>닉네임</th>
 				<td>
-					<div class="form-control-box">
+					<div>
 						<input type="text" placeholder="닉네임 입력해주세요." name="nickname"
 							maxlength="20" />
 					</div>
@@ -143,7 +142,7 @@
 			<tr>
 				<th>이메일</th>
 				<td>
-					<div class="form-control-box">
+					<div>
 						<input type="email" placeholder="이메일 입력해주세요." name="email"
 							maxlength="50" />
 					</div>
@@ -152,7 +151,7 @@
 			<tr>
 				<th>가입</th>
 				<td>
-					<button class="btn btn-primary" type="submit">가입</button>
+					<button type="submit">가입</button>
 				</td>
 			</tr>
 		</tbody>
