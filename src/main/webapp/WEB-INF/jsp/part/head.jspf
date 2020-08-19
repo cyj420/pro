@@ -1,0 +1,22 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Main</title>
+</head>
+<body>
+
+<div class="con" style="background: #B9DEED;">
+	<c:if test="${loginedMember != null }">
+		<div>안녕하세요, ${loginedMember.nickname}님 </div>
+		<a href="/member/modify">정보 수정</a>
+		<a href="/member/doLogout">로그아웃</a>
+	</c:if>
+	<c:if test="${loginedMember == null }">
+	<a href="/member/join">회원가입</a>
+	<a href="/member/login">로그인</a>
+	</c:if>
+</div>
