@@ -75,12 +75,6 @@ public class MemberController {
 	@RequestMapping("usr/member/doModify")
 	@ResponseBody
 	public String doModify(@RequestParam Map<String, Object> param, Model model, HttpSession session) {
-		System.out.println("====================================");
-		System.out.println("param.get(\"loginPw\") : " + param.get("loginPw"));
-		System.out.println("param.get(\"loginPwReal\") : " + param.get("loginPwReal"));
-		System.out.println("====================================");
-		System.out.println("param : " + param.toString());
-		System.out.println("====================================");
 		memberService.modify(param);
 		int id = Integer.parseInt((String) param.get("id"));
 		Member member = memberService.getMemberById(id);

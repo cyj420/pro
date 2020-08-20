@@ -1,4 +1,5 @@
-SELECT * FROM `member`
+SELECT * FROM `member`;
+SELECT * FROM article;
 
 # member 테이블 세팅
 CREATE TABLE `member` (
@@ -43,7 +44,6 @@ ALTER TABLE `attr` ADD UNIQUE INDEX (`relTypeCode`, `relId`, `typeCode`, `type2C
 ALTER TABLE `attr` ADD INDEX (`relTypeCode`, `typeCode`, `type2Code`); 
 
 
-
 DROP TABLE IF EXISTS `article`;
 
 CREATE TABLE `article` (
@@ -55,5 +55,15 @@ CREATE TABLE `article` (
   displayStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 1,
   title CHAR(200) NOT NULL,
   `body` LONGTEXT NOT NULL,
-  memberId INT(10) UNSIGNED NOT NULL
-)
+  memberId INT(10) UNSIGNED NOT NULL,
+  cateId INT(10) UNSIGNED NOT NULL
+);
+
+CREATE TABLE board (
+  `id` INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `name` CHAR(100) NOT NULL,
+  regDate DATETIME NOT NULL,
+  updateDate DATETIME NOT NULL,
+  delDate DATETIME DEFAULT NULL,
+  delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0
+);
