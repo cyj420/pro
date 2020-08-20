@@ -27,6 +27,7 @@
 		SET 
 		<if test="nickname != null">nickname = #{nickname},</if>
 		<if test="email != null">email = #{email},</if>
+		<if test="loginPwReal.trim().length() != 0">loginPw = #{loginPwReal},</if>
 		updateDate = NOW()
 		WHERE id = #{id}
 	</update>

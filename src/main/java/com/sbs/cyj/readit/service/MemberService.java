@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.sbs.cyj.readit.dao.MemberDao;
 import com.sbs.cyj.readit.dto.Member;
+import com.sbs.cyj.readit.util.Util;
 
 @Service
 public class MemberService {
@@ -16,7 +17,8 @@ public class MemberService {
 	private MailService mailService;
 
 	public int join(Map<String, Object> param) {
-		int id = memberDao.join(param);
+		memberDao.join(param);
+		int id = Util.getAsInt(param.get("id"));
 		sendJoinCompleteMail((String) param.get("email"));
 		return id;
 	}

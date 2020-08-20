@@ -19,12 +19,13 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 	
-	@RequestMapping("/member/join")
+	// 회원가입
+	@RequestMapping("usr/member/join")
 	public String showJoin() {
 		return "member/join";
 	}
 	
-	@RequestMapping("/member/doJoin")
+	@RequestMapping("usr/member/doJoin")
 	@ResponseBody
 	public String doJoin(@RequestParam Map<String, Object> param, Model model) {
 		if(memberService.getMemberByLoginId((String)param.get("loginId"))==null) {
@@ -36,12 +37,13 @@ public class MemberController {
 		return "<script> alert('회원가입 실패'); history.back(); </script>";
 	}
 	
-	@RequestMapping("/member/login")
+	// 로그인
+	@RequestMapping("usr/member/login")
 	public String showLogin() {
 		return "member/login";
 	}
 	
-	@RequestMapping("/member/doLogin")
+	@RequestMapping("usr/member/doLogin")
 	@ResponseBody
 	public String doLogin(@RequestParam Map<String, Object> param, Model model, HttpSession session) {
 		Member member = memberService.login(param);
@@ -55,34 +57,45 @@ public class MemberController {
 		return "<script> alert('안녕하세요, "+ member.getNickname() +"님'); location.replace('../home/main'); </script>";
 	}
 	
-	@RequestMapping("/member/doLogout")
+	// 로그아웃
+	@RequestMapping("usr/member/doLogout")
+	@ResponseBody
 	public String doLogout(Model model, HttpSession session) {
 		session.removeAttribute("loginedMember");
 		
-		return "./home/main";
+		return "<script> alert('로그아웃 되었습니다.'); location.replace('../home/main'); </script>";
 	}
 	
-	@RequestMapping("/member/modify")
+	// 회원 정보 수정
+	@RequestMapping("usr/member/modify")
 	public String showModify() {
-		return "member/modify";
+		return "member/myPage";
 	}
 	
-	@RequestMapping("/member/doModify")
+	@RequestMapping("usr/member/doModify")
+	@ResponseBody
 	public String doModify(@RequestParam Map<String, Object> param, Model model, HttpSession session) {
+		System.out.println("====================================");
+		System.out.println("param.get(\"loginPw\") : " + param.get("loginPw"));
+		System.out.println("param.get(\"loginPwReal\") : " + param.get("loginPwReal"));
+		System.out.println("====================================");
+		System.out.println("param : " + param.toString());
+		System.out.println("====================================");
 		memberService.modify(param);
 		int id = Integer.parseInt((String) param.get("id"));
 		Member member = memberService.getMemberById(id);
 		session.setAttribute("loginedMember", member);
 		
-		return "./home/main";
+		return "<script> alert('회원 정보 수정 완료'); location.replace('../home/main'); </script>";
 	}
 	
-	@RequestMapping("/member/findLoginId")
+	// ID찾기
+	@RequestMapping("usr/member/findLoginId")
 	public String findLoginId() {
 		return "member/findLoginId";
 	}
 	
-	@RequestMapping("/member/doFindLoginId")
+	@RequestMapping("usr/member/doFindLoginId")
 	@ResponseBody
 	public String doFindLoginId(@RequestParam Map<String, Object> param, Model model, HttpSession session) {
 		String loginId = memberService.findLoginIdByNameAndEmail(param);

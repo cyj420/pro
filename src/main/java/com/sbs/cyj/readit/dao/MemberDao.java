@@ -9,7 +9,7 @@ import com.sbs.cyj.readit.dto.Member;
 @Mapper
 public interface MemberDao {
 
-	Integer join(Map<String, Object> param);
+	void join(Map<String, Object> param);
 
 	Member login(Map<String, Object> param);
 
