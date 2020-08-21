@@ -14,4 +14,5 @@ public class Board {
 	private String delDate;
 	private boolean delStatus;
 	private String name;
+	private int memberId;
 }
