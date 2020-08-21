@@ -15,4 +15,6 @@ public interface ArticleDao {
 	List<Article> getArticles();
 
 	Article getArticleById(int id);
+
+	List<Article> getArticlesByMemberId(int memberId);
 }

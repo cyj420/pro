@@ -29,5 +29,6 @@ spring:
 mybatis:
   type-aliases-package: com.sbs.cyj.readit.dto
 custom:
+  logoText: 블로그
   emailFrom: no-reply@audiotiontree.com
   emailFromName: 오디션 트리 

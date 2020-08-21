@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:set var="pageTitle" value="${board.name} 게시물 작성" />
 <%@ include file="../part/head.jspf"%>
 <script>
 	var ArticleWriteForm__submitDone = false;
@@ -31,9 +33,8 @@
 		ArticleWriteForm__submitDone = true;
 	}
 </script>
-<h1>글 작성</h1>
 <div class="con">
-	<form action="doWrite" method="post">
+	<form action="${board.code}-doWrite" method="post">
 		<input name="memberId" value="${loginedMember.id}" onsubmit="ArticleWriteForm__submit(this); return false;" hidden="hidden">
 		<table>
 		<colgroup>

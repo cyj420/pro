@@ -11,7 +11,7 @@
 		title = #{title},
 		`body` = #{body},
 		memberId = #{memberId},
-		cateId = 1
+		boardId = #{boardId}
 	</insert>
 	
 	<select id="getArticles" resultType="Article">
@@ -24,5 +24,13 @@
 		SELECT * FROM article
 		WHERE displayStatus = 1
 		AND id = #{id};
+	</select>
+	
+	<select id="getArticlesByMemberId" resultType="Article">
+		SELECT A.*
+		FROM article AS A
+		INNER JOIN `Member` AS M
+		ON M.id = A.memberId
+		AND A.memberId = #{memberId}
 	</select>
 </mapper>

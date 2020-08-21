@@ -8,7 +8,14 @@
 		INTO board
 		SET regDate = NOW(),
 		updateDate = NOW(),
+		`code` = #{loginId},
 		`name` = #{loginId},
 		memberId = #{id}
 	</insert>
+	<select id="getBoardByCode" resultType="Board">
+		SELECT *
+		FROM board
+		WHERE
+		`code` = #{code}
+	</select>
 </mapper>

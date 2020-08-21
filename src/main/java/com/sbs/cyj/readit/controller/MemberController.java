@@ -11,13 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sbs.cyj.readit.dto.Board;
 import com.sbs.cyj.readit.dto.Member;
+import com.sbs.cyj.readit.service.BoardService;
 import com.sbs.cyj.readit.service.MemberService;
 
 @Controller
 public class MemberController {
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private BoardService boardService;
 	
 	// 회원가입
 	@RequestMapping("usr/member/join")
@@ -54,6 +58,10 @@ public class MemberController {
 		
 		session.setAttribute("loginedMember", member);
 		
+		Board board = boardService.getBoardByCode(member.getLoginId());
+		
+		session.setAttribute("board", board);
+		
 		return "<script> alert('안녕하세요, "+ member.getNickname() +"님'); location.replace('../home/main'); </script>";
 	}
 	
@@ -62,6 +70,7 @@ public class MemberController {
 	@ResponseBody
 	public String doLogout(Model model, HttpSession session) {
 		session.removeAttribute("loginedMember");
+		session.removeAttribute("board");
 		
 		return "<script> alert('로그아웃 되었습니다.'); location.replace('../home/main'); </script>";
 	}

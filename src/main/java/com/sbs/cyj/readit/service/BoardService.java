@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sbs.cyj.readit.dao.BoardDao;
+import com.sbs.cyj.readit.dto.Board;
 
 @Service
 public class BoardService {
@@ -14,5 +15,9 @@ public class BoardService {
 
 	public void generateBoard(Map<String, Object> param) {
 		boardDao.generateBoard(param);
+	}
+
+	public Board getBoardByCode(String boardCode) {
+		return boardDao.getBoardByCode(boardCode);
 	}
 }

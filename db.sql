@@ -1,5 +1,8 @@
 SELECT * FROM `member`;
-SELECT * FROM article;
+SELECT * FROM article
+WHERE displayStatus = 1
+ORDER BY id DESC;
+SELECT * FROM board;
 
 # member 테이블 세팅
 CREATE TABLE `member` (
@@ -56,14 +59,42 @@ CREATE TABLE `article` (
   title CHAR(200) NOT NULL,
   `body` LONGTEXT NOT NULL,
   memberId INT(10) UNSIGNED NOT NULL,
-  cateId INT(10) UNSIGNED NOT NULL
+  boardId INT(10) UNSIGNED NOT NULL
 );
 
 CREATE TABLE board (
   `id` INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `code` CHAR(100) NOT NULL UNIQUE,
   `name` CHAR(100) NOT NULL,
+  memberId INT(10) UNSIGNED NOT NULL UNIQUE,
   regDate DATETIME NOT NULL,
   updateDate DATETIME NOT NULL,
   delDate DATETIME DEFAULT NULL,
   delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0
 );
+SELECT * FROM board;
+SELECT * FROM `member`;
+
+# 코드는 unique
+SELECT B.code
+FROM board AS B
+INNER JOIN MEMBER AS M
+ON B.memberId = M.id
+
+# name은 변경 가능
+SELECT B.name
+FROM board AS B
+INNER JOIN MEMBER AS M
+ON B.memberId = M.id
+
+
+SELECT A.*
+FROM article AS A
+INNER JOIN `Member` AS M
+ON M.id = A.memberId
+AND A.memberId = 1
+
+
+SELECT * FROM board
+
+SELECT * FROM article
