@@ -34,7 +34,7 @@ public class ArticleService {
 		return articleDao.getArticlesByMemberId(memberId);
 	}
 
-	public List<Category> getCategories(int boardId) {
-		return articleDao.getCategories(boardId);
+	public List<Category> getCategories(int memberId) {
+		return articleDao.getCategories(memberId);
 	}
 }

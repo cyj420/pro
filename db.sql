@@ -3,6 +3,20 @@ SELECT * FROM article
 WHERE displayStatus = 1
 ORDER BY id DESC;
 SELECT * FROM board;
+SELECT * FROM category
+WHERE boardId = 1;
+
+INSERT INTO category
+SET `name` = '단편',
+regDate = NOW(),
+updateDate = NOW(),
+boardId = 2;
+
+UPDATE `member`
+SET 
+loginPw = '123',
+updateDate = NOW()
+WHERE loginId = 'aa'
 
 # member 테이블 세팅
 CREATE TABLE `member` (
@@ -59,7 +73,8 @@ CREATE TABLE `article` (
   title CHAR(200) NOT NULL,
   `body` LONGTEXT NOT NULL,
   memberId INT(10) UNSIGNED NOT NULL,
-  boardId INT(10) UNSIGNED NOT NULL
+  boardId INT(10) UNSIGNED NOT NULL,
+  `cateId` INT(10) NOT NULL
 );
 
 CREATE TABLE board (
@@ -72,8 +87,16 @@ CREATE TABLE board (
   delDate DATETIME DEFAULT NULL,
   delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0
 );
-SELECT * FROM board;
-SELECT * FROM `member`;
+
+CREATE TABLE category (
+  `id` INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `name` CHAR(100) NOT NULL,
+  regDate DATETIME NOT NULL,
+  updateDate DATETIME NOT NULL,
+  delDate DATETIME DEFAULT NULL,
+  delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+  boardId INT(10) UNSIGNED NOT NULL
+);
 
 # 코드는 unique
 SELECT B.code

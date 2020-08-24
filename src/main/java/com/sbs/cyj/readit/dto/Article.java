@@ -19,7 +19,6 @@ public class Article {
 	private String title;
 	private String body;
 	private int memberId;
-	private int boardId;
 	private int cateId;
 	private Map<String, Object> extra;
 

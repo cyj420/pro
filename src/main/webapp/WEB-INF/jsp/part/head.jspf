@@ -23,8 +23,8 @@
 	<a href="/usr/home/main">[HOME]</a>
 	<a href="/usr/article/totalList">[LIST]</a>
 	<c:if test="${loginedMember != null }">
-		<a href="/usr/article/${board.code}-list">[${boardCode}-LIST]</a>
-		<a href="/usr/article/${board.code}-write">[${boardCode}-Write]</a>
+		<a href="/usr/article/${loginedMember.loginId}-list">[${loginedMember.loginId}-LIST]</a>
+		<a href="/usr/article/${loginedMember.loginId}-write">[${loginedMember.loginId}-Write]</a>
 	</c:if>
 	</div>
 </div>

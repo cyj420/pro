@@ -17,17 +17,12 @@ public class MemberService {
 	private MemberDao memberDao;
 	@Autowired
 	private MailService mailService;
-	@Autowired
-	private BoardService boardService;
 
 	public int join(Map<String, Object> param) {
 		memberDao.join(param);
 		int id = Util.getAsInt(param.get("id"));
 		
 		sendJoinCompleteMail((String) param.get("email"));
-		
-		// 후에 아래 코드는 메일 인증 후 실행하도록 수정할 예정.
-		boardService.generateBoard(param);
 		
 		return id;
 	}
