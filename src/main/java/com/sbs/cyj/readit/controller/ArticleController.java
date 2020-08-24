@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,12 +43,12 @@ public class ArticleController {
 	
 	@RequestMapping("usr/article/{boardCode}-doWrite")
 	@ResponseBody
-	public String doWrite(@RequestParam Map<String, Object> param, HttpServletRequest req, @PathVariable("boardCode") String boardCode, Model model) {
+	public String doWrite(@RequestParam Map<String, Object> param, HttpSession session, @PathVariable("boardCode") String boardCode, Model model) {
 		System.out.println("boardCode : "+boardCode);
 		Board board = boardService.getBoardByCode(boardCode);
 		model.addAttribute("board", board);
 
-		Member loginedMember = (Member) req.getAttribute("loginedMember");
+		Member loginedMember = (Member) session.getAttribute("loginedMember");
 				
 //		Map<String, Object> newParam = Util.getNewMapOf(param, "title", "body", "fileIdsStr");
 		

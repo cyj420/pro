@@ -92,7 +92,7 @@ public class MemberController {
 		return "<script> alert('회원 정보 수정 완료'); location.replace('../home/main'); </script>";
 	}
 	
-	// ID찾기
+	// ID 찾기
 	@RequestMapping("usr/member/findLoginId")
 	public String findLoginId() {
 		return "member/findLoginId";
@@ -100,7 +100,7 @@ public class MemberController {
 	
 	@RequestMapping("usr/member/doFindLoginId")
 	@ResponseBody
-	public String doFindLoginId(@RequestParam Map<String, Object> param, Model model, HttpSession session) {
+	public String doFindLoginId(@RequestParam Map<String, Object> param, Model model) {
 		String loginId = memberService.findLoginIdByNameAndEmail(param);
 		
 		StringBuilder sb = new StringBuilder();
@@ -116,6 +116,48 @@ public class MemberController {
 			return "<script> alert('일치하는 ID가 없습니다.'); location.replace('../home/main'); </script>";
 		}
 		
+		return sb.toString();
+	}
+	
+	// PW 찾기
+	@RequestMapping("usr/member/findLoginPw")
+	public String findLoginPw() {
+		return "member/findLoginPw";
+	}
+	
+	@RequestMapping("usr/member/doFindLoginPw")
+	@ResponseBody
+	public String doFindLoginPW(@RequestParam Map<String, Object> param, Model model) {
+		// 비번 찾기에서는
+		// 1. 로그인 아이디 / 이름 / 메일 주소 작성
+		// 2. 작성 정보와 (로그인 아이디 기준) 계정이 일치할 경우 작성 이메일로 임시 암호 발송
+		// 3. 이 때, 메일은 sha를 통과한 이후.
+		// +. 후에 Member에 임시번호 status 같은 걸 추가하여, 임시 비번을 계속 쓸 경우 변경해달라고 alert 하는 것도 구현해보기.
+		String loginId = (String) param.get("loginId");
+		Member member = memberService.getMemberByLoginId(loginId);
+		
+		StringBuilder sb = new StringBuilder();
+		
+		if(member != null) {
+			if(member.getName().equals((String) param.get("name")) && member.getEmail().equals((String) param.get("email"))) {
+				if(memberService.resetLoginPw(param) > 0) {
+					sb.append("alert('임시 PW를 메일로 보냈습니다.');");
+					sb.append("location.replace('./login');");
+				}
+				else {
+					sb.append("alert('메일 발송에 실패했습니다.');");
+					sb.append("history.back();");
+				}
+			}
+			else {
+				sb.append("alert('일치하는 계정이 없습니다.');");
+				sb.append("history.back();");
+			}
+		}
+
+		sb.insert(0, "<script>");
+		sb.append("</script>");
+
 		return sb.toString();
 	}
 }

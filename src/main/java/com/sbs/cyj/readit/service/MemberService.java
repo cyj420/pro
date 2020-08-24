@@ -1,5 +1,7 @@
 package com.sbs.cyj.readit.service;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,9 +53,13 @@ public class MemberService {
 
 		StringBuilder mailBodySb = new StringBuilder();
 		mailBodySb.append("<h1>가입이 완료되었습니다.</h1>");
-		mailBodySb.append(String.format("<p><a href=\"%s\" target=\"_blank\">%s</a>로 이동</p>", "http://localhost:8085/home/main", "[사이트 이름]"));
+		mailBodySb.append(siteLink());
 
 		mailService.send(email, mailTitle, mailBodySb.toString());
+	}
+
+	private String siteLink() {
+		return String.format("<p><a href=\"%s\" target=\"_blank\">%s</a>로 이동</p>", "http://localhost:8085/usr/home/main", "[사이트 이름]");
 	}
 
 	public Member getMemberByLoginId(String loginId) {
@@ -62,5 +68,46 @@ public class MemberService {
 
 	public Member getMemberByEmail(String email) {
 		return memberDao.getMemberByEmail(email);
+	}
+
+	public int resetLoginPw(Map<String, Object> param) {
+		String tempPw = ""+System.currentTimeMillis();
+		String newPw = "";
+		try {
+			newPw = transformString(tempPw);
+		} catch (NoSuchAlgorithmException e) {
+			return -1;
+		}
+		sendResetMail((String)param.get("email"), tempPw);
+		
+		param.put("tempPw", newPw);
+		
+		memberDao.resetLoginId(param);
+		return 1;
+	}
+
+	private String transformString(String msg) throws NoSuchAlgorithmException {
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		md.update(msg.getBytes());
+		return bytesToHex(md.digest());
+	}
+	
+	private String bytesToHex(byte[] digest) {
+		StringBuilder sb = new StringBuilder();
+		for(byte b : digest) {
+			sb.append(String.format("%02x", b));
+		}
+		return sb.toString();
+	}
+
+	private void sendResetMail(String email, String tempPw) {
+		String mailTitle = String.format("[%s] 임시 비밀번호입니다.", "~사이트 이름~");
+
+		StringBuilder mailBodySb = new StringBuilder();
+		
+		mailBodySb.append(String.format("<h1>임시 비밀번호 : [%s]</h1>", tempPw));
+		mailBodySb.append(siteLink());
+
+		mailService.send(email, mailTitle, mailBodySb.toString());
 	}
 }

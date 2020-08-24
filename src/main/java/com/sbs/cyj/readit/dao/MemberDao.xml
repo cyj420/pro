@@ -52,4 +52,12 @@
 		SELECT * FROM `member`
 		WHERE `email` = #{email}
 	</select>
+	
+	<update id="resetLoginId">
+		UPDATE `member`
+		SET 
+		loginPw = #{tempPw},
+		updateDate = NOW()
+		WHERE loginId = #{loginId}
+	</update>
 </mapper>

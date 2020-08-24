@@ -52,5 +52,6 @@
 		<input type="submit" value="로그인">
 	</form>
 	<a href="./findLoginId">ID 찾기</a>
+	<a href="./findLoginPw">PW 찾기</a>
 </div>
 <%@ include file="../part/foot.jspf"%>

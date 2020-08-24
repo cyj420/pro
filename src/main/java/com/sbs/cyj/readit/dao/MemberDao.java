@@ -22,4 +22,6 @@ public interface MemberDao {
 	Member getMemberByLoginId(String loginId);
 
 	Member getMemberByEmail(String email);
+
+	void resetLoginId(Map<String, Object> param);
 }
