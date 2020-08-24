@@ -13,6 +13,7 @@
 			<tr>
 				<th>번호</th>
 				<th>날짜</th>
+				<th>작성자</th>
 				<th>제목</th>
 			</tr>
 		</thead>
@@ -21,6 +22,7 @@
 				<tr>
 					<td>${article.id}</td>
 					<td>${article.regDate}</td>
+					<td>${article.memberId}</td>
 					<td>
 						<a href="/usr/article/${board.code}-detail?id=${article.id}">${article.title}</a>
 					</td>

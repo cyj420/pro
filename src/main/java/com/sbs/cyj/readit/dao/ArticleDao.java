@@ -20,4 +20,6 @@ public interface ArticleDao {
 	List<Article> getArticlesByMemberId(int memberId);
 
 	List<Category> getCategories(int boardId);
+
+	List<Article> getArticlesByBoardCode(String boardCode);
 }

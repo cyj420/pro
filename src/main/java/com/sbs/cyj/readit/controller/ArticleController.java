@@ -3,6 +3,7 @@ package com.sbs.cyj.readit.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,9 +65,9 @@ public class ArticleController {
 		return "<script> alert('" + id + "번째 글을 작성하였습니다.'); location.replace('../home/main'); </script>";
 	}
 	
-	// 게시글 리스트 (개인)
+	// 게시글 리스트
 	@RequestMapping("usr/article/{boardCode}-list")
-	public String showList(Model model, @PathVariable("boardCode") String boardCode, String listUrl) {
+	public String showList(Model model, @PathVariable("boardCode") String boardCode, String listUrl, HttpServletRequest req) {
 		if ( listUrl == null ) {
 			listUrl = "./" + boardCode + "-list";
 		}
@@ -74,19 +75,20 @@ public class ArticleController {
 		Board board = boardService.getBoardByCode(boardCode);
 		model.addAttribute("board", board);
 		
-		List<Article> articles = articleService.getArticlesByMemberId(board.getMemberId());
+		List<Article> articles;
+		
+		String str = "";
+		if(req.getParameter("memberId")!=null) {
+			str = req.getParameter("memberId");
+			int memberId = Integer.parseInt(str);
+			articles = articleService.getArticlesByMemberId(memberId);
+		}
+		else {
+			articles = articleService.getArticlesByBoardCode(boardCode);
+		}
 		model.addAttribute("articles", articles);
 		
 		return "article/list";
-	}
-	
-	// 게시글 리스트 (전체)
-	@RequestMapping("usr/article/totalList")
-	public String showTotalList(Model model) {
-		List<Article> articles = articleService.getArticles();
-		model.addAttribute("articles", articles);
-		
-		return "article/totalList";
 	}
 	
 	// 게시글 상세보기
@@ -103,8 +105,6 @@ public class ArticleController {
 		int id = Integer.parseInt((String) param.get("id")); 
 		Article article = articleService.getArticleById(id);
 		model.addAttribute("article", article);
-		
-		
 		
 		return "article/detail";
 	}

@@ -40,4 +40,10 @@
 		SELECT * FROM category
 		WHERE boardId = #{boardId};
 	</select>
+	
+	<select id="getArticlesByBoardCode" resultType="Article">
+		SELECT * FROM article
+		WHERE displayStatus = 1
+		AND boardCode = #{boardCode};
+	</select>
 </mapper>

@@ -10,8 +10,8 @@ CREATE TABLE `member` (
     regDate DATETIME,
     updateDate DATETIME,
     delDate DATETIME,
-	delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
-	authStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	  delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	  authStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
     loginId CHAR(20) NOT NULL UNIQUE,
     loginPw CHAR(100) NOT NULL,
     `name` CHAR(20) NOT NULL,
@@ -59,6 +59,17 @@ CREATE TABLE `article` (
   title CHAR(200) NOT NULL,
   `body` LONGTEXT NOT NULL,
   memberId INT(10) UNSIGNED NOT NULL,
+  `cateId` INT(10) NOT NULL,
+  boardCode CHAR(20) NOT NULL DEFAULT 'free'
+);
+
+CREATE TABLE category (
+  `id` INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `name` CHAR(100) NOT NULL,
+  regDate DATETIME NOT NULL,
+  updateDate DATETIME NOT NULL,
+  delDate DATETIME DEFAULT NULL,
+  delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
   boardId INT(10) UNSIGNED NOT NULL
 );
 
@@ -66,12 +77,24 @@ CREATE TABLE board (
   `id` INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `code` CHAR(100) NOT NULL UNIQUE,
   `name` CHAR(100) NOT NULL,
-  memberId INT(10) UNSIGNED NOT NULL UNIQUE,
   regDate DATETIME NOT NULL,
   updateDate DATETIME NOT NULL,
   delDate DATETIME DEFAULT NULL,
   delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0
 );
+
+INSERT INTO board
+SET `code` = 'free',
+`name` = '자유게시판',
+regDate = NOW(),
+updateDate = NOW();
+
+INSERT INTO board
+SET `code` = 'notice',
+`name` = '공지사항',
+regDate = NOW(),
+updateDate = NOW();
+
 SELECT * FROM board;
 SELECT * FROM `member`;
 

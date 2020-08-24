@@ -37,4 +37,8 @@ public class ArticleService {
 	public List<Category> getCategories(int boardId) {
 		return articleDao.getCategories(boardId);
 	}
+
+	public List<Article> getArticlesByBoardCode(String boardCode) {
+		return articleDao.getArticlesByBoardCode(boardCode);
+	}
 }

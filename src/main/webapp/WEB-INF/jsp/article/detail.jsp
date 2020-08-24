@@ -20,7 +20,9 @@
 			</tr>
 			<tr>
 				<th>작성자 id</th>
-				<td><a href="${board.code}-list">${article.memberId}</a></td>
+				<td>
+				<a href="/usr/article/${board.code}-list?memberId=${article.memberId}">${article.memberId}</a>
+				</td>
 			</tr>
 			<tr>
 				<th>제목</th>
