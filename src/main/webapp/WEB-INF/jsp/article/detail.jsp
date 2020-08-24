@@ -15,6 +15,14 @@
 				<td>${article.regDate}</td>
 			</tr>
 			<tr>
+				<th>카테고리 id</th>
+				<td>${article.cateId}</td>
+			</tr>
+			<tr>
+				<th>작성자 id</th>
+				<td><a href="${board.code}-list">${article.memberId}</a></td>
+			</tr>
+			<tr>
 				<th>제목</th>
 				<td>${article.title}</td>
 			</tr>

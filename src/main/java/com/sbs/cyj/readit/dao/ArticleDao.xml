@@ -11,7 +11,8 @@
 		title = #{title},
 		`body` = #{body},
 		memberId = #{memberId},
-		boardId = #{boardId}
+		boardId = #{boardId},
+		cateId = #{cateId}
 	</insert>
 	
 	<select id="getArticles" resultType="Article">
@@ -33,5 +34,10 @@
 		ON M.id = A.memberId
 		AND A.memberId = #{memberId}
 		ORDER BY A.id DESC;
+	</select>
+	
+	<select id="getCategories" resultType="Category">
+		SELECT * FROM category
+		WHERE boardId = #{boardId};
 	</select>
 </mapper>

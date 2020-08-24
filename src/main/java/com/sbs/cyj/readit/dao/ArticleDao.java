@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.sbs.cyj.readit.dto.Article;
+import com.sbs.cyj.readit.dto.Category;
 
 @Mapper
 public interface ArticleDao {
@@ -17,4 +18,6 @@ public interface ArticleDao {
 	Article getArticleById(int id);
 
 	List<Article> getArticlesByMemberId(int memberId);
+
+	List<Category> getCategories(int boardId);
 }

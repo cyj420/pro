@@ -128,11 +128,6 @@ public class MemberController {
 	@RequestMapping("usr/member/doFindLoginPw")
 	@ResponseBody
 	public String doFindLoginPW(@RequestParam Map<String, Object> param, Model model) {
-		// 비번 찾기에서는
-		// 1. 로그인 아이디 / 이름 / 메일 주소 작성
-		// 2. 작성 정보와 (로그인 아이디 기준) 계정이 일치할 경우 작성 이메일로 임시 암호 발송
-		// 3. 이 때, 메일은 sha를 통과한 이후.
-		// +. 후에 Member에 임시번호 status 같은 걸 추가하여, 임시 비번을 계속 쓸 경우 변경해달라고 alert 하는 것도 구현해보기.
 		String loginId = (String) param.get("loginId");
 		Member member = memberService.getMemberByLoginId(loginId);
 		

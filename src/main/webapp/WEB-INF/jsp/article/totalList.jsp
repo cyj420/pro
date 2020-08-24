@@ -22,7 +22,7 @@
 					<td>${article.id}</td>
 					<td>${article.regDate}</td>
 					<td>
-						<p>임시방편으로 링크에 -만 추가함...</p>
+						<p>임시방편으로 detail링크에 -만 추가함...</p>
 						<a href="/usr/article/-detail?id=${article.id}">${article.title}</a>
 					</td>
 				</tr>

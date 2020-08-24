@@ -50,7 +50,6 @@ public class MemberService {
 	
 	private void sendJoinCompleteMail(String email) {
 		String mailTitle = String.format("[%s] 가입이 완료되었습니다.", "~사이트 이름~");
-
 		StringBuilder mailBodySb = new StringBuilder();
 		mailBodySb.append("<h1>가입이 완료되었습니다.</h1>");
 		mailBodySb.append(siteLink());

@@ -3,7 +3,6 @@ package com.sbs.cyj.readit.controller;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sbs.cyj.readit.dto.Article;
 import com.sbs.cyj.readit.dto.Board;
+import com.sbs.cyj.readit.dto.Category;
 import com.sbs.cyj.readit.dto.Member;
 import com.sbs.cyj.readit.service.ArticleService;
 import com.sbs.cyj.readit.service.BoardService;
@@ -37,6 +37,9 @@ public class ArticleController {
 		model.addAttribute("listUrl", listUrl);
 		Board board = boardService.getBoardByCode(boardCode);
 		model.addAttribute("board", board);
+		
+		List<Category> categories = articleService.getCategories(board.getId());
+		model.addAttribute("categories", categories);
 
 		return "article/write";
 	}
@@ -53,10 +56,6 @@ public class ArticleController {
 //		Map<String, Object> newParam = Util.getNewMapOf(param, "title", "body", "fileIdsStr");
 		
 		System.out.println("board.getId() : "+ board.getId());
-		
-		// 여기서 문제 발생... 왜 null???
-		System.out.println("loginedMember.toString() : " + loginedMember.toString());
-		System.out.println("loginedMember.getId() : "+ loginedMember.getId());
 		
 		param.put("boardId", board.getId());
 		param.put("memberId", loginedMember.getId());
@@ -104,6 +103,8 @@ public class ArticleController {
 		int id = Integer.parseInt((String) param.get("id")); 
 		Article article = articleService.getArticleById(id);
 		model.addAttribute("article", article);
+		
+		
 		
 		return "article/detail";
 	}

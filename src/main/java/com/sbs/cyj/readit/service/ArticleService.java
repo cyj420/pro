@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.sbs.cyj.readit.dao.ArticleDao;
 import com.sbs.cyj.readit.dto.Article;
+import com.sbs.cyj.readit.dto.Category;
 import com.sbs.cyj.readit.util.Util;
 
 @Service
@@ -31,5 +32,9 @@ public class ArticleService {
 
 	public List<Article> getArticlesByMemberId(int memberId) {
 		return articleDao.getArticlesByMemberId(memberId);
+	}
+
+	public List<Category> getCategories(int boardId) {
+		return articleDao.getCategories(boardId);
 	}
 }
