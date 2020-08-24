@@ -30,15 +30,15 @@ public class ArticleService {
 		return articleDao.getArticleById(id);
 	}
 
-	public List<Article> getArticlesByMemberId(int memberId) {
-		return articleDao.getArticlesByMemberId(memberId);
+	public List<Article> getArticlesByMemberIdAndBoardId(int memberId, int boardId) {
+		return articleDao.getArticlesByMemberIdAndBoardId(memberId, boardId);
 	}
 
 	public List<Category> getCategories(int boardId) {
 		return articleDao.getCategories(boardId);
 	}
 
-	public List<Article> getArticlesByBoardCode(String boardCode) {
-		return articleDao.getArticlesByBoardCode(boardCode);
+	public List<Article> getArticlesByBoardId(int boardId) {
+		return articleDao.getArticlesByBoardId(boardId);
 	}
 }

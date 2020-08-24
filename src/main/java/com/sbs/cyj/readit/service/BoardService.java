@@ -1,5 +1,6 @@
 package com.sbs.cyj.readit.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +20,9 @@ public class BoardService {
 
 	public Board getBoardByCode(String boardCode) {
 		return boardDao.getBoardByCode(boardCode);
+	}
+
+	public List<Board> getBoards() {
+		return boardDao.getBoards();
 	}
 }

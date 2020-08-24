@@ -48,15 +48,12 @@ public class ArticleController {
 	@RequestMapping("usr/article/{boardCode}-doWrite")
 	@ResponseBody
 	public String doWrite(@RequestParam Map<String, Object> param, HttpSession session, @PathVariable("boardCode") String boardCode, Model model) {
-		System.out.println("boardCode : "+boardCode);
 		Board board = boardService.getBoardByCode(boardCode);
 		model.addAttribute("board", board);
 
 		Member loginedMember = (Member) session.getAttribute("loginedMember");
 				
 //		Map<String, Object> newParam = Util.getNewMapOf(param, "title", "body", "fileIdsStr");
-		
-		System.out.println("board.getId() : "+ board.getId());
 		
 		param.put("boardId", board.getId());
 		param.put("memberId", loginedMember.getId());
@@ -74,6 +71,7 @@ public class ArticleController {
 		model.addAttribute("listUrl", listUrl);
 		Board board = boardService.getBoardByCode(boardCode);
 		model.addAttribute("board", board);
+		int boardId = board.getId();
 		
 		List<Article> articles;
 		
@@ -81,10 +79,10 @@ public class ArticleController {
 		if(req.getParameter("memberId")!=null) {
 			str = req.getParameter("memberId");
 			int memberId = Integer.parseInt(str);
-			articles = articleService.getArticlesByMemberId(memberId);
+			articles = articleService.getArticlesByMemberIdAndBoardId(memberId, boardId);
 		}
 		else {
-			articles = articleService.getArticlesByBoardCode(boardCode);
+			articles = articleService.getArticlesByBoardId(boardId);
 		}
 		model.addAttribute("articles", articles);
 		

@@ -21,11 +21,15 @@
 	</c:if>
 	<div>
 	<a href="/usr/home/main">[HOME]</a>
-	<a href="/usr/article/free-list">[LIST]</a>
-	<a href="/usr/article/notice-list">[NOTICE]</a>
+	<c:forEach items="${boards}" var="b">
+		<a href="/usr/article/${b.code}-list">[${b.name }-LIST]</a>
+	</c:forEach>
 	<c:if test="${loginedMember != null }">
-		<a href="/usr/article/${board.code}-list">[${boardCode}-LIST]</a>
-		<a href="/usr/article/${board.code}-write">[${boardCode}-Write]</a>
+		<c:forEach items="${boards}" var="b">
+			<c:if test="${boardCode == b.code }">
+			<a href="/usr/article/${b.code}-write">[${b.name }-WRITE]</a>
+			</c:if>
+		</c:forEach>
 	</c:if>
 	</div>
 </div>

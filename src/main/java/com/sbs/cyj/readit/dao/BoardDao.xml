@@ -12,10 +12,16 @@
 		`name` = #{loginId},
 		memberId = #{id}
 	</insert>
+	
 	<select id="getBoardByCode" resultType="Board">
 		SELECT *
 		FROM board
 		WHERE
 		`code` = #{code}
+	</select>
+	
+	<select id="getBoards" resultType="Board">
+		SELECT *
+		FROM board
 	</select>
 </mapper>

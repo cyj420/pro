@@ -27,12 +27,13 @@
 		AND id = #{id};
 	</select>
 	
-	<select id="getArticlesByMemberId" resultType="Article">
+	<select id="getArticlesByMemberIdAndBoardId" resultType="Article">
 		SELECT A.*
 		FROM article AS A
 		INNER JOIN `Member` AS M
 		ON M.id = A.memberId
 		AND A.memberId = #{memberId}
+		AND A.boardId = #{boardId}
 		ORDER BY A.id DESC;
 	</select>
 	
@@ -41,9 +42,9 @@
 		WHERE boardId = #{boardId};
 	</select>
 	
-	<select id="getArticlesByBoardCode" resultType="Article">
+	<select id="getArticlesByBoardId" resultType="Article">
 		SELECT * FROM article
 		WHERE displayStatus = 1
-		AND boardCode = #{boardCode};
+		AND boardId = #{boardId};
 	</select>
 </mapper>

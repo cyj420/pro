@@ -1,8 +1,3 @@
-SELECT * FROM `member`;
-SELECT * FROM article
-WHERE displayStatus = 1
-ORDER BY id DESC;
-SELECT * FROM board;
 
 # member 테이블 세팅
 CREATE TABLE `member` (
@@ -10,8 +5,8 @@ CREATE TABLE `member` (
     regDate DATETIME,
     updateDate DATETIME,
     delDate DATETIME,
-	  delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
-	  authStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	authStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
     loginId CHAR(20) NOT NULL UNIQUE,
     loginPw CHAR(100) NOT NULL,
     `name` CHAR(20) NOT NULL,
@@ -19,7 +14,7 @@ CREATE TABLE `member` (
     `email` CHAR(100) NOT NULL UNIQUE
 );
 
-# 댓글 테이블 추가
+
 DROP TABLE IF EXISTS attr;
 CREATE TABLE attr (
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -46,7 +41,6 @@ ALTER TABLE `attr` ADD UNIQUE INDEX (`relTypeCode`, `relId`, `typeCode`, `type2C
 ## 특정 조건을 만족하는 회원 또는 게시물(기타 데이터)를 빠르게 찾기 위해서
 ALTER TABLE `attr` ADD INDEX (`relTypeCode`, `typeCode`, `type2Code`); 
 
-
 DROP TABLE IF EXISTS `article`;
 
 CREATE TABLE `article` (
@@ -60,7 +54,7 @@ CREATE TABLE `article` (
   `body` LONGTEXT NOT NULL,
   memberId INT(10) UNSIGNED NOT NULL,
   `cateId` INT(10) NOT NULL,
-  boardCode CHAR(20) NOT NULL DEFAULT 'free'
+  `boardId` INT(10) NOT NULL DEFAULT 1
 );
 
 CREATE TABLE category (
@@ -95,8 +89,7 @@ SET `code` = 'notice',
 regDate = NOW(),
 updateDate = NOW();
 
-SELECT * FROM board;
-SELECT * FROM `member`;
+SELECT * FROM article
 
 # 코드는 unique
 SELECT B.code

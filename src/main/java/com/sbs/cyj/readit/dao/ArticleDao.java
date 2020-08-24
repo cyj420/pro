@@ -17,9 +17,9 @@ public interface ArticleDao {
 
 	Article getArticleById(int id);
 
-	List<Article> getArticlesByMemberId(int memberId);
+	List<Article> getArticlesByMemberIdAndBoardId(int memberId, int boardId);
 
 	List<Category> getCategories(int boardId);
 
-	List<Article> getArticlesByBoardCode(String boardCode);
+	List<Article> getArticlesByBoardId(int boardId);
 }
