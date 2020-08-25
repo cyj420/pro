@@ -34,6 +34,7 @@
 		ON M.id = A.memberId
 		AND A.memberId = #{memberId}
 		AND A.boardId = #{boardId}
+		AND A.displayStatus = 1
 		ORDER BY A.id DESC;
 	</select>
 	
@@ -45,6 +46,16 @@
 	<select id="getArticlesByBoardId" resultType="Article">
 		SELECT * FROM article
 		WHERE displayStatus = 1
-		AND boardId = #{boardId};
+		AND boardId = #{boardId}
+		ORDER BY id DESC;
 	</select>
+	
+	<update id="delete">
+		UPDATE article
+		SET updateDate = NOW(),
+		delDate = NOW(),
+		delStatus = 1,
+		displayStatus = 0
+		WHERE id = #{id};
+	</update>
 </mapper>

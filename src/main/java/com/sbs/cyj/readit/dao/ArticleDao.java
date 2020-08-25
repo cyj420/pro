@@ -22,4 +22,6 @@ public interface ArticleDao {
 	List<Category> getCategories(int boardId);
 
 	List<Article> getArticlesByBoardId(int boardId);
+
+	void delete(int id);
 }

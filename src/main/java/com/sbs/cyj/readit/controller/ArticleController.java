@@ -100,11 +100,36 @@ public class ArticleController {
 		Board board = boardService.getBoardByCode(boardCode);
 		model.addAttribute("board", board);
 
-		Member actor = (Member)req.getAttribute("loginedMember");
+		Member loginedMember = (Member)req.getAttribute("loginedMember");
+		model.addAttribute("loginedMember", loginedMember);
+		
 		int id = Integer.parseInt((String) param.get("id")); 
-		Article article = articleService.getArticleById(actor, id);
+		Article article = articleService.getArticleById(loginedMember, id);
 		model.addAttribute("article", article);
 		
 		return "article/detail";
+	}
+	
+	@RequestMapping("usr/article/{boardCode}-doDelete")
+	@ResponseBody
+	public String doDelete(@RequestParam Map<String, Object> param, HttpSession session, HttpServletRequest req, @PathVariable("boardCode") String boardCode, Model model) {
+		Board board = boardService.getBoardByCode(boardCode);
+		model.addAttribute("board", board);
+
+		Member loginedMember = (Member) session.getAttribute("loginedMember");
+		
+		int id = Integer.parseInt(req.getParameter("id"));
+		
+		String str = "";
+		
+		if(loginedMember.getId() == Integer.parseInt(req.getParameter("memberId"))) {
+			articleService.delete(id);
+			str = "alert('" + id + "번째 글을 삭제하였습니다.'); location.replace('../article/" + board.getCode() + "-list');";
+		}
+		else {
+			str = "alert('게시글 삭제 실패'); history.back();";
+		}
+
+		return "<script>" + str + "</script>";
 	}
 }

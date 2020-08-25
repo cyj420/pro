@@ -111,4 +111,8 @@ public class ArticleService {
 	public List<Article> getArticlesByBoardId(int boardId) {
 		return articleDao.getArticlesByBoardId(boardId);
 	}
+
+	public void delete(int id) {
+		articleDao.delete(id);
+	}
 }

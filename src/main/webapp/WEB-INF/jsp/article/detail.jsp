@@ -3,6 +3,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="${board.name} 게시물  상세보기" />
 <%@ include file="../part/head.jspf"%>
+<style>
+video{
+	max-width: 500px;
+}
+img{
+	max-width: 500px;
+}
+</style>
 <div class="con">
 	<table>
 		<tbody>
@@ -28,6 +36,12 @@
 				<th>제목</th>
 				<td>${article.title}</td>
 			</tr>
+			<c:if test="${article.memberId == loginedMember.id }">
+				<tr>
+					<th>비고</th>
+					<td><a href="/usr/article/${board.code}-doDelete?id=${article.id}&memberId=${article.memberId}">삭제</a></td>
+				</tr>
+			</c:if>
 			<tr>
 				<th>내용</th>
 				<td>${article.body}</td>
