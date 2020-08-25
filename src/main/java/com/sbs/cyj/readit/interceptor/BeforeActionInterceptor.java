@@ -28,9 +28,6 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 		request.setAttribute("logoText", this.siteName);
 		
 		List<Board> boards = boardService.getBoards();
-		System.out.println("==============================");
-		System.out.println("boards size() : "+ boards.size());
-		System.out.println("==============================");
 		request.setAttribute("boards", boards);
 
 		return HandlerInterceptor.super.preHandle(request, response, handler);

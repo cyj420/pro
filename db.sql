@@ -114,3 +114,24 @@ AND A.memberId = 1
 SELECT * FROM board
 
 SELECT * FROM article
+
+===========================================================
+
+CREATE TABLE `file` (
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME,
+    updateDate DATETIME,
+    delDate DATETIME,
+	delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	relTypeCode CHAR(50) NOT NULL,
+	relId INT(10) UNSIGNED NOT NULL,
+    originFileName VARCHAR(100) NOT NULL,
+    fileExt CHAR(10) NOT NULL,
+    typeCode CHAR(20) NOT NULL,
+    type2Code CHAR(20) NOT NULL,
+    fileSize INT(10) UNSIGNED NOT NULL,
+    fileExtTypeCode CHAR(10) NOT NULL,
+    fileExtType2Code CHAR(10) NOT NULL,
+    fileNo TINYINT(2) UNSIGNED NOT NULL,
+    `body` LONGBLOB
+); 

@@ -3,14 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="${board.name} 게시물 작성" />
 <%@ include file="../part/head.jspf"%>
+<%-- <%@ include file="../part/toastuiEditor.jspf"%> --%>
 <script>
-	var ArticleWriteForm__submitDone = false;
 	function ArticleWriteForm__submit(form) {
-		if (ArticleWriteForm__submitDone) {
-			alert('처리중입니다.');
-			return;
-		}
-
 		form.title.value = form.title.value.trim();
 
 		if (form.title.value.length == 0) {
@@ -29,16 +24,56 @@
 			return;
 		}
 
-		form.submit();
+		var maxSizeMb = 50;
+		var maxSize = maxSizeMb * 1024 * 1024 //50MB
+
+		if (form.file__article__0__common__attachment__1.value) {
+			if (form.file__article__0__common__attachment__1.files[0].size > maxSize) {
+				alert(maxSizeMb + "MB 이하의 파일을 업로드 해주세요.");
+				return;
+			}
+		}
+
+		var startUploadFiles = function(onSuccess) {
+			var needToUpload = form.file__article__0__common__attachment__1.value.length > 0;
+			if (needToUpload == false) {
+				onSuccess();
+				return;
+			}
+			
+			var fileUploadFormData = new FormData(form);
+
+			$.ajax({
+				url : './../file/doUploadAjax',
+				data : fileUploadFormData,
+				processData : false,
+				contentType : false,
+				dataType : "json",
+				type : 'POST',
+				success : onSuccess
+			});
+		}
+
 		ArticleWriteForm__submitDone = true;
+		startUploadFiles(function(data) {
+			var fileIdsStr = '';
+			if (data && data.body && data.body.fileIdsStr) {
+				fileIdsStr = data.body.fileIdsStr;
+			}
+			form.fileIdsStr.value = fileIdsStr;
+			form.file__article__0__common__attachment__1.value = '';
+			form.submit();
+		});
 	}
 </script>
 <div class="con">
-	<form action="${board.code}-doWrite" method="post">
-		<input name="memberId" value="${loginedMember.id}" onsubmit="ArticleWriteForm__submit(this); return false;" hidden="hidden">
+	<form method="post" action="${board.code}-doWrite" method="post" onsubmit="ArticleWriteForm__submit(this); return false;" >
+		<input type="hidden" name="fileIdsStr" />
+		<input type="hidden" name="redirectUri" value="/usr/article/${board.code}-detail?id=#id">
+		
 		<table>
-		<colgroup>
-			<col width="100">
+			<colgroup>
+				<col width="100">
 			</colgroup>
 			<tbody>
 				<tr>
@@ -66,6 +101,15 @@
 					<td>
 						<div>
 							<input type="text" placeholder="내용을 입력해주세요." name="body"/>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th>첨부 이미지</th>
+					<td>
+						<div>
+							<input type="file" accept="image/*"
+								name="file__article__0__common__attachment__1">
 						</div>
 					</td>
 				</tr>
