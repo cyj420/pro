@@ -34,8 +34,31 @@
 			}
 		}
 
+		if (form.file__article__0__common__attachment__2.value) {
+			if (form.file__article__0__common__attachment__2.files[0].size > maxSize) {
+				alert(maxSizeMb + "MB 이하의 파일을 업로드 해주세요.");
+				return;
+			}
+		}
+
+		if (form.file__article__0__common__attachment__3.value) {
+			if (form.file__article__0__common__attachment__3.files[0].size > maxSize) {
+				alert(maxSizeMb + "MB 이하의 파일을 업로드 해주세요.");
+				return;
+			}
+		}
+
 		var startUploadFiles = function(onSuccess) {
 			var needToUpload = form.file__article__0__common__attachment__1.value.length > 0;
+
+			if (!needToUpload) {
+				needToUpload = form.file__article__0__common__attachment__2.value.length > 0;
+			}
+
+			if (!needToUpload) {
+				needToUpload = form.file__article__0__common__attachment__3.value.length > 0;
+			}
+
 			if (needToUpload == false) {
 				onSuccess();
 				return;
@@ -54,7 +77,6 @@
 			});
 		}
 
-		ArticleWriteForm__submitDone = true;
 		startUploadFiles(function(data) {
 			var fileIdsStr = '';
 			if (data && data.body && data.body.fileIdsStr) {
@@ -62,6 +84,9 @@
 			}
 			form.fileIdsStr.value = fileIdsStr;
 			form.file__article__0__common__attachment__1.value = '';
+			form.file__article__0__common__attachment__2.value = '';
+			form.file__article__0__common__attachment__3.value = '';
+			
 			form.submit();
 		});
 	}
@@ -104,15 +129,18 @@
 						</div>
 					</td>
 				</tr>
-				<tr>
-					<th>첨부 이미지</th>
-					<td>
-						<div>
-							<input type="file" accept="image/*"
-								name="file__article__0__common__attachment__1">
-						</div>
-					</td>
-				</tr>
+				<c:forEach var="i" begin="1" end="3" step="1">
+					<c:set var="fileNo" value="${String.valueOf(i)}" />
+					<c:set var="fileExtTypeCode" value="${appConfig.getAttachmentFileExtTypeCode('article', i)}" />
+					<tr>
+						<th>첨부${fileNo} ${appConfig.getAttachmentFileExtTypeDisplayName('article', i)}</th>
+						<td>
+							<div class="form-control-box">
+								<input type="file" accept="${appConfig.getAttachemntFileInputAccept('article', i)}" name="file__article__0__common__attachment__${fileNo}">
+							</div>
+						</td>
+					</tr>
+				</c:forEach>
 				<tr>
 					<th>작성</th>
 					<td>

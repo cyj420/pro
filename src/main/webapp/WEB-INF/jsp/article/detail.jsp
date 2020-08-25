@@ -32,6 +32,27 @@
 				<th>내용</th>
 				<td>${article.body}</td>
 			</tr>
+			<c:forEach var="i" begin="1" end="3" step="1">
+				<c:set var="fileNo" value="${String.valueOf(i)}" />
+				<c:set var="file" value="${article.extra.file__common__attachment[fileNo]}" />
+				<c:if test="${file != null}">
+					<tr>
+						<th>첨부파일 ${fileNo}</th>
+						<td>
+							<c:if test="${file.fileExtTypeCode == 'video'}">
+								<div class="video-box">
+									<video controls src="/usr/file/streamVideo?id=${file.id}&updateDate=${file.updateDate}"></video>
+								</div>
+							</c:if>
+							<c:if test="${file.fileExtTypeCode == 'img'}">
+								<div class="img-box img-box-auto">
+									<img src="/usr/file/img?id=${file.id}&updateDate=${file.updateDate}" alt="" />
+								</div>
+							</c:if>
+						</td>
+					</tr>
+				</c:if>
+			</c:forEach>
 		</tbody>
 	</table>
 </div>

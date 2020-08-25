@@ -15,7 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,15 +32,15 @@ import com.google.common.cache.LoadingCache;
 import com.sbs.cyj.readit.dto.File;
 import com.sbs.cyj.readit.dto.ResultData;
 import com.sbs.cyj.readit.service.FileService;
+import com.sbs.cyj.readit.service.VideoStreamService;
 import com.sbs.cyj.readit.util.Util;
-//import com.sbs.cyj.readit.service.VideoStreamService;
 
 @Controller
 public class FileController {
 	@Autowired
 	private FileService fileService;
-//	@Autowired
-//	private VideoStreamService videoStreamService;
+	@Autowired
+	private VideoStreamService videoStreamService;
 
 	private LoadingCache<Integer, File> fileCache = CacheBuilder.newBuilder().maximumSize(100).expireAfterAccess(2, TimeUnit.MINUTES).build(new CacheLoader<Integer, File>() {
 		@Override
@@ -91,12 +93,12 @@ public class FileController {
 		IOUtils.copy(in, response.getOutputStream());
 	}
 
-//	@RequestMapping("/usr/file/streamVideo")
-//	public ResponseEntity<byte[]> streamVideo(@RequestHeader(value = "Range", required = false) String httpRangeList, int id) {
-//		File file = Util.getCacheData(fileCache, id);
-//
-//		return videoStreamService.prepareContent(new ByteArrayInputStream(file.getBody()), file.getFileSize(), file.getFileExt(), httpRangeList);
-//	}
+	@RequestMapping("/usr/file/streamVideo")
+	public ResponseEntity<byte[]> streamVideo(@RequestHeader(value = "Range", required = false) String httpRangeList, int id) {
+		File file = Util.getCacheData(fileCache, id);
+
+		return videoStreamService.prepareContent(new ByteArrayInputStream(file.getBody()), file.getFileSize(), file.getFileExt(), httpRangeList);
+	}
 
 	@RequestMapping("/usr/file/doUploadEditorBlobAjax")
 	@ResponseBody

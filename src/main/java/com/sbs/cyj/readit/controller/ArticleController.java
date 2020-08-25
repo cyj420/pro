@@ -91,7 +91,7 @@ public class ArticleController {
 	
 	// 게시글 상세보기
 	@RequestMapping("usr/article/{boardCode}-detail")
-	public String showDetail(@RequestParam Map<String, Object> param, Model model, @PathVariable("boardCode") String boardCode, String listUrl) {
+	public String showDetail(@RequestParam Map<String, Object> param, Model model, @PathVariable("boardCode") String boardCode, String listUrl, HttpServletRequest req) {
 		if ( listUrl == null ) {
 			listUrl = "./" + boardCode + "-list";
 		}
@@ -99,9 +99,10 @@ public class ArticleController {
 
 		Board board = boardService.getBoardByCode(boardCode);
 		model.addAttribute("board", board);
-		
+
+		Member actor = (Member)req.getAttribute("loginedMember");
 		int id = Integer.parseInt((String) param.get("id")); 
-		Article article = articleService.getArticleById(id);
+		Article article = articleService.getArticleById(actor, id);
 		model.addAttribute("article", article);
 		
 		return "article/detail";
