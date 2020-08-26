@@ -68,5 +68,8 @@
 		</div>
 		<input type="submit" value="정보 수정">
 	</form>
+	<a href="./withdrawal?id=${loginedMember.id}" onclick="if ( confirm('정말 탈퇴하시겠습니까?') == false ) { return false; }">
+		<button>회원 탈퇴</button>
+	</a>
 </div>
 <%@ include file="../part/foot.jspf"%>

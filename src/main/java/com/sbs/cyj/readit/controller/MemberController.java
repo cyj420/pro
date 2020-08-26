@@ -70,7 +70,6 @@ public class MemberController {
 	@ResponseBody
 	public String doLogout(Model model, HttpSession session) {
 		session.removeAttribute("loginedMember");
-		session.removeAttribute("board");
 		
 		return "<script> alert('로그아웃 되었습니다.'); location.replace('../home/main'); </script>";
 	}
@@ -98,6 +97,7 @@ public class MemberController {
 		return "member/findLoginId";
 	}
 	
+	// ID 찾기
 	@RequestMapping("usr/member/doFindLoginId")
 	@ResponseBody
 	public String doFindLoginId(@RequestParam Map<String, Object> param, Model model) {
@@ -149,6 +149,23 @@ public class MemberController {
 				sb.append("history.back();");
 			}
 		}
+
+		sb.insert(0, "<script>");
+		sb.append("</script>");
+
+		return sb.toString();
+	}
+	
+	@RequestMapping("usr/member/withdrawal")
+	@ResponseBody
+	public String doWithdrawal(@RequestParam int id, Model model, HttpSession session) {
+		memberService.withdrawal(id);
+		session.removeAttribute("loginedMember");
+		
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("alert('탈퇴 완료.');");
+		sb.append("location.replace('./../home/main');");
 
 		sb.insert(0, "<script>");
 		sb.append("</script>");

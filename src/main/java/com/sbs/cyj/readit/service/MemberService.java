@@ -104,4 +104,8 @@ public class MemberService {
 
 		mailService.send(email, mailTitle, mailBodySb.toString());
 	}
+
+	public void withdrawal(int id) {
+		memberDao.withdrawal(id);
+	}
 }

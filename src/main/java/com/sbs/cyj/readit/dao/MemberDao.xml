@@ -13,13 +13,14 @@
 		loginPw = #{loginPwReal},
 		`name` = #{name},
 		nickname = #{nickname},
-		email = #{email}
+		email = #{email};
 	</insert>
 	
 	<select id="login" resultType="Member">
 		SELECT * FROM `member`
 		WHERE loginId = #{loginId}
 		AND loginPw = #{loginPwReal}
+		AND delStatus = 0;
 	</select>
 	
 	<update id="modify">
@@ -29,28 +30,31 @@
 		<if test="email != null">email = #{email},</if>
 		<if test="loginPwReal.trim().length() != 0">loginPw = #{loginPwReal},</if>
 		updateDate = NOW()
-		WHERE id = #{id}
+		WHERE id = #{id};
 	</update>
 	
 	<select id="getMemberById" resultType="Member">
 		SELECT * FROM `member`
 		WHERE id = #{id}
+		AND delStatus = 0;
 	</select>
 	
 	<select id="findLoginIdByNameAndEmail" resultType="String">
 		SELECT loginId FROM `member`
 		WHERE `name` = #{name}
 		AND email = #{email}
+		AND delStatus = 0;
 	</select>
 	
 	<select id="getMemberByLoginId" resultType="Member">
 		SELECT * FROM `member`
-		WHERE `loginId` = #{loginId}
+		WHERE `loginId` = #{loginId};
 	</select>
 	
 	<select id="getMemberByEmail" resultType="Member">
 		SELECT * FROM `member`
 		WHERE `email` = #{email}
+		AND delStatus = 0;
 	</select>
 	
 	<update id="resetLoginId">
@@ -59,5 +63,15 @@
 		loginPw = #{tempPw},
 		updateDate = NOW()
 		WHERE loginId = #{loginId}
+		AND delStatus = 0
+	</update>
+	
+	<update id="withdrawal">
+		UPDATE `member`
+		SET 
+		updateDate = NOW(),
+		delDate = NOW(),
+		delStatus = 1
+		WHERE id = #{id}
 	</update>
 </mapper>

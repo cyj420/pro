@@ -11,7 +11,7 @@ CREATE TABLE `member` (
     loginPw CHAR(100) NOT NULL,
     `name` CHAR(20) NOT NULL,
     `nickname` CHAR(20) NOT NULL,
-    `email` CHAR(100) NOT NULL UNIQUE
+    `email` CHAR(100) NOT NULL
 );
 
 
