@@ -29,8 +29,17 @@ public class ArticleService {
 		int id = Util.getAsInt(param.get("id"));
 
 		String fileIdsStr = (String) param.get("fileIdsStr");
-
+		
+		System.out.println("===Article Service START===");
+		if(fileIdsStr != null) {
+			System.out.println("fileIdsStr != null");
+			System.out.println("fileIdsStr : "+fileIdsStr);
+		}
+		if(fileIdsStr.length() > 0) {
+			System.out.println("fileIdsStr.length() > 0");
+		}
 		if (fileIdsStr != null && fileIdsStr.length() > 0) {
+			System.out.println("===1===");
 			List<Integer> fileIds = Arrays.asList(fileIdsStr.split(",")).stream().map(s -> Integer.parseInt(s.trim()))
 					.collect(Collectors.toList());
 
@@ -40,6 +49,7 @@ public class ArticleService {
 				fileService.changeRelId(fileId, id);
 			}
 		}
+		System.out.println("===Article Service END===");
 		
 		return id;
 	}

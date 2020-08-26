@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="${board.name} 게시물 작성" />
 <%@ include file="../part/head.jspf"%>
-<%-- <%@ include file="../part/toastuiEditor.jspf"%> --%>
+<%@ include file="../part/toastuiEditor.jspf"%>
 <script>
 	function ArticleWriteForm__submit(form) {
 		form.title.value = form.title.value.trim();
@@ -15,14 +15,18 @@
 			return;
 		}
 
-		form.body.value = form.body.value.trim();
+		var bodyEditor = $(form).find('.toast-editor.input-body').data('data-toast-editor');
 
-		if (form.body.value.length == 0) {
-			form.body.focus();
+		var body = bodyEditor.getMarkdown().trim();
+
+		if (body.length == 0) {
+			bodyEditor.focus();
 			alert('내용을 입력해주세요.');
 
 			return;
 		}
+		
+		form.body.value = body;
 
 		var maxSizeMb = 50;
 		var maxSize = maxSizeMb * 1024 * 1024 //50MB
@@ -79,14 +83,19 @@
 
 		startUploadFiles(function(data) {
 			var fileIdsStr = '';
+
 			if (data && data.body && data.body.fileIdsStr) {
 				fileIdsStr = data.body.fileIdsStr;
 			}
+
 			form.fileIdsStr.value = fileIdsStr;
 			form.file__article__0__common__attachment__1.value = '';
 			form.file__article__0__common__attachment__2.value = '';
-			form.file__article__0__common__attachment__3.value = '';
-			
+
+			if (bodyEditor.inBodyFileIdsStr) {
+				form.fileIdsStr.value += bodyEditor.inBodyFileIdsStr;
+			}
+
 			form.submit();
 		});
 	}
@@ -94,6 +103,7 @@
 <div class="con">
 	<form method="post" action="${board.code}-doWrite" method="post" onsubmit="ArticleWriteForm__submit(this); return false;" >
 		<input type="hidden" name="fileIdsStr" />
+		<input type="hidden" name="body" />
 		<input type="hidden" name="redirectUri" value="/usr/article/${board.code}-detail?id=#id">
 		
 		<table>
@@ -124,8 +134,21 @@
 				<tr>
 					<th>내용</th>
 					<td>
-						<div>
-							<input type="text" placeholder="내용을 입력해주세요." name="body"/>
+						<div class="form-control-box">
+							<script type="text/x-template">
+# 제목
+![img](https://placekitten.com/200/287)
+이미지는 이렇게 씁니다.
+
+# 유투브 동영상 첨부
+
+아래와 같이 첨부할 수 있습니다.
+
+```youtube
+https://www.youtube.com/watch?v=LmgWxezH7cc
+```
+                        </script>
+							<div data-relTypeCode="article" data-relId="0" class="toast-editor input-body"></div>
 						</div>
 					</td>
 				</tr>

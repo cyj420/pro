@@ -218,10 +218,12 @@
 			if ( !relId ) {
 				relId = 0;
 			}
+			/* 
 			var height = jq_attr($el, 'data-toast-editor-height', 500);
 			height = parseInt(height);
 			var initialEditType = jq_attr($el, 'data-toast-editor-initialEditType', "markdown");
 			var previewStyle = jq_attr($el, 'data-toast-editor-previewStyle', "vertical");
+			 */
 			var initialValue = ToastEditor__getBodyFromXTemplate($el.prev());
 
 			if (initialValue == '') {
@@ -230,9 +232,11 @@
 
 			var editor = new toastui.Editor({
 				el : el,
+				/* 
 				height : height,
 				initialEditType : initialEditType,
 				previewStyle : previewStyle,
+				 */
 				initialValue : initialValue,
 				hooks : {
 					'addImageBlobHook' : function(blob, callback) {

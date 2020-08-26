@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="${board.name} 게시물  상세보기" />
 <%@ include file="../part/head.jspf"%>
+<%@ include file="../part/toastuiEditor.jspf"%>
 <style>
 video{
 	max-width: 500px;
@@ -44,7 +45,10 @@ img{
 			</c:if>
 			<tr>
 				<th>내용</th>
-				<td>${article.body}</td>
+				<td>
+				    <script type="text/x-template">${article.body}</script>
+                    <div class="toast-editor toast-editor-viewer"></div>
+				</td>
 			</tr>
 			<c:forEach var="i" begin="1" end="3" step="1">
 				<c:set var="fileNo" value="${String.valueOf(i)}" />

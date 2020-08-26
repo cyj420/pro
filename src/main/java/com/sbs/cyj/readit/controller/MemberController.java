@@ -77,15 +77,8 @@ public class MemberController {
 
 		session.setAttribute("loginedMemberId", member.getId());
 
-		System.out.println("========로그인 시작========");
-		System.out.println("redirectUri : "+redirectUri);
-		if(redirectUri.length() == 0) {
-			System.out.println("redirectUri.length() == 0");
-		}
 		if (redirectUri == null || redirectUri.length() == 0) {
 			redirectUri = "/usr/home/main";
-			System.out.println("========로그인 끝========");
-			//지금 이곳으로 바로 들어가고 있음.
 		}
 
 		model.addAttribute("redirectUri", redirectUri);
@@ -100,19 +93,16 @@ public class MemberController {
 		session.removeAttribute("loginedMember");
 		session.removeAttribute("loginedMemberId");
 		
-		System.out.println("========로그아웃 시작========");
-		System.out.println("redirectUri : "+redirectUri);
 		if(redirectUri.length() == 0) {
-			//에러발생??
 			System.out.println("redirectUri.length() == 0");
 		}
 		if (redirectUri == null || redirectUri.length() == 0) {
 			redirectUri = "/usr/home/main";
-			System.out.println("========로그아웃 끝========");
-			//지금 이곳으로 바로 들어가고 있음.
 		}
 
 		model.addAttribute("redirectUri", redirectUri);
+		model.addAttribute("msg", String.format("로그아웃 되었습니다."));
+		
 		return "common/redirect";
 	}
 	

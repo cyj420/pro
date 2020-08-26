@@ -62,6 +62,9 @@ public class ArticleController {
 		String redirectUri = (String) param.get("redirectUri");
 		redirectUri = redirectUri.replace("#id", id + "");
 
+//		alert 어떻게 띄우지?? 로그인/로그아웃 참고했는데 안됨
+//		model.addAttribute("msg", String.format(id+"번째 글을 작성하였습니다."));
+		
 		return "redirect:" + redirectUri;
 //		return "<script> alert('" + id + "번째 글을 작성하였습니다.'); location.replace('../home/main'); </script>";
 	}
