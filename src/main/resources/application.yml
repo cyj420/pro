@@ -6,6 +6,8 @@ server:
     include-message: always
     include-binding-errors: always
 spring:
+  profiles:
+    active: local # 기본적으로 local이 선택된다는 뜻
   mvc:
     view:
       prefix: /WEB-INF/jsp/

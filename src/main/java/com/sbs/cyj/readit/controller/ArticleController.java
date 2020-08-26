@@ -46,12 +46,11 @@ public class ArticleController {
 	}
 	
 	@RequestMapping("usr/article/{boardCode}-doWrite")
-	@ResponseBody
-	public String doWrite(@RequestParam Map<String, Object> param, HttpSession session, @PathVariable("boardCode") String boardCode, Model model) {
+	public String doWrite(@RequestParam Map<String, Object> param, HttpServletRequest req, @PathVariable("boardCode") String boardCode, Model model) {
 		Board board = boardService.getBoardByCode(boardCode);
 		model.addAttribute("board", board);
 
-		Member loginedMember = (Member) session.getAttribute("loginedMember");
+		Member loginedMember = (Member) req.getAttribute("loginedMember");
 				
 //		Map<String, Object> newParam = Util.getNewMapOf(param, "title", "body", "fileIdsStr");
 		
@@ -59,7 +58,12 @@ public class ArticleController {
 		param.put("memberId", loginedMember.getId());
 		
 		int id = articleService.write(param);
-		return "<script> alert('" + id + "번째 글을 작성하였습니다.'); location.replace('../home/main'); </script>";
+		
+		String redirectUri = (String) param.get("redirectUri");
+		redirectUri = redirectUri.replace("#id", id + "");
+
+		return "redirect:" + redirectUri;
+//		return "<script> alert('" + id + "번째 글을 작성하였습니다.'); location.replace('../home/main'); </script>";
 	}
 	
 	// 게시글 리스트
@@ -112,11 +116,11 @@ public class ArticleController {
 	
 	@RequestMapping("usr/article/{boardCode}-doDelete")
 	@ResponseBody
-	public String doDelete(@RequestParam Map<String, Object> param, HttpSession session, HttpServletRequest req, @PathVariable("boardCode") String boardCode, Model model) {
+	public String doDelete(@RequestParam Map<String, Object> param, HttpServletRequest req, @PathVariable("boardCode") String boardCode, Model model) {
 		Board board = boardService.getBoardByCode(boardCode);
 		model.addAttribute("board", board);
 
-		Member loginedMember = (Member) session.getAttribute("loginedMember");
+		Member loginedMember = (Member) req.getAttribute("loginedMember");
 		
 		int id = Integer.parseInt(req.getParameter("id"));
 		

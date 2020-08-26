@@ -11,17 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sbs.cyj.readit.dto.Board;
 import com.sbs.cyj.readit.dto.Member;
-import com.sbs.cyj.readit.service.BoardService;
 import com.sbs.cyj.readit.service.MemberService;
 
 @Controller
 public class MemberController {
 	@Autowired
 	private MemberService memberService;
-	@Autowired
-	private BoardService boardService;
 	
 	// 회원가입
 	@RequestMapping("usr/member/join")
@@ -47,31 +43,77 @@ public class MemberController {
 		return "member/login";
 	}
 	
+//	@RequestMapping("usr/member/doLogin")
+//	@ResponseBody
+//	public String doLogin(@RequestParam Map<String, Object> param, Model model, HttpSession session) {
+//		Member member = memberService.login(param);
+//		
+//		if(member==null) {
+//			return "<script> alert('로그인 실패'); history.back(); </script>";
+//		}
+//		
+//		session.setAttribute("loginedMember", member);
+//		session.setAttribute("loginedMemberId", member.getId());
+//		
+//		return "<script> alert('안녕하세요, "+ member.getNickname() +"님'); location.replace('../home/main'); </script>";
+//	}
+	
 	@RequestMapping("usr/member/doLogin")
-	@ResponseBody
-	public String doLogin(@RequestParam Map<String, Object> param, Model model, HttpSession session) {
-		Member member = memberService.login(param);
-		
-		if(member==null) {
-			return "<script> alert('로그인 실패'); history.back(); </script>";
+	public String doLogin(String loginId, String loginPwReal, String redirectUri, Model model, HttpSession session) {
+		String loginPw = loginPwReal;
+		Member member = memberService.getMemberByLoginId(loginId);
+
+		if (member == null) {
+			model.addAttribute("historyBack", true);
+			model.addAttribute("msg", "존재하지 않는 회원입니다.");
+			return "common/redirect";
 		}
-		
-		session.setAttribute("loginedMember", member);
-		
-		Board board = boardService.getBoardByCode(member.getLoginId());
-		
-		session.setAttribute("board", board);
-		
-		return "<script> alert('안녕하세요, "+ member.getNickname() +"님'); location.replace('../home/main'); </script>";
+
+		if (member.getLoginPw().equals(loginPw) == false) {
+			model.addAttribute("historyBack", true);
+			model.addAttribute("msg", "비밀번호가 일치하지 않습니다.");
+			return "common/redirect";
+		}
+
+		session.setAttribute("loginedMemberId", member.getId());
+
+		System.out.println("========로그인 시작========");
+		System.out.println("redirectUri : "+redirectUri);
+		if(redirectUri.length() == 0) {
+			System.out.println("redirectUri.length() == 0");
+		}
+		if (redirectUri == null || redirectUri.length() == 0) {
+			redirectUri = "/usr/home/main";
+			System.out.println("========로그인 끝========");
+			//지금 이곳으로 바로 들어가고 있음.
+		}
+
+		model.addAttribute("redirectUri", redirectUri);
+		model.addAttribute("msg", String.format("%s님 반갑습니다.", member.getNickname()));
+
+		return "common/redirect";
 	}
 	
 	// 로그아웃
 	@RequestMapping("usr/member/doLogout")
-	@ResponseBody
-	public String doLogout(Model model, HttpSession session) {
+	public String doLogout(Model model, HttpSession session, String redirectUri) {
 		session.removeAttribute("loginedMember");
+		session.removeAttribute("loginedMemberId");
 		
-		return "<script> alert('로그아웃 되었습니다.'); location.replace('../home/main'); </script>";
+		System.out.println("========로그아웃 시작========");
+		System.out.println("redirectUri : "+redirectUri);
+		if(redirectUri.length() == 0) {
+			//에러발생??
+			System.out.println("redirectUri.length() == 0");
+		}
+		if (redirectUri == null || redirectUri.length() == 0) {
+			redirectUri = "/usr/home/main";
+			System.out.println("========로그아웃 끝========");
+			//지금 이곳으로 바로 들어가고 있음.
+		}
+
+		model.addAttribute("redirectUri", redirectUri);
+		return "common/redirect";
 	}
 	
 	// 회원 정보 수정

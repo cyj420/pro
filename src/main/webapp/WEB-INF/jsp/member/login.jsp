@@ -40,6 +40,7 @@
 </script>
 <div class="con">
 	<form action="doLogin" method="post" onsubmit="MemberLoginForm__submit(this); return false;">
+		<input type="hidden" name="redirectUri" value="${param.redirectUri}">
 		<input name="loginPwReal" hidden="hidden">
 		<div>
 			<label>ID : <input name="loginId" type="text">
@@ -50,6 +51,7 @@
 			</label>
 		</div>
 		<input type="submit" value="로그인">
+		<button class="btn btn-info" onclick="history.back();" type="button">취소</button>
 	</form>
 	<a href="./findLoginId">ID 찾기</a>
 	<a href="./findLoginPw">PW 찾기</a>
