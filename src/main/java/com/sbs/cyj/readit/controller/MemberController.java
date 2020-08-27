@@ -43,21 +43,6 @@ public class MemberController {
 		return "member/login";
 	}
 	
-//	@RequestMapping("usr/member/doLogin")
-//	@ResponseBody
-//	public String doLogin(@RequestParam Map<String, Object> param, Model model, HttpSession session) {
-//		Member member = memberService.login(param);
-//		
-//		if(member==null) {
-//			return "<script> alert('로그인 실패'); history.back(); </script>";
-//		}
-//		
-//		session.setAttribute("loginedMember", member);
-//		session.setAttribute("loginedMemberId", member.getId());
-//		
-//		return "<script> alert('안녕하세요, "+ member.getNickname() +"님'); location.replace('../home/main'); </script>";
-//	}
-	
 	@RequestMapping("usr/member/doLogin")
 	public String doLogin(String loginId, String loginPwReal, String redirectUri, Model model, HttpSession session) {
 		String loginPw = loginPwReal;

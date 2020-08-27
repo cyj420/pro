@@ -105,7 +105,7 @@ function ArticleModifyForm__submit(form) {
 		<input type="hidden" name="fileIdsStr" />
 		<input type="hidden" name="body" />
 		<input type="hidden" name="id" value="${article.id }"/>
-		<input type="hidden" name="redirectUri" value="/usr/article/${board.code}-detail?id=#id">
+		<input type="hidden" name="redirectUri" value="/usr/article/${board.code}-detail?id=${article.id}">
 		
 		<table>
 			<colgroup>
@@ -149,41 +149,6 @@ function ArticleModifyForm__submit(form) {
 						</div>
 					</td>
 				</tr>
-				<%-- 
-				<c:forEach var="i" begin="1" end="3" step="1">
-					<c:set var="fileNo" value="${String.valueOf(i)}" />
-					<c:set var="file" value="${article.extra.file__common__attachment[fileNo]}" />
-					<tr>
-						<th>첨부파일 ${fileNo} ${appConfig.getAttachmentFileExtTypeDisplayName('article', i)}</th>
-						<td>
-							<div class="form-control-box">
-								<input type="file" accept="${appConfig.getAttachemntFileInputAccept('article', i)}" name="file__article__${article.id}__common__attachment__${fileNo}">
-							</div>
-							<c:if test="${file != null && file.fileExtTypeCode == 'video'}">
-								<div class="video-box">
-									<video controls src="/usr/file/streamVideo?id=${file.id}&updateDate=${file.updateDate}"></video>
-								</div>
-							</c:if>
-							<c:if test="${file != null && file.fileExtTypeCode == 'img'}">
-								<div class="img-box img-box-auto">
-									<img src="/usr/file/img?id=${file.id}&updateDate=${file.updateDate}">
-								</div>
-							</c:if>
-						</td>
-					</tr>
-					<tr>
-						<th>첨부파일 ${fileNo} 삭제</th>
-						<td>
-							<div class="form-control-box">
-								<label>
-									<input type="checkbox" name="deleteFile__article__${article.id}__common__attachment__${fileNo}" value="Y" />
-									삭제
-								</label>
-							</div>
-						</td>
-					</tr>
-				</c:forEach>
-				 --%>
 				<tr>
 					<th>작성</th>
 					<td>

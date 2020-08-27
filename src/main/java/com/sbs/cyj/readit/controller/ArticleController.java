@@ -20,7 +20,6 @@ import com.sbs.cyj.readit.dto.Member;
 import com.sbs.cyj.readit.dto.ResultData;
 import com.sbs.cyj.readit.service.ArticleService;
 import com.sbs.cyj.readit.service.BoardService;
-import com.sbs.cyj.readit.util.Util;
 
 @Controller
 public class ArticleController {
@@ -161,29 +160,11 @@ public class ArticleController {
 	
 	@RequestMapping("usr/article/{boardCode}-doModify")
 	public String doModify(@RequestParam Map<String, Object> param, HttpServletRequest req, @PathVariable("boardCode") String boardCode, Model model) {
-//		Board board = boardService.getBoardByCode(boardCode);
-//		model.addAttribute("board", board);
-//
-//		Member loginedMember = (Member) req.getAttribute("loginedMember");
-//				
-//		param.put("boardId", board.getId());
-//		param.put("memberId", loginedMember.getId());
-//		
-//		int id = articleService.modify(param);
-//		
-//		String redirectUri = (String) param.get("redirectUri");
-//		redirectUri = redirectUri.replace("#id", id + "");
-//
-//		model.addAttribute("msg", String.format(id+"번째 글 수정이 완료되었습니다."));
-//		model.addAttribute("redirectUri", redirectUri);
-//		
-//		return "common/redirect";
 		Board board = boardService.getBoardByCode(boardCode);
 		model.addAttribute("board", board);
-		Map<String, Object> newParam = Util.getNewMapOf(param, "title", "body", "fileIdsStr", "articleId", "id");
 		Member loginedMember = (Member)req.getAttribute("loginedMember");
 		
-		int id = Integer.parseInt((String) newParam.get("id"));
+		int id = Integer.parseInt((String) param.get("id"));
 		
 		ResultData checkActorCanModifyResultData = articleService.checkActorCanModify(loginedMember, id);
 		
@@ -194,7 +175,7 @@ public class ArticleController {
 			return "common/redirect";
 		}
 		
-		articleService.modify(newParam);
+		articleService.modify(param);
 		
 		String redirectUri = (String) param.get("redirectUri");
 		
