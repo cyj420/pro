@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sbs.cyj.readit.dto.Member;
+import com.sbs.cyj.readit.dto.ResultData;
 import com.sbs.cyj.readit.service.MemberService;
 
 @Controller
@@ -28,7 +29,7 @@ public class MemberController {
 	@RequestMapping("usr/member/doJoin")
 	@ResponseBody
 	public String doJoin(@RequestParam Map<String, Object> param, Model model) {
-		if(memberService.getMemberByLoginId((String)param.get("loginId"))==null) {
+		if(memberService.isJoinableLoginId((String)param.get("loginId"))) {
 			if(memberService.getMemberByEmail((String)param.get("email"))==null) {
 				int id = memberService.join(param);
 				return "<script> alert('" + id + "번째 회원입니다.'); location.replace('../home/main'); </script>";
@@ -188,5 +189,16 @@ public class MemberController {
 		sb.append("</script>");
 
 		return sb.toString();
+	}
+	
+	@RequestMapping("usr/member/getLoginIdDup")
+	@ResponseBody
+	public ResultData doGetLoginIdDup(@RequestParam String loginId, Model model) {
+		if(memberService.isJoinableLoginId(loginId)) {
+			return new ResultData("S-1", String.format("사용할 수 있는 아이디입니다."), loginId);
+		}
+		else {
+			return new ResultData("F-1", String.format("이미 존재하는 아이디입니다."), loginId);
+		}
 	}
 }

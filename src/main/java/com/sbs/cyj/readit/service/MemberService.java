@@ -108,4 +108,13 @@ public class MemberService {
 	public void withdrawal(int id) {
 		memberDao.withdrawal(id);
 	}
+
+	public boolean isJoinableLoginId(String loginId) {
+		if(memberDao.isJoinableLoginId(loginId) == null) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 }

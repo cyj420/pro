@@ -3,7 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<head>
+<head profile="http://www.w3.org/2005/10/profile">
 <meta charset="UTF-8">
 <title>${logoText}-${pageTitle}</title>
 <!-- 모바일에서 사이트가 PC에서의 픽셀크기 기준으로 작동하게 하기(반응형 하려면 필요) -->
@@ -21,6 +21,9 @@
 <link rel="stylesheet" href="/resource/common.css" />
 <!-- 공통(라이브러리) JS -->
 <script src="/resource/common.js"></script>
+<link rel="icon" 
+      type="image/png" 
+      href="http://example.com/myicon.png">
 <script>
 var param = ${paramJson};
 </script>

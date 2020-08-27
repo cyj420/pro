@@ -26,4 +26,6 @@ public interface MemberDao {
 	void resetLoginId(Map<String, Object> param);
 
 	void withdrawal(int id);
+
+	Member isJoinableLoginId(String loginId);
 }
