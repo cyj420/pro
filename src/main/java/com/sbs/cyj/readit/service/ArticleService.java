@@ -14,6 +14,7 @@ import com.sbs.cyj.readit.dto.Article;
 import com.sbs.cyj.readit.dto.Category;
 import com.sbs.cyj.readit.dto.File;
 import com.sbs.cyj.readit.dto.Member;
+import com.sbs.cyj.readit.dto.ResultData;
 import com.sbs.cyj.readit.util.Util;
 
 @Service
@@ -30,16 +31,7 @@ public class ArticleService {
 
 		String fileIdsStr = (String) param.get("fileIdsStr");
 		
-		System.out.println("===Article Service START===");
-		if(fileIdsStr != null) {
-			System.out.println("fileIdsStr != null");
-			System.out.println("fileIdsStr : "+fileIdsStr);
-		}
-		if(fileIdsStr.length() > 0) {
-			System.out.println("fileIdsStr.length() > 0");
-		}
 		if (fileIdsStr != null && fileIdsStr.length() > 0) {
-			System.out.println("===1===");
 			List<Integer> fileIds = Arrays.asList(fileIdsStr.split(",")).stream().map(s -> Integer.parseInt(s.trim()))
 					.collect(Collectors.toList());
 
@@ -49,7 +41,6 @@ public class ArticleService {
 				fileService.changeRelId(fileId, id);
 			}
 		}
-		System.out.println("===Article Service END===");
 		
 		return id;
 	}
@@ -76,6 +67,10 @@ public class ArticleService {
 //
 //		return article;
 //	}
+	
+	public Article getArticleById(int id) {
+		return articleDao.getArticleById(id);
+	}
 	
 	public Article getArticleById(Member actor, int id) {
 		Article article = articleDao.getArticleById(id);
@@ -125,4 +120,47 @@ public class ArticleService {
 	public void delete(int id) {
 		articleDao.delete(id);
 	}
+
+	public void modify(Map<String, Object> param) {
+		articleDao.modify(param);
+
+		int id = Util.getAsInt(param.get("id"));
+
+		String fileIdsStr = (String) param.get("fileIdsStr");
+
+		if (fileIdsStr != null && fileIdsStr.length() > 0) {
+			fileIdsStr = fileIdsStr.trim();
+
+			if (fileIdsStr.startsWith(",")) {
+				fileIdsStr = fileIdsStr.substring(1);
+			}
+		}
+
+		if (fileIdsStr != null && fileIdsStr.length() > 0) {
+			List<Integer> fileIds = Arrays.asList(fileIdsStr.split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+
+			// 파일이 먼저 생성된 후에, 관련 데이터가 생성되는 경우에는, file의 relId가 일단 0으로 저장된다.
+			// 그것을 뒤늦게라도 이렇게 고처야 한다.
+			for (int fileId : fileIds) {
+				fileService.changeRelId(fileId, id);
+			}
+		}
+	}
+
+	public ResultData checkActorCanModify(Member actor, int id) {
+		boolean actorCanModify = actorCanModify(actor, id);
+
+		if (actorCanModify) {
+			return new ResultData("S-1", "가능합니다.", "id", id);
+		}
+
+		return new ResultData("F-1", "권한이 없습니다.", "id", id);
+	}
+
+	private boolean actorCanModify(Member actor, int id) {
+		Article article = articleDao.getArticleById(id);
+
+		return actorCanModify(actor, article);
+	}
+
 }

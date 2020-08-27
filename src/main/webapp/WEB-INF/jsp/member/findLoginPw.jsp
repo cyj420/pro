@@ -5,11 +5,11 @@
 <div class="con">
 	<form action="doFindLoginPw" method="post">
 		<div>
-			<label>ID : <input name="loginId">
+			<label>ID : <input name="loginId" type="text">
 			</label>
 		</div>
 		<div>
-			<label>이름 : <input name="name">
+			<label>이름 : <input name="name" type="text">
 			</label>
 		</div>
 		<div>

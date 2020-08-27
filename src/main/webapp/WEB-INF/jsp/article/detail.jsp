@@ -11,6 +11,10 @@ video{
 img{
 	max-width: 500px;
 }
+.toast-editor-viewer{
+	max-width: 900px;
+	min-width: 500px;
+}
 </style>
 <div class="con">
 	<table>
@@ -40,7 +44,11 @@ img{
 			<c:if test="${article.memberId == loginedMember.id }">
 				<tr>
 					<th>비고</th>
-					<td><a href="/usr/article/${board.code}-doDelete?id=${article.id}&memberId=${article.memberId}">삭제</a></td>
+					<td>
+					<a href="/usr/article/${board.code}-modify?id=${article.id}">수정</a>
+					/
+					<a href="/usr/article/${board.code}-doDelete?id=${article.id}">삭제</a>
+					</td>
 				</tr>
 			</c:if>
 			<tr>

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,8 +17,10 @@ import com.sbs.cyj.readit.dto.Article;
 import com.sbs.cyj.readit.dto.Board;
 import com.sbs.cyj.readit.dto.Category;
 import com.sbs.cyj.readit.dto.Member;
+import com.sbs.cyj.readit.dto.ResultData;
 import com.sbs.cyj.readit.service.ArticleService;
 import com.sbs.cyj.readit.service.BoardService;
+import com.sbs.cyj.readit.util.Util;
 
 @Controller
 public class ArticleController {
@@ -52,8 +53,6 @@ public class ArticleController {
 
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
 				
-//		Map<String, Object> newParam = Util.getNewMapOf(param, "title", "body", "fileIdsStr");
-		
 		param.put("boardId", board.getId());
 		param.put("memberId", loginedMember.getId());
 		
@@ -62,11 +61,10 @@ public class ArticleController {
 		String redirectUri = (String) param.get("redirectUri");
 		redirectUri = redirectUri.replace("#id", id + "");
 
-//		alert 어떻게 띄우지?? 로그인/로그아웃 참고했는데 안됨
-//		model.addAttribute("msg", String.format(id+"번째 글을 작성하였습니다."));
+		model.addAttribute("msg", String.format(id+"번째 글을 작성하였습니다."));
+		model.addAttribute("redirectUri", redirectUri);
 		
-		return "redirect:" + redirectUri;
-//		return "<script> alert('" + id + "번째 글을 작성하였습니다.'); location.replace('../home/main'); </script>";
+		return "common/redirect";
 	}
 	
 	// 게시글 리스트
@@ -119,17 +117,17 @@ public class ArticleController {
 	
 	@RequestMapping("usr/article/{boardCode}-doDelete")
 	@ResponseBody
-	public String doDelete(@RequestParam Map<String, Object> param, HttpServletRequest req, @PathVariable("boardCode") String boardCode, Model model) {
+	public String doDelete(@RequestParam int id, HttpServletRequest req, @PathVariable("boardCode") String boardCode, Model model) {
 		Board board = boardService.getBoardByCode(boardCode);
 		model.addAttribute("board", board);
 
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
 		
-		int id = Integer.parseInt(req.getParameter("id"));
-		
 		String str = "";
 		
-		if(loginedMember.getId() == Integer.parseInt(req.getParameter("memberId"))) {
+		Article a = articleService.getArticleById(id);
+		
+		if(loginedMember.getId() == a.getMemberId()) {
 			articleService.delete(id);
 			str = "alert('" + id + "번째 글을 삭제하였습니다.'); location.replace('../article/" + board.getCode() + "-list');";
 		}
@@ -138,5 +136,73 @@ public class ArticleController {
 		}
 
 		return "<script>" + str + "</script>";
+	}
+	
+	// 게시글 수정
+	@RequestMapping("usr/article/{boardCode}-modify")
+	public String showModify(@PathVariable("boardCode") String boardCode, Model model, String listUrl, @RequestParam int id, HttpServletRequest req) {
+		if ( listUrl == null ) {
+			listUrl = "./" + boardCode + "-list";
+		}
+		model.addAttribute("listUrl", listUrl);
+		Board board = boardService.getBoardByCode(boardCode);
+		model.addAttribute("board", board);
+		
+		List<Category> categories = articleService.getCategories(board.getId());
+		model.addAttribute("categories", categories);
+		
+		Member loginedMember = (Member) req.getAttribute("loginedMember");
+		
+		Article article = articleService.getArticleById(loginedMember, id);
+		model.addAttribute("article", article);
+		
+		return "article/modify";
+	}
+	
+	@RequestMapping("usr/article/{boardCode}-doModify")
+	public String doModify(@RequestParam Map<String, Object> param, HttpServletRequest req, @PathVariable("boardCode") String boardCode, Model model) {
+//		Board board = boardService.getBoardByCode(boardCode);
+//		model.addAttribute("board", board);
+//
+//		Member loginedMember = (Member) req.getAttribute("loginedMember");
+//				
+//		param.put("boardId", board.getId());
+//		param.put("memberId", loginedMember.getId());
+//		
+//		int id = articleService.modify(param);
+//		
+//		String redirectUri = (String) param.get("redirectUri");
+//		redirectUri = redirectUri.replace("#id", id + "");
+//
+//		model.addAttribute("msg", String.format(id+"번째 글 수정이 완료되었습니다."));
+//		model.addAttribute("redirectUri", redirectUri);
+//		
+//		return "common/redirect";
+		Board board = boardService.getBoardByCode(boardCode);
+		model.addAttribute("board", board);
+		Map<String, Object> newParam = Util.getNewMapOf(param, "title", "body", "fileIdsStr", "articleId", "id");
+		Member loginedMember = (Member)req.getAttribute("loginedMember");
+		
+		int id = Integer.parseInt((String) newParam.get("id"));
+		
+		ResultData checkActorCanModifyResultData = articleService.checkActorCanModify(loginedMember, id);
+		
+		if (checkActorCanModifyResultData.isFail() ) {
+			model.addAttribute("historyBack", true);
+			model.addAttribute("msg", checkActorCanModifyResultData.getMsg());
+			
+			return "common/redirect";
+		}
+		
+		articleService.modify(newParam);
+		
+		String redirectUri = (String) param.get("redirectUri");
+		
+		redirectUri = redirectUri.replace("#id", id + "");
+
+		model.addAttribute("msg", String.format(id+"번째 글을 수정하였습니다."));
+		model.addAttribute("redirectUri", redirectUri);
+
+		return "common/redirect";
 	}
 }

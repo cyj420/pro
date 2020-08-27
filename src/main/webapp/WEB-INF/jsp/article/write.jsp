@@ -147,7 +147,7 @@
 ```youtube
 https://www.youtube.com/watch?v=LmgWxezH7cc
 ```
-                        </script>
+                        	</script>
 							<div data-relTypeCode="article" data-relId="0" class="toast-editor input-body"></div>
 						</div>
 					</td>

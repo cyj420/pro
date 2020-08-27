@@ -5,11 +5,11 @@
 <div class="con">
 	<form action="doFindLoginId" method="post">
 		<div>
-			<label>이름 : <input name="name">
+			<label>이름 : <input name="name" type="text">
 			</label>
 		</div>
 		<div>
-			<label>email : <input name="email">
+			<label>email : <input name="email" type="email">
 			</label>
 		</div>
 		<input type="submit" value="ID 찾기">

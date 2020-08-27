@@ -16,7 +16,7 @@ public interface ArticleDao {
 	List<Article> getArticles();
 
 	Article getArticleById(int id);
-
+	
 	List<Article> getArticlesByMemberIdAndBoardId(int memberId, int boardId);
 
 	List<Category> getCategories(int boardId);
@@ -24,4 +24,6 @@ public interface ArticleDao {
 	List<Article> getArticlesByBoardId(int boardId);
 
 	void delete(int id);
+
+	void modify(Map<String, Object> param);
 }

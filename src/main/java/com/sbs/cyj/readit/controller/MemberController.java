@@ -145,7 +145,7 @@ public class MemberController {
 
 		
 		if(loginId==null) {
-			return "<script> alert('일치하는 ID가 없습니다.'); location.replace('../home/main'); </script>";
+			return "<script> alert('일치하는 ID가 없습니다.'); history.back(); </script>";
 		}
 		
 		return sb.toString();
