@@ -28,6 +28,7 @@
 		
 		form.body.value = body;
 
+		/* 
 		var maxSizeMb = 50;
 		var maxSize = maxSizeMb * 1024 * 1024 //50MB
 
@@ -95,14 +96,17 @@
 			if (bodyEditor.inBodyFileIdsStr) {
 				form.fileIdsStr.value += bodyEditor.inBodyFileIdsStr;
 			}
+			*/
 
-			form.submit();
-		});
+		form.submit();
+		/* 
+			});
+		 */ 
 	}
 </script>
 <div class="con">
 	<form method="post" action="${board.code}-doWrite" method="post" onsubmit="ArticleWriteForm__submit(this); return false;" >
-		<input type="hidden" name="fileIdsStr" />
+		<!-- <input type="hidden" name="fileIdsStr" /> -->
 		<input type="hidden" name="body" />
 		<input type="hidden" name="redirectUri" value="/usr/article/${board.code}-detail?id=#id">
 		
@@ -152,6 +156,7 @@ https://www.youtube.com/watch?v=LmgWxezH7cc
 						</div>
 					</td>
 				</tr>
+				<%-- 
 				<c:forEach var="i" begin="1" end="3" step="1">
 					<c:set var="fileNo" value="${String.valueOf(i)}" />
 					<c:set var="fileExtTypeCode" value="${appConfig.getAttachmentFileExtTypeCode('article', i)}" />
@@ -164,6 +169,7 @@ https://www.youtube.com/watch?v=LmgWxezH7cc
 						</td>
 					</tr>
 				</c:forEach>
+				 --%>
 				<tr>
 					<th>작성</th>
 					<td>

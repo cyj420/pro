@@ -28,7 +28,7 @@ function ArticleModifyForm__submit(form) {
 	
 	form.body.value = body;
 
-	var maxSizeMb = 50;
+	/* var maxSizeMb = 50;
 	var maxSize = maxSizeMb * 1024 * 1024 //50MB
 
 	if (form.file__article__0__common__attachment__1.value) {
@@ -95,9 +95,9 @@ function ArticleModifyForm__submit(form) {
 		if (bodyEditor.inBodyFileIdsStr) {
 			form.fileIdsStr.value += bodyEditor.inBodyFileIdsStr;
 		}
-
+ */
 		form.submit();
-	});
+	/* }); */
 }
 </script>
 <div class="con">

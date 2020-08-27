@@ -58,6 +58,7 @@ img{
                     <div class="toast-editor toast-editor-viewer"></div>
 				</td>
 			</tr>
+			<%-- 
 			<c:forEach var="i" begin="1" end="3" step="1">
 				<c:set var="fileNo" value="${String.valueOf(i)}" />
 				<c:set var="file" value="${article.extra.file__common__attachment[fileNo]}" />
@@ -79,6 +80,7 @@ img{
 					</tr>
 				</c:if>
 			</c:forEach>
+			 --%>
 		</tbody>
 	</table>
 </div>
