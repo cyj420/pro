@@ -118,6 +118,9 @@
 			'json'
 		);
 	}
+
+	<!-- lodash 라이브러리 (debounce) 를 이용한 딜레이(0.5초) 설정  -->
+	MemberJoinForm__checkLoginIdDup = _.debounce(MemberJoinForm__checkLoginIdDup, 500);
 </script>
 <form method="POST" action="doJoin"
 	onsubmit="MemberJoinForm__submit(this); return false;">
