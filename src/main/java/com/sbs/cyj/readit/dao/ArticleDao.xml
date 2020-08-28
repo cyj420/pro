@@ -50,7 +50,7 @@
 	</select>
 	
 	<select id="getArticlesByBoardId" resultMap="article">
-		SELECT A.*, 
+		SELECT A.id, A.regDate, A.updateDate, A.delDate, A.delStatus, A.displayStatus, A.title, A.memberId, A.cateId, A.boardId,  
 		M.nickname AS extra__writer
 		FROM article AS A
 		INNER JOIN `member` AS M

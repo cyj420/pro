@@ -30,7 +30,8 @@
 		<if test="email != null">email = #{email},</if>
 		<if test="loginPwReal.trim().length() != 0">loginPw = #{loginPwReal},</if>
 		updateDate = NOW()
-		WHERE id = #{id};
+		WHERE id = #{id}
+		AND delStatus = 0;
 	</update>
 	
 	<select id="getMemberById" resultType="Member">
@@ -48,7 +49,8 @@
 	
 	<select id="getMemberByLoginId" resultType="Member">
 		SELECT * FROM `member`
-		WHERE `loginId` = #{loginId};
+		WHERE `loginId` = #{loginId}
+		AND delStatus = 0;
 	</select>
 	
 	<select id="getMemberByEmail" resultType="Member">

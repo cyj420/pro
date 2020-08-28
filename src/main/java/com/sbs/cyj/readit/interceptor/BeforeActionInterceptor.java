@@ -36,7 +36,10 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 	private AppConfig appConfig;
 
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+			throws Exception {
+
+		System.out.println("request.getRequestURI() : " + request.getRequestURI());
 
 		// 기타 유용한 정보를 request에 담는다.
 		Map<String, Object> param = Util.getParamMap(request);
@@ -56,7 +59,8 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 
 		String afterLoginUri = requestUri;
 
-		// 현재 페이지가 이미 로그인 페이지라면, 이 상태에서 로그인 버튼을 눌렀을 때 기존 param의 redirectUri가 계속 유지되도록 한다.
+		// 현재 페이지가 이미 로그인 페이지라면, 이 상태에서 로그인 버튼을 눌렀을 때 기존 param의 redirectUri가 계속 유지되도록
+		// 한다.
 		if (requestUri.contains("/usr/member/login")) {
 			afterLoginUri = Util.getString(request, "redirectUri", "");
 		}
@@ -103,11 +107,11 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 		request.setAttribute("loginedMemberId", loginedMemberId);
 		request.setAttribute("isLogined", isLogined);
 		request.setAttribute("loginedMember", loginedMember);
-		
+
 		List<Board> boards = boardService.getBoards();
-		
+
 		request.setAttribute("boards", boards);
-		
+
 		request.setAttribute("activeProfile", activeProfile);
 
 		request.setAttribute("appConfig", appConfig);
