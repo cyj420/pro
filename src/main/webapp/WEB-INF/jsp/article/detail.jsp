@@ -34,7 +34,7 @@ img{
 			<tr>
 				<th>작성자 id</th>
 				<td>
-				<a href="/usr/article/${board.code}-list?memberId=${article.memberId}">${article.memberId}</a>
+				<a href="/usr/article/${board.code}-list?memberId=${article.memberId}">${article.extra.writer}</a>
 				</td>
 			</tr>
 			<tr>

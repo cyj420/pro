@@ -22,7 +22,7 @@
 				<tr>
 					<td>${article.id}</td>
 					<td>${article.regDate}</td>
-					<td>${article.memberId}</td>
+					<td><a href="/usr/article/${board.code}-list?memberId=${article.memberId}">${article.extra.writer}</a></td>
 					<td>
 						<a href="/usr/article/${board.code}-detail?id=${article.id}">${article.title}</a>
 					</td>
