@@ -29,6 +29,7 @@
 		<if test="nickname != null">nickname = #{nickname},</if>
 		<if test="email != null">email = #{email},</if>
 		<if test="loginPwReal.trim().length() != 0">loginPw = #{loginPwReal},</if>
+		tempPwStatus = 0,
 		updateDate = NOW()
 		WHERE id = #{id}
 		AND delStatus = 0;
@@ -68,6 +69,7 @@
 		UPDATE `member`
 		SET 
 		loginPw = #{tempPw},
+		tempPwStatus = 1,
 		updateDate = NOW()
 		WHERE loginId = #{loginId}
 		AND delStatus = 0

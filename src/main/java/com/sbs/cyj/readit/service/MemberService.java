@@ -2,6 +2,9 @@ package com.sbs.cyj.readit.service;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,4 +120,33 @@ public class MemberService {
 			return false;
 		}
 	}
+
+	public int compareDate(String lastUpdateDate) {
+		System.out.println("============service START============");
+        String strStartDate = lastUpdateDate.substring(0, 10).replace("-", "");
+        
+        SimpleDateFormat nowDate = new SimpleDateFormat ( "yyyyMMdd");
+        Date time = new Date();
+        String strEndDate = nowDate.format(time);
+        
+        String strFormat = "yyyyMMdd";    //strStartDate 와 strEndDate 의 format
+        
+        //SimpleDateFormat 을 이용하여 startDate와 endDate의 Date 객체를 생성한다.
+        SimpleDateFormat sdf = new SimpleDateFormat(strFormat);
+        
+        int result = 0;
+        
+        try{
+            Date startDate = sdf.parse(strStartDate);
+            Date endDate = sdf.parse(strEndDate);
+ 
+            //두날짜 사이의 시간 차이(ms)를 하루 동안의 ms(24시*60분*60초*1000밀리초) 로 나눈다.
+            result = (int) ((endDate.getTime() - startDate.getTime()) / (24*60*60*1000));
+            System.out.println("result1 : "+result);
+        }catch(ParseException e){
+        }
+        System.out.println("result2 : "+result);
+        System.out.println("============service END============");
+        return result;
+    }
 }

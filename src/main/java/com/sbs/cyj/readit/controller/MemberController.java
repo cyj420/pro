@@ -66,9 +66,25 @@ public class MemberController {
 		if (redirectUri == null || redirectUri.length() == 0) {
 			redirectUri = "/usr/home/main";
 		}
+		
+		String lastUpdateDate = member.getUpdateDate();
+		
+		int date = memberService.compareDate(lastUpdateDate);
+		String str = "";
+		if(date > 90) {
+			str = String.format("%s님 비밀번호 변경한 지 %d일이 되었습니다.\\n보완을 위해 비밀번호를 바꿔주세요.", member.getNickname(), date);
+		}
+		else {
+			str = String.format("%s님 반갑습니다.", member.getNickname());
+		}
+		
+		if(member.isTempPwStatus()) {
+			str += "\\n임시번호를 사용중입니다.\\n비밀번호 재설정을 해주세요.";
+		}
 
 		model.addAttribute("redirectUri", redirectUri);
-		model.addAttribute("msg", String.format("%s님 반갑습니다.", member.getNickname()));
+		model.addAttribute("msg", str);
+		
 
 		return "common/redirect";
 	}

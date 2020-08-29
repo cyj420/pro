@@ -19,4 +19,5 @@ public class Member {
 	private String name;
 	private String nickname;
 	private String email;
+	private boolean tempPwStatus;
 }

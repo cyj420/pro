@@ -115,7 +115,7 @@ SELECT * FROM board
 
 SELECT * FROM article
 
-===========================================================
+#===========================================================
 
 CREATE TABLE `file` (
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -135,3 +135,9 @@ CREATE TABLE `file` (
     fileNo TINYINT(2) UNSIGNED NOT NULL,
     `body` LONGBLOB
 ); 
+
+#===========================================================
+#0830
+
+ALTER TABLE `member`
+ADD COLUMN `tempPwStatus` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0
