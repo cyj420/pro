@@ -15,6 +15,7 @@
 		cateId = #{cateId}
 	</insert>
 	
+	<!-- 
 	<select id="getArticles" resultType="Article">
 		SELECT A.*, M.nickname AS extra
 		FROM article AS A
@@ -23,6 +24,7 @@
 		AND A.displayStatus = 1
 		ORDER BY A.id DESC;
 	</select>
+	 -->
 	
 	<select id="getArticleById" resultMap="article">
 		SELECT A.*, M.nickname AS extra__writer

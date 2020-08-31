@@ -28,4 +28,6 @@ public interface MemberDao {
 	void withdrawal(int id);
 
 	Member isJoinableLoginId(String loginId);
+
+	void doAuthMail(int id);
 }

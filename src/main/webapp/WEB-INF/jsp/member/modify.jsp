@@ -13,6 +13,24 @@
 			return;
 		}
 
+		if(form.nickname.value.trim().length == 0){
+			alert('닉네임 칸은 비울 수 없습니다.');
+			form.nickname.focus();
+			return;
+		}
+
+		if(form.email.value.trim().length == 0){
+			alert('이메일 칸은 비울 수 없습니다.');
+			form.email.focus();
+			return;
+		}
+
+		if(form.loginPw.value.trim().length == 0){
+			alert('비밀번호 칸은 비울 수 없습니다.');
+			form.loginPw.focus();
+			return;
+		}
+
 		if(form.loginPw.value.length != 0){
 			form.loginPwReal.value = sha256(form.loginPw.value);
 		}
@@ -23,9 +41,9 @@
 		MemberModifyForm__submitDone = true;
 	}
 </script>
-<h1>회원정보</h1>
+<h1>회원정보 수정</h1>
 <div class="con">
-	<form action="sendAuthMail" method="post">
+	<form action="doModify" method="post" onsubmit="MemberModifyForm__submit(this); return false;">
 		<input name="id" value="${loginedMember.id}" hidden="hidden">
 		<input type="hidden" name="redirectUri" value="${param.redirectUri}">
 		<input name="loginPwReal" hidden="hidden">
@@ -38,19 +56,18 @@
 			</label>
 		</div>
 		<div>
-			<label>닉네임 : <input name="nickname" value="${loginedMember.nickname}" disabled="disabled">
+			<label>닉네임 : <input name="nickname" value="${loginedMember.nickname}">
 			</label>
 		</div>
 		<div>
-			<label>email : <input name="email" type="email" value="${loginedMember.email}" disabled="disabled">
+			<label>email : <input name="email" type="email" value="${loginedMember.email}">
 			</label>
 		</div>
-		<c:if test="${loginedMember.authStatus == true}">
-			<div>메일 인증 완료</div>
-		</c:if>
-		<c:if test="${loginedMember.authStatus == false}">
-			<input type="submit" value="인증 메일 발송">
-		</c:if>
+		<div>
+			<label>비밀번호 : <input name="loginPw" type="password">
+			</label>
+		</div>
+		<input type="submit" value="정보 수정">
 	</form>
 	<a href="./withdrawal?id=${loginedMember.id}" onclick="if ( confirm('정말 탈퇴하시겠습니까?') == false ) { return false; }">
 		<button>회원 탈퇴</button>

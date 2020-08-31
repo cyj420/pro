@@ -1,3 +1,7 @@
+# DB 세팅
+DROP DATABASE IF EXISTS `readit`;
+CREATE DATABASE `readit`;
+USE `readit`;
 
 # member 테이블 세팅
 CREATE TABLE `member` (

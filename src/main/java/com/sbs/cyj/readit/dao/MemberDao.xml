@@ -16,7 +16,7 @@
 		email = #{email};
 	</insert>
 	
-	<select id="login" resultType="Member">
+	<select id="login" resultMap="member">
 		SELECT * FROM `member`
 		WHERE loginId = #{loginId}
 		AND loginPw = #{loginPwReal}
@@ -35,7 +35,7 @@
 		AND delStatus = 0;
 	</update>
 	
-	<select id="getMemberById" resultType="Member">
+	<select id="getMemberById" resultMap="member">
 		SELECT * FROM `member`
 		WHERE id = #{id}
 		AND delStatus = 0;
@@ -48,19 +48,19 @@
 		AND delStatus = 0;
 	</select>
 	
-	<select id="getMemberByLoginId" resultType="Member">
+	<select id="getMemberByLoginId" resultMap="member">
 		SELECT * FROM `member`
 		WHERE `loginId` = #{loginId}
 		AND delStatus = 0;
 	</select>
 	
-	<select id="getMemberByEmail" resultType="Member">
+	<select id="getMemberByEmail" resultMap="member">
 		SELECT * FROM `member`
 		WHERE `email` = #{email}
 		AND delStatus = 0;
 	</select>
 	
-	<select id="isJoinableLoginId" resultType="Member">
+	<select id="isJoinableLoginId" resultMap="member">
 		SELECT * FROM `member`
 		WHERE `loginId` = #{loginId}
 	</select>
@@ -83,4 +83,27 @@
 		delStatus = 1
 		WHERE id = #{id}
 	</update>
+	
+	<update id="doAuthMail">
+		UPDATE `member`
+		SET 
+		updateDate = NOW(),
+		authStatus = 1
+		WHERE id = #{id}
+	</update>
+	
+	<resultMap type="Member" id="member">
+		<id property="id" column="id" />
+		<id property="regDate" column="regDate" />
+		<id property="updateDate" column="updateDate" />
+		<id property="delDate" column="delDate" />
+		<id property="delStatus" column="delStatus" />
+		<id property="authStatus" column="authStatus" />
+		<id property="loginId" column="loginId" />
+		<id property="loginPw" column="loginPw" />
+		<id property="name" column="name" />
+		<id property="nickname" column="nickname" />
+		<id property="email" column="email" />
+		<id property="tempPwStatus" column="tempPwStatus" />
+	</resultMap>
 </mapper>

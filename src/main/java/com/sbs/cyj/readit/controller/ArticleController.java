@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -50,10 +51,10 @@ public class ArticleController {
 		Board board = boardService.getBoardByCode(boardCode);
 		model.addAttribute("board", board);
 
-		Member loginedMember = (Member) req.getAttribute("loginedMember");
-				
+		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
+
 		param.put("boardId", board.getId());
-		param.put("memberId", loginedMember.getId());
+		param.put("memberId", loginedMemberId);
 		
 		int id = articleService.write(param);
 		

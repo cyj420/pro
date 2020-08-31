@@ -1,5 +1,8 @@
 package com.sbs.cyj.readit.controller;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -13,12 +16,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sbs.cyj.readit.dto.Member;
 import com.sbs.cyj.readit.dto.ResultData;
+import com.sbs.cyj.readit.service.AttrService;
+import com.sbs.cyj.readit.service.MailService;
 import com.sbs.cyj.readit.service.MemberService;
 
 @Controller
 public class MemberController {
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private AttrService attrService;
+	@Autowired
+	private MailService mailService;
 
 	// 회원가입
 	@RequestMapping("/usr/member/join")
@@ -30,12 +39,36 @@ public class MemberController {
 	@ResponseBody
 	public String doJoin(@RequestParam Map<String, Object> param, Model model) {
 		if (memberService.isJoinableLoginId((String) param.get("loginId"))) {
-			if (memberService.getMemberByEmail((String) param.get("email")) == null) {
-				int id = memberService.join(param);
-				return "<script> alert('" + id + "번째 회원입니다.'); location.replace('../home/main'); </script>";
+			int id = memberService.join(param);
+			
+			if (id > 0) {
+				String code = generateCodeForAuthMail(id);
+				mailService.sendJoinCompleteMail((String)param.get("email"), code, (String)param.get("nickname"));
 			}
+			
+			return "<script> alert('" + id + "번째 회원입니다.'); location.replace('../home/main'); </script>";
 		}
 		return "<script> alert('회원가입 실패'); history.back(); </script>";
+	}
+
+	private String transformString(String msg){
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("SHA-256");
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		md.update(msg.getBytes());
+		return bytesToHex(md.digest());
+	}
+	
+	private String bytesToHex(byte[] digest) {
+		StringBuilder sb = new StringBuilder();
+		for(byte b : digest) {
+			sb.append(String.format("%02x", b));
+		}
+		return sb.toString();
 	}
 
 	// 로그인
@@ -62,6 +95,7 @@ public class MemberController {
 		}
 
 		session.setAttribute("loginedMemberId", member.getId());
+		session.setAttribute("loginedMember", member.getId());
 
 		if (redirectUri == null || redirectUri.length() == 0) {
 			redirectUri = "/usr/home/main";
@@ -92,8 +126,8 @@ public class MemberController {
 	// 로그아웃
 	@RequestMapping("/usr/member/doLogout")
 	public String doLogout(Model model, HttpSession session, String redirectUri) {
-		session.removeAttribute("loginedMember");
 		session.removeAttribute("loginedMemberId");
+		session.removeAttribute("loginedMember");
 
 		if (redirectUri.length() == 0) {
 			System.out.println("redirectUri.length() == 0");
@@ -119,8 +153,8 @@ public class MemberController {
 	public String doModify(@RequestParam Map<String, Object> param, Model model, HttpSession session) {
 		memberService.modify(param);
 		int id = Integer.parseInt((String) param.get("id"));
-		Member member = memberService.getMemberById(id);
-		session.setAttribute("loginedMember", member);
+		session.setAttribute("loginedMemberId", id);
+		session.setAttribute("loginedMember", memberService.getMemberById(id));
 
 		return "<script> alert('회원 정보 수정 완료'); location.replace('../home/main'); </script>";
 	}
@@ -188,23 +222,24 @@ public class MemberController {
 		return sb.toString();
 	}
 
+	// 회원 탈퇴
 	@RequestMapping("/usr/member/withdrawal")
-	@ResponseBody
-	public String doWithdrawal(@RequestParam int id, Model model, HttpSession session) {
+	public String doWithdrawal(@RequestParam int id, Model model, HttpSession session, String redirectUri) {
 		memberService.withdrawal(id);
+		session.removeAttribute("loginedMemberId");
 		session.removeAttribute("loginedMember");
 
-		StringBuilder sb = new StringBuilder();
+		if (redirectUri == null || redirectUri.length() == 0) {
+			redirectUri = "/usr/home/main";
+		}
 
-		sb.append("alert('탈퇴 완료.');");
-		sb.append("location.replace('./../home/main');");
+		model.addAttribute("redirectUri", redirectUri);
+		model.addAttribute("msg", String.format("탈퇴 완료."));
 
-		sb.insert(0, "<script>");
-		sb.append("</script>");
-
-		return sb.toString();
+		return "common/redirect";
 	}
 
+	// 아이디 중복 체크
 	@RequestMapping("/usr/member/getLoginIdDup")
 	@ResponseBody
 	public ResultData doGetLoginIdDup(@RequestParam String loginId, Model model) {
@@ -213,5 +248,69 @@ public class MemberController {
 		} else {
 			return new ResultData("F-1", String.format("이미 존재하는 아이디입니다."), loginId);
 		}
+	}
+	
+	// 메일 인증
+	@RequestMapping("/usr/member/doAuthMail")
+	public String doAuthMail(Model model, HttpSession session, @RequestParam String code) {
+		String msg = "";
+		if(session.getAttribute("loginedMemberId")!=null) {
+			int id = (int) session.getAttribute("loginedMemberId");
+			
+			if(!memberService.getMemberById(id).isAuthStatus()) {
+				if(code.equals(attrService.getValue("member__"+id+"__auth__mailAuthCode"))){
+					memberService.doAuthMail(id);
+					msg = "인증 성공";
+				}
+				else {
+					msg = "인증 실패";
+				}
+			}
+			else {
+				msg = "현재 로그인 중인 계정은 이미 인증된 계정입니다.";
+			}
+		}
+		else {
+			// 이건 뜰 일 없겠지만...
+			msg = "인증 실패 - 비로그인 상태";
+		}
+
+		model.addAttribute("redirectUri", "/usr/home/main");
+		model.addAttribute("msg", msg);
+
+		return "common/redirect";
+	}
+	
+	// 인증 메일 보내기
+	@RequestMapping("/usr/member/sendAuthMail")
+	public String doSendAuthMail(Model model, HttpSession session) {
+		String msg = "";
+		int memberId = (int) session.getAttribute("loginedMemberId");
+		Member member = memberService.getMemberById(memberId);
+		
+		if(memberId>0) {
+			String code = attrService.getValue("member__"+memberId+"__auth__mailAuthCode");
+			mailService.sendAuthMail(member.getEmail(), code, member.getNickname());
+			msg = "메일 발송 완료";
+		}
+		else {
+			msg = "로그인 후 이용 가능";
+		}
+
+		model.addAttribute("redirectUri", "/usr/home/main");
+		model.addAttribute("msg", msg);
+
+		return "common/redirect";
+	}
+	
+	public String generateCodeForAuthMail(int id){
+		SimpleDateFormat nowTime = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+		String strNowTime = nowTime.format (System.currentTimeMillis());
+		
+		String code = strNowTime+id;
+		code = transformString(code);
+		attrService.setValue("member__"+id+"__auth__mailAuthCode", code);
+		
+		return code;
 	}
 }

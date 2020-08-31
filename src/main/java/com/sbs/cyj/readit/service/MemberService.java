@@ -25,7 +25,7 @@ public class MemberService {
 		memberDao.join(param);
 		int id = Util.getAsInt(param.get("id"));
 		
-		sendJoinCompleteMail((String) param.get("email"));
+//		sendJoinCompleteMail((String) param.get("email"), (String) param.get("mailCode"));
 		
 		return id;
 	}
@@ -46,18 +46,18 @@ public class MemberService {
 		return memberDao.findLoginIdByNameAndEmail(param);
 	}
 	
-	private void sendJoinCompleteMail(String email) {
-		String mailTitle = String.format("[%s] 가입이 완료되었습니다.", "~사이트 이름~");
-		StringBuilder mailBodySb = new StringBuilder();
-		mailBodySb.append("<h1>가입이 완료되었습니다.</h1>");
-		mailBodySb.append(siteLink());
+//	private void sendJoinCompleteMail(String email, String code) {
+//		String mailTitle = String.format("[%s] 가입을 축하합니다.", "~사이트 이름~");
+//		StringBuilder mailBodySb = new StringBuilder();
+//		mailBodySb.append("<h1>가입이 완료되었습니다.</h1><a href='http://localhost:8085/usr/member/doAuthMail?code="+code+"'>인증하기</a>");
+//		mailBodySb.append(siteLink());
+//
+//		mailService.send(email, mailTitle, mailBodySb.toString());
+//	}
 
-		mailService.send(email, mailTitle, mailBodySb.toString());
-	}
-
-	private String siteLink() {
-		return String.format("<p><a href=\"%s\" target=\"_blank\">%s</a>로 이동</p>", "http://localhost:8085/usr/home/main", "[사이트 이름]");
-	}
+//	private String siteLink() {
+//		return String.format("<p><a href=\"%s\" target=\"_blank\">%s</a>로 이동</p>", "http://localhost:8085/usr/home/main", "[사이트 이름]");
+//	}
 
 	public Member getMemberByLoginId(String loginId) {
 		return memberDao.getMemberByLoginId(loginId);
@@ -103,7 +103,7 @@ public class MemberService {
 		StringBuilder mailBodySb = new StringBuilder();
 		
 		mailBodySb.append(String.format("<h1>임시 비밀번호 : [%s]</h1>", tempPw));
-		mailBodySb.append(siteLink());
+//		mailBodySb.append(siteLink());
 
 		mailService.send(email, mailTitle, mailBodySb.toString());
 	}
@@ -122,7 +122,6 @@ public class MemberService {
 	}
 
 	public int compareDate(String lastUpdateDate) {
-		System.out.println("============service START============");
         String strStartDate = lastUpdateDate.substring(0, 10).replace("-", "");
         
         SimpleDateFormat nowDate = new SimpleDateFormat ( "yyyyMMdd");
@@ -142,11 +141,12 @@ public class MemberService {
  
             //두날짜 사이의 시간 차이(ms)를 하루 동안의 ms(24시*60분*60초*1000밀리초) 로 나눈다.
             result = (int) ((endDate.getTime() - startDate.getTime()) / (24*60*60*1000));
-            System.out.println("result1 : "+result);
         }catch(ParseException e){
         }
-        System.out.println("result2 : "+result);
-        System.out.println("============service END============");
         return result;
     }
+
+	public void doAuthMail(int id) {
+		memberDao.doAuthMail(id);
+	}
 }
