@@ -65,7 +65,7 @@
 		WHERE `loginId` = #{loginId}
 	</select>
 	
-	<update id="resetLoginId">
+	<update id="resetLoginPw">
 		UPDATE `member`
 		SET 
 		loginPw = #{tempPw},

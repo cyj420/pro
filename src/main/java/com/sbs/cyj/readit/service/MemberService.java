@@ -25,8 +25,6 @@ public class MemberService {
 		memberDao.join(param);
 		int id = Util.getAsInt(param.get("id"));
 		
-//		sendJoinCompleteMail((String) param.get("email"), (String) param.get("mailCode"));
-		
 		return id;
 	}
 
@@ -46,19 +44,16 @@ public class MemberService {
 		return memberDao.findLoginIdByNameAndEmail(param);
 	}
 	
-//	private void sendJoinCompleteMail(String email, String code) {
-//		String mailTitle = String.format("[%s] 가입을 축하합니다.", "~사이트 이름~");
-//		StringBuilder mailBodySb = new StringBuilder();
-//		mailBodySb.append("<h1>가입이 완료되었습니다.</h1><a href='http://localhost:8085/usr/member/doAuthMail?code="+code+"'>인증하기</a>");
-//		mailBodySb.append(siteLink());
-//
-//		mailService.send(email, mailTitle, mailBodySb.toString());
-//	}
+	public void sendJoinCompleteMail(Map<String, Object> param, String code) {
+		String mailTitle = String.format("[%s] 가입을 축하합니다.", "~사이트 이름~");
+		StringBuilder mailBodySb = new StringBuilder();
+		mailBodySb.append("<h1>가입이 완료되었습니다.</h1>");
+		mailBodySb.append(StrAuthCode(code, (String)param.get("nickname")));
+		mailBodySb.append(siteLink());
 
-//	private String siteLink() {
-//		return String.format("<p><a href=\"%s\" target=\"_blank\">%s</a>로 이동</p>", "http://localhost:8085/usr/home/main", "[사이트 이름]");
-//	}
-
+		mailService.send((String)param.get("email"), mailTitle, mailBodySb.toString());
+	}
+	
 	public Member getMemberByLoginId(String loginId) {
 		return memberDao.getMemberByLoginId(loginId);
 	}
@@ -79,7 +74,7 @@ public class MemberService {
 		
 		param.put("tempPw", newPw);
 		
-		memberDao.resetLoginId(param);
+		memberDao.resetLoginPw(param);
 		return 1;
 	}
 
@@ -103,7 +98,7 @@ public class MemberService {
 		StringBuilder mailBodySb = new StringBuilder();
 		
 		mailBodySb.append(String.format("<h1>임시 비밀번호 : [%s]</h1>", tempPw));
-//		mailBodySb.append(siteLink());
+		mailBodySb.append(siteLink());
 
 		mailService.send(email, mailTitle, mailBodySb.toString());
 	}
@@ -145,8 +140,25 @@ public class MemberService {
         }
         return result;
     }
+	
+	public void sendAuthMail(String email, String code, String nickname) {
+		String mailTitle = String.format("[%s] 인증을 위한 메일입니다.", "~사이트 이름~");
+		StringBuilder mailBodySb = new StringBuilder();
+		mailBodySb.append(StrAuthCode(code, nickname));
+		mailBodySb.append(siteLink());
+
+		mailService.send(email, mailTitle, mailBodySb.toString());
+	}
 
 	public void doAuthMail(int id) {
 		memberDao.doAuthMail(id);
+	}
+	
+	private String siteLink() {
+		return String.format("<p><a href=\"%s\" target=\"_blank\">%s</a>로 이동</p>", "http://localhost:8085/usr/home/main", "[사이트 이름]");
+	}
+	
+	private String StrAuthCode(String code, String nickname) {
+		return "<a href='http://localhost:8085/usr/member/doAuthMail?code="+code+"'>["+nickname+"님 메일 인증하기]</a>";
 	}
 }

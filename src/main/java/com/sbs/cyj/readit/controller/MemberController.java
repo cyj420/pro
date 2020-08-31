@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sbs.cyj.readit.dto.Member;
 import com.sbs.cyj.readit.dto.ResultData;
 import com.sbs.cyj.readit.service.AttrService;
-import com.sbs.cyj.readit.service.MailService;
 import com.sbs.cyj.readit.service.MemberService;
 
 @Controller
@@ -26,8 +25,8 @@ public class MemberController {
 	private MemberService memberService;
 	@Autowired
 	private AttrService attrService;
-	@Autowired
-	private MailService mailService;
+//	@Autowired
+//	private MailService mailService;
 
 	// 회원가입
 	@RequestMapping("/usr/member/join")
@@ -43,7 +42,7 @@ public class MemberController {
 			
 			if (id > 0) {
 				String code = generateCodeForAuthMail(id);
-				mailService.sendJoinCompleteMail((String)param.get("email"), code, (String)param.get("nickname"));
+				memberService.sendJoinCompleteMail(param, code);
 			}
 			
 			return "<script> alert('" + id + "번째 회원입니다.'); location.replace('../home/main'); </script>";
@@ -56,7 +55,6 @@ public class MemberController {
 		try {
 			md = MessageDigest.getInstance("SHA-256");
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		md.update(msg.getBytes());
@@ -142,7 +140,7 @@ public class MemberController {
 		return "common/redirect";
 	}
 
-	// 회원 정보 수정
+	// 회원 정보 
 	@RequestMapping("/usr/member/modify")
 	public String showModify() {
 		return "member/myPage";
@@ -225,16 +223,26 @@ public class MemberController {
 	// 회원 탈퇴
 	@RequestMapping("/usr/member/withdrawal")
 	public String doWithdrawal(@RequestParam int id, Model model, HttpSession session, String redirectUri) {
-		memberService.withdrawal(id);
-		session.removeAttribute("loginedMemberId");
-		session.removeAttribute("loginedMember");
+		String msg = "";
+		
+		if((int)session.getAttribute("loginedMemberId") == id) {
+			memberService.withdrawal(id);
+			session.removeAttribute("loginedMemberId");
+			session.removeAttribute("loginedMember");
+			
+			msg = "탈퇴 완료"; 
+		}
+		else {
+			msg = "탈퇴는 본인만 가능합니다.";
+		}
+		
 
 		if (redirectUri == null || redirectUri.length() == 0) {
 			redirectUri = "/usr/home/main";
 		}
 
 		model.addAttribute("redirectUri", redirectUri);
-		model.addAttribute("msg", String.format("탈퇴 완료."));
+		model.addAttribute("msg", msg);
 
 		return "common/redirect";
 	}
@@ -263,7 +271,8 @@ public class MemberController {
 					msg = "인증 성공";
 				}
 				else {
-					msg = "인증 실패";
+					String str = attrService.getValue("member__"+id+"__auth__mailAuthCode");
+					msg = "인증 실패\\ncode : "+code+"\\nstr : "+str;
 				}
 			}
 			else {
@@ -271,7 +280,7 @@ public class MemberController {
 			}
 		}
 		else {
-			// 이건 뜰 일 없겠지만...
+			// 로그인 가드가 있으니 이건 뜰 일 없겠지만...
 			msg = "인증 실패 - 비로그인 상태";
 		}
 
@@ -290,7 +299,10 @@ public class MemberController {
 		
 		if(memberId>0) {
 			String code = attrService.getValue("member__"+memberId+"__auth__mailAuthCode");
-			mailService.sendAuthMail(member.getEmail(), code, member.getNickname());
+			if(code == null) {
+				code = generateCodeForAuthMail(memberId);
+			}
+			memberService.sendAuthMail(member.getEmail(), code, member.getNickname());
 			msg = "메일 발송 완료";
 		}
 		else {

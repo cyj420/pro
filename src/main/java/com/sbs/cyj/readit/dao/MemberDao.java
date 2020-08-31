@@ -23,7 +23,7 @@ public interface MemberDao {
 
 	Member getMemberByEmail(String email);
 
-	void resetLoginId(Map<String, Object> param);
+	void resetLoginPw(Map<String, Object> param);
 
 	void withdrawal(int id);
 

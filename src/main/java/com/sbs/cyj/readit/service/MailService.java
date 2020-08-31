@@ -75,31 +75,4 @@ public class MailService {
 
 		return new ResultData("S-1", "메일이 발송되었습니다.");
 	}
-	
-	public void sendJoinCompleteMail(String email, String code, String nickname) {
-		String mailTitle = String.format("[%s] 가입을 축하합니다.", "~사이트 이름~");
-		StringBuilder mailBodySb = new StringBuilder();
-		mailBodySb.append("<h1>가입이 완료되었습니다.</h1>");
-		mailBodySb.append(StrAuthCode(code, nickname));
-		mailBodySb.append(siteLink());
-
-		send(email, mailTitle, mailBodySb.toString());
-	}
-	
-	private String siteLink() {
-		return String.format("<p><a href=\"%s\" target=\"_blank\">%s</a>로 이동</p>", "http://localhost:8085/usr/home/main", "[사이트 이름]");
-	}
-	
-	private String StrAuthCode(String code, String nickname) {
-		return "<a href='http://localhost:8085/usr/member/doAuthMail?code="+code+"'>["+nickname+"님 메일 인증하기]</a>";
-	}
-	
-	public void sendAuthMail(String email, String code, String nickname) {
-		String mailTitle = String.format("[%s] 인증을 위한 메일입니다.", "~사이트 이름~");
-		StringBuilder mailBodySb = new StringBuilder();
-		mailBodySb.append(StrAuthCode(code, nickname));
-		mailBodySb.append(siteLink());
-
-		send(email, mailTitle, mailBodySb.toString());
-	}
 } 
