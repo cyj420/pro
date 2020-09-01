@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import com.sbs.cyj.readit.dto.Member;
 import com.sbs.cyj.readit.dto.ResultData;
 import com.sbs.cyj.readit.service.AttrService;
 import com.sbs.cyj.readit.service.MemberService;
+import com.sbs.cyj.readit.util.Util;
 
 @Controller
 public class MemberController {
@@ -25,8 +27,6 @@ public class MemberController {
 	private MemberService memberService;
 	@Autowired
 	private AttrService attrService;
-//	@Autowired
-//	private MailService mailService;
 
 	// 회원가입
 	@RequestMapping("/usr/member/join")
@@ -138,23 +138,6 @@ public class MemberController {
 		model.addAttribute("msg", String.format("로그아웃 되었습니다."));
 
 		return "common/redirect";
-	}
-
-	// 회원 정보 
-	@RequestMapping("/usr/member/modify")
-	public String showModify() {
-		return "member/myPage";
-	}
-
-	@RequestMapping("/usr/member/doModify")
-	@ResponseBody
-	public String doModify(@RequestParam Map<String, Object> param, Model model, HttpSession session) {
-		memberService.modify(param);
-		int id = Integer.parseInt((String) param.get("id"));
-		session.setAttribute("loginedMemberId", id);
-		session.setAttribute("loginedMember", memberService.getMemberById(id));
-
-		return "<script> alert('회원 정보 수정 완료'); location.replace('../home/main'); </script>";
 	}
 
 	// ID 찾기
@@ -321,8 +304,72 @@ public class MemberController {
 		
 		String code = strNowTime+id;
 		code = transformString(code);
-		attrService.setValue("member__"+id+"__auth__mailAuthCode", code);
+		attrService.setValue("member__"+id+"__auth__mailAuthCode", code, Util.getDateStrLater(60*60));
 		
 		return code;
+	}
+	
+	// MyPrivate 들어가기 전 PW 체크
+	@RequestMapping("/usr/member/checkPw")
+	public String showCheckPw() {
+		return "member/checkPw";
+	}
+	
+	@RequestMapping("/usr/member/doCheckPw")
+	public String doCheckPw(String loginPwReal, String redirectUri, Model model, HttpServletRequest req) {
+		int memberId = (int) req.getAttribute("loginedMemberId");
+		Member member = memberService.getMemberById(memberId);
+		
+		String loginPw = loginPwReal;
+		
+		if (member.getLoginPw().equals(loginPw) == false) {
+			model.addAttribute("historyBack", true);
+			model.addAttribute("msg", "비밀번호가 일치하지 않습니다.");
+			return "common/redirect";
+		}
+		
+		String authCode = memberService.genCheckPasswordAuthCode(memberId);
+
+		if (redirectUri == null || redirectUri.length() == 0) {
+			redirectUri = "/usr/member/modify";
+		}
+
+		redirectUri = Util.getNewUri(redirectUri, "checkPasswordAuthCode", authCode);
+
+		model.addAttribute("redirectUri", redirectUri);
+
+		return "common/redirect";
+	}
+	
+	// 회원 정보 
+	@RequestMapping("/usr/member/modify")
+	public String showModify(HttpSession session, HttpServletRequest req, String checkPasswordAuthCode, Model model) {
+		int memberId = (int) session.getAttribute("loginedMemberId");
+		ResultData checkValidCheckPasswordAuthCodeResultData = memberService.checkValidCheckPasswordAuthCode(memberId, checkPasswordAuthCode);
+
+		if (checkPasswordAuthCode == null || checkPasswordAuthCode.length() == 0) {
+			model.addAttribute("historyBack", true);
+			model.addAttribute("msg", "비밀번호 체크 인증코드가 없습니다.");
+			return "common/redirect";
+		}
+
+		if (checkValidCheckPasswordAuthCodeResultData.isFail()) {
+			model.addAttribute("historyBack", true);
+			model.addAttribute("msg", checkValidCheckPasswordAuthCodeResultData.getMsg());
+			return "common/redirect";
+		}
+
+		return "member/modify";
+	}
+
+	@RequestMapping("/usr/member/doModify")
+	@ResponseBody
+	public String doModify(@RequestParam Map<String, Object> param, Model model, HttpSession session) {
+		memberService.modify(param);
+		int id = Integer.parseInt((String) param.get("id"));
+		session.setAttribute("loginedMemberId", id);
+		session.setAttribute("loginedMember", memberService.getMemberById(id));
+
+		return "<script> alert('회원 정보 수정 완료'); location.replace('../home/main'); </script>";
 	}
 }

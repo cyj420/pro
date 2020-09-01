@@ -1,7 +1,5 @@
 package com.sbs.cyj.readit.dto;
 
-import java.util.Map;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +11,10 @@ public class Attr {
 	private int id;
 	private String regDate;
 	private String updateDate;
-	private String name;
+	private String expireDate;
+	private String relTypeCode;
+	private int relId;
+	private String typeCode;
+	private String type2Code;
 	private String value;
-	private Map<String, Object> extra;
 }

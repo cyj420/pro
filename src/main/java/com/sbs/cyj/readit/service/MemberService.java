@@ -6,12 +6,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sbs.cyj.readit.dao.MemberDao;
 import com.sbs.cyj.readit.dto.Member;
+import com.sbs.cyj.readit.dto.ResultData;
 import com.sbs.cyj.readit.util.Util;
 
 @Service
@@ -20,6 +22,8 @@ public class MemberService {
 	private MemberDao memberDao;
 	@Autowired
 	private MailService mailService;
+	@Autowired
+	private AttrService attrService;
 
 	public int join(Map<String, Object> param) {
 		memberDao.join(param);
@@ -160,5 +164,20 @@ public class MemberService {
 	
 	private String StrAuthCode(String code, String nickname) {
 		return "<a href='http://localhost:8085/usr/member/doAuthMail?code="+code+"'>["+nickname+"님 메일 인증하기]</a>";
+	}
+	
+	public String genCheckPasswordAuthCode(int actorId) {
+		String authCode = UUID.randomUUID().toString();
+		attrService.setValue("member__" + actorId + "__extra__modifyPrivateAuthCode", authCode, Util.getDateStrLater(60 * 60));
+
+		return authCode;
+	}
+
+	public ResultData checkValidCheckPasswordAuthCode(int actorId, String checkPasswordAuthCode) {
+		if (attrService.getValue("member__" + actorId + "__extra__modifyPrivateAuthCode").equals(checkPasswordAuthCode)) {
+			return new ResultData("S-1", "유효한 키 입니다.");
+		}
+
+		return new ResultData("F-1", "유효하지 않은 키 입니다.");
 	}
 }

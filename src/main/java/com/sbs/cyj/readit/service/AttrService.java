@@ -1,8 +1,5 @@
 package com.sbs.cyj.readit.service;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,33 +17,22 @@ public class AttrService {
 		int relId = Integer.parseInt(nameBits[1]);
 		String typeCode = nameBits[2];
 		String type2Code = nameBits[3];
-		
-		Map<String, Object> map = new HashMap<>();
-		
-		map.put("relTypeCode", relTypeCode);
-		map.put("relId", relId);
-		map.put("typeCode", typeCode);
-		map.put("type2Code", type2Code);
-		
-		return attrDao.get(map);
+
+		return get(relTypeCode, relId, typeCode, type2Code);
 	}
 
-	public int setValue(String name, String value) {
+	public Attr get(String relTypeCode, int relId, String typeCode, String type2Code) {
+		return attrDao.get(relTypeCode, relId, typeCode, type2Code);
+	}
+
+	public int setValue(String name, String value, String expireDate) {
 		String[] nameBits = name.split("__");
 		String relTypeCode = nameBits[0];
 		int relId = Integer.parseInt(nameBits[1]);
 		String typeCode = nameBits[2];
 		String type2Code = nameBits[3];
-		
-		Map<String, Object> map = new HashMap<>();
-		
-		map.put("relTypeCode", relTypeCode);
-		map.put("relId", relId);
-		map.put("typeCode", typeCode);
-		map.put("type2Code", type2Code);
-		map.put("value", value);
 
-		return attrDao.setValue(map);
+		return setValue(relTypeCode, relId, typeCode, type2Code, value, expireDate);
 	}
 
 	public String getValue(String name) {
@@ -55,15 +41,18 @@ public class AttrService {
 		int relId = Integer.parseInt(nameBits[1]);
 		String typeCode = nameBits[2];
 		String type2Code = nameBits[3];
+
+		return getValue(relTypeCode, relId, typeCode, type2Code);
+	}
+
+	public String getValue(String relTypeCode, int relId, String typeCode, String type2Code) {
+		String value = attrDao.getValue(relTypeCode, relId, typeCode, type2Code);
 		
-		Map<String, Object> map = new HashMap<>();
+		if ( value == null ) {
+			return "";
+		}
 		
-		map.put("relTypeCode", relTypeCode);
-		map.put("relId", relId);
-		map.put("typeCode", typeCode);
-		map.put("type2Code", type2Code);
-		
-		return attrDao.getValue(map);
+		return value;
 	}
 
 	public int remove(String name) {
@@ -72,14 +61,29 @@ public class AttrService {
 		int relId = Integer.parseInt(nameBits[1]);
 		String typeCode = nameBits[2];
 		String type2Code = nameBits[3];
-		
-		Map<String, Object> map = new HashMap<>();
-		
-		map.put("relTypeCode", relTypeCode);
-		map.put("relId", relId);
-		map.put("typeCode", typeCode);
-		map.put("type2Code", type2Code);
-		
-		return attrDao.remove(map);
+
+		return remove(relTypeCode, relId, typeCode, type2Code);
+	}
+
+	public int remove(String relTypeCode, int relId, String typeCode, String type2Code) {
+		return attrDao.remove(relTypeCode, relId, typeCode, type2Code);
+	}
+
+	public int setValue(String relTypeCode, int relId, String typeCode, String type2Code, String value, String expireDate) {
+		System.out.println("relTypeCode : " + relTypeCode);
+		System.out.println("relId : " + relId);
+		System.out.println("typeCode : " + typeCode);
+		System.out.println("type2Code : " + type2Code);
+		System.out.println("value : " + value);
+		System.out.println("expireDate : " + expireDate);
+
+		attrDao.setValue(relTypeCode, relId, typeCode, type2Code, value, expireDate);
+		Attr attr = get(relTypeCode, relId, typeCode, type2Code);
+
+		if (attr != null) {
+			return attr.getId();
+		}
+
+		return -1;
 	}
 } 

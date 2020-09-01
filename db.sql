@@ -144,4 +144,45 @@ CREATE TABLE `file` (
 #0830
 
 ALTER TABLE `member`
-ADD COLUMN `tempPwStatus` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0
+ADD COLUMN `tempPwStatus` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
+
+#===========================================================
+#0831
+
+INSERT INTO category
+SET `name` = '기타',
+regDate = NOW(),
+updateDate = NOW(),
+boardId = 1;
+
+INSERT INTO category
+SET `name` = '공지',
+regDate = NOW(),
+updateDate = NOW(),
+boardId = 2;
+
+#===========================================================
+#0901
+
+DROP TABLE IF EXISTS attr;
+CREATE TABLE attr (
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    `relTypeCode` CHAR(20) NOT NULL,
+    `relId` INT(10) UNSIGNED NOT NULL,
+    `typeCode` CHAR(30) NOT NULL,
+    `type2Code` CHAR(30) NOT NULL,
+    `value` TEXT NOT NULL
+);
+
+# attr 유니크 인덱스 걸기
+## 중복변수 생성금지
+## 변수찾는 속도 최적화
+ALTER TABLE `attr` ADD UNIQUE INDEX (`relTypeCode`, `relId`, `typeCode`, `type2Code`); 
+
+## 특정 조건을 만족하는 회원 또는 게시물(기타 데이터)를 빠르게 찾기 위해서
+ALTER TABLE `attr` ADD INDEX (`relTypeCode`, `typeCode`, `type2Code`);
+
+# attr에 만료날짜 추가
+ALTER TABLE `attr` ADD COLUMN `expireDate` DATETIME NULL AFTER `value`;

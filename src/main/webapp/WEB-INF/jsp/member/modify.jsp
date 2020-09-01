@@ -31,11 +31,26 @@
 			return;
 		}
 
-		if(form.loginPw.value.length != 0){
-			form.loginPwReal.value = sha256(form.loginPw.value);
+		if(form.loginPw.value.trim().length == 0){
+			alert('비밀번호 칸은 비울 수 없습니다.');
+			form.loginPw.focus();
+			return;
+		}
+
+		form.newLoginPwReal.value = '';
+		
+		if(form.newLoginPw.value.length != 0){
+			if(form.newLoginPw.value == form.loginPw.value){
+				alert('새 비밀번호는 이전 비밀번호와 달라야 합니다.')
+				form.newLoginPw.focus();
+				return;
+			}
+			
+			form.newLoginPwReal.value = sha256(form.newLoginPw.value);
 		}
 		
 		form.loginPw.value = '';
+		form.newLoginPw.value = '';
 
 		form.submit();
 		MemberModifyForm__submitDone = true;
@@ -47,6 +62,7 @@
 		<input name="id" value="${loginedMember.id}" hidden="hidden">
 		<input type="hidden" name="redirectUri" value="${param.redirectUri}">
 		<input name="loginPwReal" hidden="hidden">
+		<input name="newLoginPwReal" hidden="hidden">
 		<div>
 			<label>ID : <input name="loginId" value="${loginedMember.loginId}" disabled="disabled">
 			</label>
@@ -65,6 +81,10 @@
 		</div>
 		<div>
 			<label>비밀번호 : <input name="loginPw" type="password">
+			</label>
+		</div>
+		<div>
+			<label>새 비밀번호 : <input name="newLoginPw" type="password">
 			</label>
 		</div>
 		<input type="submit" value="정보 수정">
