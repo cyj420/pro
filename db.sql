@@ -189,3 +189,15 @@ ALTER TABLE `attr` ADD COLUMN `expireDate` DATETIME NULL AFTER `value`;
 
 # 해당 부분 memberController - findLoginPw 에서 attr 이용하는 것으로 수정.
 ALTER TABLE `member` DROP COLUMN `tempPwStatus`;
+
+CREATE TABLE reply (
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME,
+    updateDate DATETIME,
+    delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+    delDate DATETIME,
+    displayStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 1,
+    memberId INT(10) UNSIGNED NOT NULL,
+    articleId INT(10) UNSIGNED NOT NULL,
+    `body` LONGTEXT NOT NULL
+);

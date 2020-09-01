@@ -114,6 +114,7 @@ public class ArticleController {
 		return "article/detail";
 	}
 	
+	// 게시글 삭제
 	@RequestMapping("usr/article/{boardCode}-doDelete")
 	@ResponseBody
 	public String doDelete(@RequestParam int id, HttpServletRequest req, @PathVariable("boardCode") String boardCode, Model model) {
@@ -185,5 +186,28 @@ public class ArticleController {
 		model.addAttribute("redirectUri", redirectUri);
 
 		return "common/redirect";
+	}
+	
+	// 댓글 작성
+	@RequestMapping("usr/article/doWriteReplyAjax")
+	public String doWriteReplyAjax(@RequestParam Map<String, Object> param, @PathVariable("boardCode") String boardCode, @RequestParam int articleId, String body, String listUrl, Model model) {
+		if ( listUrl == null ) {
+			listUrl = "./" + boardCode + "-list";
+		}
+		model.addAttribute("listUrl", listUrl);
+		System.out.println("============================");
+		System.out.println("param : " + param.toString());
+		System.out.println("============================");
+		
+//		articleService.writeArticleReply(param);
+		String msg = "댓글이 생성되었습니다.";
+
+		String redirectUri = (String) param.get("redirectUri");
+//		redirectUri = redirectUri.replace("#id", id + "");
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("redirectUri", redirectUri);
+		
+		return "article/modify";
 	}
 }

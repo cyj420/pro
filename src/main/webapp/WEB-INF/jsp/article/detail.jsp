@@ -58,30 +58,64 @@ img{
                     <div class="toast-editor toast-editor-viewer"></div>
 				</td>
 			</tr>
-			<%-- 
-			<c:forEach var="i" begin="1" end="3" step="1">
-				<c:set var="fileNo" value="${String.valueOf(i)}" />
-				<c:set var="file" value="${article.extra.file__common__attachment[fileNo]}" />
-				<c:if test="${file != null}">
-					<tr>
-						<th>첨부파일 ${fileNo}</th>
-						<td>
-							<c:if test="${file.fileExtTypeCode == 'video'}">
-								<div class="video-box">
-									<video controls src="/usr/file/streamVideo?id=${file.id}&updateDate=${file.updateDate}"></video>
-								</div>
-							</c:if>
-							<c:if test="${file.fileExtTypeCode == 'img'}">
-								<div class="img-box img-box-auto">
-									<img src="/usr/file/img?id=${file.id}&updateDate=${file.updateDate}" alt="" />
-								</div>
-							</c:if>
-						</td>
-					</tr>
-				</c:if>
-			</c:forEach>
-			 --%>
 		</tbody>
 	</table>
+	<!-- 여기까지 본문 -->
+	
+	
+	<!-- 여기부터 댓글 -->
+	<c:if test="${loginedMember != null}">
+		<h2>댓글 작성</h2>
+		<div>
+			<script>
+			    function Reply__submitWriteForm(form){
+				    form.body.value = form.body.value.trim();
+				    if(form.body.value.length == 0){
+					    alert('내용을 입력하세요.');
+					    form.body.focus();
+					    return;
+					}
+
+				    $.post('./doWriteReplyAjax', {
+						articleId : ${param.id},
+						memberId : ${loginedMember.id}
+						body : form.body.value
+					}, function(data){
+						if(data.msg){
+							alert(data.msg);
+						}
+						if(data.resultCode.substr(0,2) == 'S-'){
+							location.reload(); // 임시
+						}
+					}, 'json');
+
+					form.body.value = '';
+				}
+		    </script>
+
+			<form onsubmit="Reply__submitWriteForm(this); return false;">
+				<input type="hidden" name="memberId" value="${loginedMember.id}" /> 
+				<input type="hidden" name="articleId" value="${param.id}" />
+			
+				<table>
+					<tbody>
+						<tr>
+							<th>내용</th>
+							<td>
+								<div class="form-control-box">
+									<textarea maxlength="300" name="body" placeholder="내용을 입력해주세요."
+										class="height-300"></textarea>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th>작성</th>
+							<td><input type="submit" value="작성"></td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+		</div>
+	</c:if>
 </div>
 <%@ include file="../part/foot.jspf"%>
