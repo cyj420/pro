@@ -192,4 +192,12 @@ public class MemberService {
 
 		return authCode;
 	}
+
+	public String getNowTime() {
+		SimpleDateFormat form = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+		Date dateTime = new Date();
+		String nowTime = form.format(dateTime);
+		
+		return nowTime;
+	}
 }
