@@ -66,22 +66,27 @@ public class MemberService {
 		return memberDao.getMemberByEmail(email);
 	}
 
-	public int resetLoginPw(Map<String, Object> param) {
-		String tempPw = ""+System.currentTimeMillis();
+	public int resetLoginPw(int actorId, Map<String, Object> param) {
+		String tempPw = UUID.randomUUID().toString();
+		tempPw = tempPw.substring(0, 8);
+		
+		attrService.setValue("member__" + actorId + "__extra__useTempPassword", "1", Util.getDateStrLater(60 * 60));
+		
+		sendResetMail((String)param.get("email"), (String) param.get("name"), tempPw);
+		
 		String newPw = "";
 		try {
 			newPw = transformString(tempPw);
 		} catch (NoSuchAlgorithmException e) {
 			return -1;
 		}
-		sendResetMail((String)param.get("email"), tempPw);
 		
 		param.put("tempPw", newPw);
 		
 		memberDao.resetLoginPw(param);
 		return 1;
 	}
-
+	
 	private String transformString(String msg) throws NoSuchAlgorithmException {
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
 		md.update(msg.getBytes());
@@ -96,12 +101,12 @@ public class MemberService {
 		return sb.toString();
 	}
 
-	private void sendResetMail(String email, String tempPw) {
+	private void sendResetMail(String email, String name, String tempPw) {
 		String mailTitle = String.format("[%s] 임시 비밀번호입니다.", "~사이트 이름~");
 
 		StringBuilder mailBodySb = new StringBuilder();
 		
-		mailBodySb.append(String.format("<h1>임시 비밀번호 : [%s]</h1>", tempPw));
+		mailBodySb.append(String.format("<h1>%s님의 임시 비밀번호 : [%s]</h1>", name, tempPw));
 		mailBodySb.append(siteLink());
 
 		mailService.send(email, mailTitle, mailBodySb.toString());

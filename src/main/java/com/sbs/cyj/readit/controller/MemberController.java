@@ -77,19 +77,24 @@ public class MemberController {
 			redirectUri = "/usr/home/main";
 		}
 		
-		String lastUpdateDate = member.getUpdateDate();
+		String str = "안녕하세요.";
+
+		//		String lastUpdateDate = member.getUpdateDate();
+//		
+//		int date = memberService.compareDate(lastUpdateDate);
+//		if(date > 90) {
+//			str = String.format("%s님 비밀번호 변경한 지 %d일이 되었습니다.\\n보완을 위해 비밀번호를 바꿔주세요.", member.getNickname(), date);
+//		}
+//		else {
+//			str = String.format("%s님 반갑습니다.", member.getNickname());
+//		}
+//		
+//		if(member.isTempPwStatus()) {
+//			str += "\\n임시번호를 사용중입니다.\\n비밀번호 재설정을 해주세요.";
+//		}
 		
-		int date = memberService.compareDate(lastUpdateDate);
-		String str = "";
-		if(date > 90) {
-			str = String.format("%s님 비밀번호 변경한 지 %d일이 되었습니다.\\n보완을 위해 비밀번호를 바꿔주세요.", member.getNickname(), date);
-		}
-		else {
-			str = String.format("%s님 반갑습니다.", member.getNickname());
-		}
-		
-		if(member.isTempPwStatus()) {
-			str += "\\n임시번호를 사용중입니다.\\n비밀번호 재설정을 해주세요.";
+		if(attrService.getValue("member__" + member.getId() + "__extra__useTempPassword").equals("1")) {
+			str = "현재 임시 비밀번호를 사용중입니다.";
 		}
 
 		model.addAttribute("redirectUri", redirectUri);
@@ -162,7 +167,7 @@ public class MemberController {
 		if (member != null) {
 			if (member.getName().equals((String) param.get("name"))
 					&& member.getEmail().equals((String) param.get("email"))) {
-				if (memberService.resetLoginPw(param) > 0) {
+				if (memberService.resetLoginPw(member.getId(), param) > 0) {
 					sb.append("alert('임시 PW를 메일로 보냈습니다.');");
 					sb.append("location.replace('./login');");
 				} else {
@@ -338,6 +343,11 @@ public class MemberController {
 		if(member.getEmail().equals(email)) {
 			param.put("email", null);
 		}
+		
+		if(attrService.getValue("member__" + member.getId() + "__extra__useTempPassword").equals("1")) {
+			attrService.remove("member__" + memberId + "__extra__useTempPassword");
+		}
+		
 		memberService.modify(param);
 		int id = Integer.parseInt((String) param.get("id"));
 		session.setAttribute("loginedMemberId", id);

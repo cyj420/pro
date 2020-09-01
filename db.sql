@@ -186,3 +186,6 @@ ALTER TABLE `attr` ADD INDEX (`relTypeCode`, `typeCode`, `type2Code`);
 
 # attr에 만료날짜 추가
 ALTER TABLE `attr` ADD COLUMN `expireDate` DATETIME NULL AFTER `value`;
+
+# 해당 부분 memberController - findLoginPw 에서 attr 이용하는 것으로 수정.
+ALTER TABLE `member` DROP COLUMN `tempPwStatus`;

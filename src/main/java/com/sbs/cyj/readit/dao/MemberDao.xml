@@ -32,7 +32,6 @@
 		authStatus = 0,
 		</if>
 		<if test="newLoginPwReal.trim().length() != 0">loginPw = #{newLoginPwReal},</if>
-		tempPwStatus = 0,
 		updateDate = NOW()
 		WHERE id = #{id}
 		AND delStatus = 0;
@@ -72,7 +71,6 @@
 		UPDATE `member`
 		SET 
 		loginPw = #{tempPw},
-		tempPwStatus = 1,
 		updateDate = NOW()
 		WHERE loginId = #{loginId}
 		AND delStatus = 0
@@ -107,6 +105,5 @@
 		<id property="name" column="name" />
 		<id property="nickname" column="nickname" />
 		<id property="email" column="email" />
-		<id property="tempPwStatus" column="tempPwStatus" />
 	</resultMap>
 </mapper>
