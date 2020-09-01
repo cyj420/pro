@@ -27,7 +27,10 @@
 		UPDATE `member`
 		SET 
 		<if test="nickname != null">nickname = #{nickname},</if>
-		<if test="email != null">email = #{email},</if>
+		<if test="email != null">
+		email = #{email},
+		authStatus = 0,
+		</if>
 		<if test="newLoginPwReal.trim().length() != 0">loginPw = #{newLoginPwReal},</if>
 		tempPwStatus = 0,
 		updateDate = NOW()

@@ -79,6 +79,14 @@
 			<label>email : <input name="email" type="email" value="${loginedMember.email}">
 			</label>
 		</div>
+		
+		<c:if test="${loginedMember.authStatus == true}">
+			<div>메일 인증 완료</div>
+		</c:if>
+		<c:if test="${loginedMember.authStatus == false}">
+			<a href="./sendAuthMail" >인증 메일 보내기</a>
+		</c:if>
+		
 		<div>
 			<label>비밀번호 : <input name="loginPw" type="password">
 			</label>

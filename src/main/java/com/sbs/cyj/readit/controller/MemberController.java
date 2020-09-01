@@ -1,8 +1,5 @@
 package com.sbs.cyj.readit.controller;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,32 +38,13 @@ public class MemberController {
 			int id = memberService.join(param);
 			
 			if (id > 0) {
-				String code = generateCodeForAuthMail(id);
+				String code = memberService.genMailAuthCode(id);
 				memberService.sendJoinCompleteMail(param, code);
 			}
 			
 			return "<script> alert('" + id + "번째 회원입니다.'); location.replace('../home/main'); </script>";
 		}
 		return "<script> alert('회원가입 실패'); history.back(); </script>";
-	}
-
-	private String transformString(String msg){
-		MessageDigest md = null;
-		try {
-			md = MessageDigest.getInstance("SHA-256");
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-		md.update(msg.getBytes());
-		return bytesToHex(md.digest());
-	}
-	
-	private String bytesToHex(byte[] digest) {
-		StringBuilder sb = new StringBuilder();
-		for(byte b : digest) {
-			sb.append(String.format("%02x", b));
-		}
-		return sb.toString();
 	}
 
 	// 로그인
@@ -241,7 +219,7 @@ public class MemberController {
 		}
 	}
 	
-	// 메일 인증
+	// 메일 인증하기
 	@RequestMapping("/usr/member/doAuthMail")
 	public String doAuthMail(Model model, HttpSession session, @RequestParam String code) {
 		String msg = "";
@@ -249,12 +227,12 @@ public class MemberController {
 			int id = (int) session.getAttribute("loginedMemberId");
 			
 			if(!memberService.getMemberById(id).isAuthStatus()) {
-				if(code.equals(attrService.getValue("member__"+id+"__auth__mailAuthCode"))){
+				if(code.equals(attrService.getValue("member__"+id+"__extra__mailAuthCode"))){
 					memberService.doAuthMail(id);
 					msg = "인증 성공";
 				}
 				else {
-					String str = attrService.getValue("member__"+id+"__auth__mailAuthCode");
+					String str = attrService.getValue("member__"+id+"__extra__mailAuthCode");
 					msg = "인증 실패\\ncode : "+code+"\\nstr : "+str;
 				}
 			}
@@ -281,9 +259,9 @@ public class MemberController {
 		Member member = memberService.getMemberById(memberId);
 		
 		if(memberId>0) {
-			String code = attrService.getValue("member__"+memberId+"__auth__mailAuthCode");
+			String code = attrService.getValue("member__"+memberId+"__extra__mailAuthCode");
 			if(code == null) {
-				code = generateCodeForAuthMail(memberId);
+				code = memberService.genMailAuthCode(memberId);
 			}
 			memberService.sendAuthMail(member.getEmail(), code, member.getNickname());
 			msg = "메일 발송 완료";
@@ -296,17 +274,6 @@ public class MemberController {
 		model.addAttribute("msg", msg);
 
 		return "common/redirect";
-	}
-	
-	public String generateCodeForAuthMail(int id){
-		SimpleDateFormat nowTime = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
-		String strNowTime = nowTime.format (System.currentTimeMillis());
-		
-		String code = strNowTime+id;
-		code = transformString(code);
-		attrService.setValue("member__"+id+"__auth__mailAuthCode", code, Util.getDateStrLater(60*60));
-		
-		return code;
 	}
 	
 	// MyPrivate 들어가기 전 PW 체크
@@ -358,13 +325,19 @@ public class MemberController {
 			model.addAttribute("msg", checkValidCheckPasswordAuthCodeResultData.getMsg());
 			return "common/redirect";
 		}
-
 		return "member/modify";
 	}
 
 	@RequestMapping("/usr/member/doModify")
 	@ResponseBody
 	public String doModify(@RequestParam Map<String, Object> param, Model model, HttpSession session) {
+		int memberId = (int) session.getAttribute("loginedMemberId");
+		Member member = memberService.getMemberById(memberId);
+		
+		String email = (String) param.get("email");
+		if(member.getEmail().equals(email)) {
+			param.put("email", null);
+		}
 		memberService.modify(param);
 		int id = Integer.parseInt((String) param.get("id"));
 		session.setAttribute("loginedMemberId", id);
