@@ -17,5 +17,7 @@ public interface ReplyDao {
 	Reply getReplyById(int id);
 
 	void deleteReplyById(int id);
+
+	void modifyReplyById(String id, String body);
 	
 }

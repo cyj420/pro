@@ -42,6 +42,13 @@
 		WHERE id = #{id}
 	</update>
 	
+	<update id="modifyReplyById" parameterType="String">
+		UPDATE reply
+		SET body = #{body},
+		updateDate = NOW()
+		WHERE id = #{id}
+	</update>
+	
 	<resultMap type="Reply" id="reply">
 		<id property="id" column="id" />
 		<id property="regDate" column="regDate" />

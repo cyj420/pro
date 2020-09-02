@@ -72,4 +72,12 @@ public class ReplyController {
 		
 		return new ResultData("S-1", String.format("%d번 댓글을 삭제하였습니다.", id));
 	}
+	
+	// 댓글 수정
+	@RequestMapping("/usr/reply/doModifyReplyAjax")
+	@ResponseBody
+	public ResultData doReplyModify(@RequestParam int id, String body) {
+		replyService.modifyReplyById(""+id, body);
+		return new ResultData("S-1", String.format("%d번 댓글을 수정하였습니다.", id));
+	}
 }
