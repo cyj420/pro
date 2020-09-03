@@ -43,6 +43,7 @@ var param = ${paramJson};
 	<div>
 	<a href="/usr/home/main">[HOME]</a>
 	<c:forEach items="${boards}" var="b">
+		<a href="/usr/article/${b.code}-list/mySeries">My Series</a>
 		<a href="/usr/article/${b.code}-list">[${b.name }-LIST]</a>
 	</c:forEach>
 	<c:if test="${loginedMember != null }">

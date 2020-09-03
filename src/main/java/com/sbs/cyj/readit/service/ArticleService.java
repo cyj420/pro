@@ -13,6 +13,7 @@ import com.sbs.cyj.readit.dto.Category;
 import com.sbs.cyj.readit.dto.File;
 import com.sbs.cyj.readit.dto.Member;
 import com.sbs.cyj.readit.dto.ResultData;
+import com.sbs.cyj.readit.dto.Series;
 import com.sbs.cyj.readit.util.Util;
 
 @Service
@@ -118,6 +119,10 @@ public class ArticleService {
 		Article article = articleDao.getArticleById(id);
 
 		return actorCanModify(actor, article);
+	}
+
+	public List<Article> getArticlesBySeriesIdAndBoardId(int seriesId, int boardId) {
+		return articleDao.getArticlesBySeriesIdAndBoardId(seriesId, boardId);
 	}
 
 }

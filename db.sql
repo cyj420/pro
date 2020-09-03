@@ -201,3 +201,29 @@ CREATE TABLE reply (
     articleId INT(10) UNSIGNED NOT NULL,
     `body` LONGTEXT NOT NULL
 );
+
+#===========================================================
+#0903
+
+DROP TABLE IF EXISTS series;
+CREATE TABLE series (
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME,
+    updateDate DATETIME,
+    delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+    delDate DATETIME,
+    displayStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 1,
+    memberId INT(10) UNSIGNED NOT NULL,
+    cateId INT(10) UNSIGNED NOT NULL,
+    `name` CHAR(100) NOT NULL
+);
+
+ALTER TABLE `article`
+ADD COLUMN `seriesId` INT(10) UNSIGNED;
+
+INSERT INTO series
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 2,
+cateId = 1,
+`name` = '첫번째 시리즈';

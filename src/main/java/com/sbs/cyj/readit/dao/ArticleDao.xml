@@ -27,10 +27,12 @@
 	 -->
 	
 	<select id="getArticleById" resultMap="article">
-		SELECT A.*, M.nickname AS extra__writer
+		SELECT A.*, M.nickname AS extra__writer, C.name AS extra__cateName
 		FROM article AS A
 		INNER JOIN `Member` AS M
+		INNER JOIN category AS C
 		ON M.id = A.memberId
+		AND C.id = A.cateId
 		WHERE A.displayStatus = 1
 		AND A.id = #{id};
 	</select>
@@ -59,6 +61,17 @@
 		ON M.id = A.memberId
 		AND A.displayStatus = 1
 		AND A.boardId = #{boardId}
+		ORDER BY A.id DESC;
+	</select>
+	
+	<select id="getArticlesBySeriesIdAndBoardId" resultMap="article">
+		SELECT A.*, M.nickname AS extra__writer
+		FROM article AS A
+		INNER JOIN `Member` AS M
+		ON M.id = A.memberId
+		AND A.seriesId = #{seriesId}
+		AND A.boardId = #{boardId}
+		AND A.displayStatus = 1
 		ORDER BY A.id DESC;
 	</select>
 	
@@ -94,8 +107,10 @@
 		<id property="memberId" column="memberId" />
 		<id property="boardId" column="boardId" />
 		<id property="cateId" column="cateId" />
+		<id property="seriesId" column="seriesId" />
 		<association property="extra" javaType="map">
 			<id property="writer" column="extra__writer" />
+			<id property="cateName" column="extra__cateName" />
 		</association>
 	</resultMap>
 </mapper>

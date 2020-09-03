@@ -49,11 +49,19 @@ img{
 				<td>${article.regDate}</td>
 			</tr>
 			<tr>
-				<th>카테고리 id</th>
-				<td>${article.cateId}</td>
+				<th>카테고리명</th>
+				<td>${article.extra.cateName}</td>
 			</tr>
+			<c:if test="${series != null }">
+				<tr>
+					<th>시리즈명</th>
+					<td>
+					<a href="/usr/article/${board.code}-list?seriesId=${article.seriesId}">${series.name}</a>
+					</td>
+				</tr>
+			</c:if>
 			<tr>
-				<th>작성자 id</th>
+				<th>닉네임</th>
 				<td>
 				<a href="/usr/article/${board.code}-list?memberId=${article.memberId}">${article.extra.writer}</a>
 				</td>

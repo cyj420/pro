@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,16 +19,19 @@ import com.sbs.cyj.readit.dto.Board;
 import com.sbs.cyj.readit.dto.Category;
 import com.sbs.cyj.readit.dto.Member;
 import com.sbs.cyj.readit.dto.ResultData;
+import com.sbs.cyj.readit.dto.Series;
 import com.sbs.cyj.readit.service.ArticleService;
 import com.sbs.cyj.readit.service.BoardService;
+import com.sbs.cyj.readit.service.SeriesService;
 
 @Controller
 public class ArticleController {
 	@Autowired
 	private ArticleService articleService;
-	
 	@Autowired
 	private BoardService boardService;
+	@Autowired
+	private SeriesService seriesService;
 	
 	// 게시글 작성
 	@RequestMapping("usr/article/{boardCode}-write")
@@ -85,10 +89,18 @@ public class ArticleController {
 			int memberId = Integer.parseInt(str);
 			articles = articleService.getArticlesByMemberIdAndBoardId(memberId, boardId);
 		}
+		else if(req.getParameter("seriesId")!=null) {
+			str = req.getParameter("seriesId");
+			int seriesId = Integer.parseInt(str);
+			articles = articleService.getArticlesBySeriesIdAndBoardId(seriesId, boardId);
+		}
 		else {
 			articles = articleService.getArticlesByBoardId(boardId);
 		}
 		model.addAttribute("articles", articles);
+		
+//		List<Series> series = seriesService.getSeriesByMemberId(memberId);
+//		model.addAttribute("series", series);
 		
 		return "article/list";
 	}
@@ -110,6 +122,9 @@ public class ArticleController {
 		int id = Integer.parseInt((String) param.get("id")); 
 		Article article = articleService.getArticleById(loginedMember, id);
 		model.addAttribute("article", article);
+		
+		Series series = seriesService.getSeriesByArticleId(article.getId());
+		model.addAttribute("series", series);
 		
 		return "article/detail";
 	}
@@ -186,5 +201,21 @@ public class ArticleController {
 		model.addAttribute("redirectUri", redirectUri);
 
 		return "common/redirect";
+	}
+	
+	// MySeries >> 후에 이 페이지에서 시리즈 추가/삭제/수정 등 가능하도록 변경할 예정
+	@RequestMapping("/usr/article/{boardCode}-list/mySeries")
+	public String showMyPage(HttpSession session, @PathVariable("boardCode") String boardCode, String listUrl, Model model) {
+		if ( listUrl == null ) {
+			listUrl = "./" + boardCode + "-list";
+		}
+		model.addAttribute("listUrl", listUrl);
+		Board board = boardService.getBoardByCode(boardCode);
+		model.addAttribute("board", board);
+		int memberId = (int) session.getAttribute("loginedMemberId");
+		List<Series> series = seriesService.getSeriesByMemberId(memberId);
+		model.addAttribute("series", series);
+		
+		return "article/mySeries";
 	}
 }

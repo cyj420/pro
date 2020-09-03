@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.sbs.cyj.readit.dto.Article;
 import com.sbs.cyj.readit.dto.Category;
+import com.sbs.cyj.readit.dto.Series;
 
 @Mapper
 public interface ArticleDao {
@@ -26,4 +27,8 @@ public interface ArticleDao {
 	void delete(int id);
 
 	void modify(Map<String, Object> param);
+
+	List<Series> getSeriesByMemberId(int memberId);
+
+	List<Article> getArticlesBySeriesIdAndBoardId(int seriesId, int boardId);
 }

@@ -311,7 +311,7 @@ public class MemberController {
 	
 	// 회원 정보 수정
 	@RequestMapping("/usr/member/modify")
-	public String showModify(HttpSession session, HttpServletRequest req, String checkPasswordAuthCode, Model model) {
+	public String showModify(HttpSession session, String checkPasswordAuthCode, Model model) {
 		int memberId = (int) session.getAttribute("loginedMemberId");
 		ResultData checkValidCheckPasswordAuthCodeResultData = memberService.checkValidCheckPasswordAuthCode(memberId, checkPasswordAuthCode);
 
@@ -331,7 +331,7 @@ public class MemberController {
 
 	@RequestMapping("/usr/member/doModify")
 	@ResponseBody
-	public String doModify(@RequestParam Map<String, Object> param, Model model, HttpSession session) {
+	public String doModify(@RequestParam Map<String, Object> param, HttpSession session) {
 		int memberId = (int) session.getAttribute("loginedMemberId");
 		Member member = memberService.getMemberById(memberId);
 		
