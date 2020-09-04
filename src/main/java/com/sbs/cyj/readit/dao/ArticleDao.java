@@ -30,5 +30,7 @@ public interface ArticleDao {
 
 	List<Series> getSeriesByMemberId(int memberId);
 
-	List<Article> getArticlesBySeriesIdAndBoardId(int seriesId, int boardId);
+	List<Article> getArticlesBySeriesId(int seriesId);
+
+	List<Article> getArticlesByCateId(int cateId);
 }

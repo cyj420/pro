@@ -56,7 +56,7 @@ img{
 				<tr>
 					<th>시리즈명</th>
 					<td>
-					<a href="/usr/article/${board.code}-list?seriesId=${article.seriesId}">${series.name}</a>
+					<a href="/usr/article/${board.code}-list?seriesId=${article.seriesId}">${series.name}</a> [${ch }]
 					</td>
 				</tr>
 			</c:if>
@@ -91,6 +91,21 @@ img{
 	</table>
 	<!-- 본문 END -->
 	
+	<!-- 동일 시리즈 이전글/다음글 START -->
+	<c:if test="${series != null }">
+		<div>시리즈명 : <a href="/usr/article/${board.code}-list?seriesId=${article.seriesId}">${series.name}</a></div>
+		<c:if test="${preCh != null }">
+			<div>
+				이전글 : <a href="/usr/article/${board.code}-detail?id=${preCh}">${preChName }</a>
+			</div>
+		</c:if>
+		<c:if test="${nextCh != null }">
+			<div>
+				다음글 : <a href="/usr/article/${board.code}-detail?id=${nextCh}">${nextChName }</a>
+			</div>
+		</c:if>
+	</c:if>
+	<!-- 동일 시리즈 이전글/다음글 END -->
 	
 	<!-- 댓글 작성 START -->
 	<c:if test="${loginedMember != null}">

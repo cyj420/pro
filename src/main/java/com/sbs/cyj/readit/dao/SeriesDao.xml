@@ -5,10 +5,12 @@
 <mapper namespace="com.sbs.cyj.readit.dao.SeriesDao">
 	
 	<select id="getSeriesByMemberId" resultMap="series">
-		SELECT S.*, M.nickname AS extra__writer
+		SELECT S.*, M.nickname AS extra__writer, C.name AS extra__cateName
 		FROM series AS S
 		INNER JOIN `Member` AS M
+		INNER JOIN category AS C
 		ON M.id = S.memberId
+		AND S.cateId = C.id
 		AND S.memberId = #{memberId}
 		AND S.displayStatus = 1
 		ORDER BY S.id DESC;
@@ -35,6 +37,7 @@
 		<id property="name" column="name" />
 		<association property="extra" javaType="map">
 			<id property="writer" column="extra__writer" />
+			<id property="cateName" column="extra__cateName" />
 		</association>
 	</resultMap>
 </mapper>

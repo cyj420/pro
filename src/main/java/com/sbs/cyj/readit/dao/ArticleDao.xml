@@ -64,13 +64,22 @@
 		ORDER BY A.id DESC;
 	</select>
 	
-	<select id="getArticlesBySeriesIdAndBoardId" resultMap="article">
+	<select id="getArticlesBySeriesId" resultMap="article">
 		SELECT A.*, M.nickname AS extra__writer
 		FROM article AS A
 		INNER JOIN `Member` AS M
 		ON M.id = A.memberId
 		AND A.seriesId = #{seriesId}
-		AND A.boardId = #{boardId}
+		AND A.displayStatus = 1
+		ORDER BY A.id DESC;
+	</select>
+	
+	<select id="getArticlesByCateId" resultMap="article">
+		SELECT A.*, M.nickname AS extra__writer
+		FROM article AS A
+		INNER JOIN `Member` AS M
+		ON M.id = A.memberId
+		AND A.cateId = #{cateId}
 		AND A.displayStatus = 1
 		ORDER BY A.id DESC;
 	</select>

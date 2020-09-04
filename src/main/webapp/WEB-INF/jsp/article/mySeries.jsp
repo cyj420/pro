@@ -24,7 +24,7 @@
 				<tr>
 					<td>${s.id}</td>
 					<td>${s.regDate}</td>
-					<td><a href="/usr/article/${board.code}-list?memberId=${s.memberId}">${s.extra.writer}</a></td>
+					<td><a href="/usr/article/${board.code}-list?cateId=${s.cateId}">${s.extra.cateName}</a></td>
 					<td>
 						<a href="/usr/article/${board.code}-list?seriesId=${s.id}">${s.name}</a>
 					</td>

@@ -92,7 +92,12 @@ public class ArticleController {
 		else if(req.getParameter("seriesId")!=null) {
 			str = req.getParameter("seriesId");
 			int seriesId = Integer.parseInt(str);
-			articles = articleService.getArticlesBySeriesIdAndBoardId(seriesId, boardId);
+			articles = articleService.getArticlesBySeriesId(seriesId);
+		}
+		else if(req.getParameter("cateId")!=null) {
+			str = req.getParameter("cateId");
+			int cateId = Integer.parseInt(str);
+			articles = articleService.getArticlesByCateId(cateId);
 		}
 		else {
 			articles = articleService.getArticlesByBoardId(boardId);
@@ -124,7 +129,36 @@ public class ArticleController {
 		model.addAttribute("article", article);
 		
 		Series series = seriesService.getSeriesByArticleId(article.getId());
-		model.addAttribute("series", series);
+		
+		if(series != null) {
+			model.addAttribute("series", series);
+	
+			// 동일 시리즈 이전글 다음글을 위함
+			List<Article> articles = articleService.getArticlesBySeriesId(series.getId());
+			int size = articles.size();
+			int ch = 0;
+			int preCh = 0;
+			int nextCh = 0;
+			for(int i=0; i<size; i++) {
+				if(articles.get(size-i-1).getId() == article.getId()) {
+					ch = i+1;
+					if(i != 0) {
+						preCh = articles.get(size-i).getId();
+						String preChName = articles.get(size-i).getTitle();
+						model.addAttribute("preCh", preCh);
+						model.addAttribute("preChName", preChName);
+					}
+					if(i != size-1) {
+						nextCh = articles.get(size-i-2).getId();
+						String nextChName = articles.get(size-i-2).getTitle();
+						model.addAttribute("nextCh", nextCh);
+						model.addAttribute("nextChName", nextChName);
+					}
+				}
+			}
+			model.addAttribute("size", size);
+			model.addAttribute("ch", ch);
+		}
 		
 		return "article/detail";
 	}
@@ -203,7 +237,7 @@ public class ArticleController {
 		return "common/redirect";
 	}
 	
-	// MySeries >> 후에 이 페이지에서 시리즈 추가/삭제/수정 등 가능하도록 변경할 예정
+	// MySeries >> 현재는 단순 리스팅만 하지만 후에 이 페이지에서 시리즈 추가/삭제/수정 등 가능하도록 변경할 예정
 	@RequestMapping("/usr/article/{boardCode}-list/mySeries")
 	public String showMyPage(HttpSession session, @PathVariable("boardCode") String boardCode, String listUrl, Model model) {
 		if ( listUrl == null ) {
