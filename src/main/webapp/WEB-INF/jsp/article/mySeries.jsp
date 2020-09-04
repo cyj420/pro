@@ -32,5 +32,6 @@
 			</c:forEach>
 		</tbody>
 	</table>
+	<button><a href="/usr/article/${board.code}-addSeries">시리즈 추가</a></button>
 </div>
 <%@ include file="../part/foot.jspf"%>

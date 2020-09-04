@@ -84,6 +84,17 @@
 		ORDER BY A.id DESC;
 	</select>
 	
+	<select id="getArticlesByMemberIdAndCateId" resultMap="article">
+		SELECT A.*, M.nickname AS extra__writer
+		FROM article AS A
+		INNER JOIN `Member` AS M
+		ON M.id = A.memberId
+		AND A.memberId = #{memberId}
+		AND A.cateId = #{cateId}
+		AND A.displayStatus = 1
+		ORDER BY A.id DESC;
+	</select>
+	
 	<update id="delete">
 		UPDATE article
 		SET updateDate = NOW(),

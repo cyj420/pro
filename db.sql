@@ -227,3 +227,63 @@ updateDate = NOW(),
 memberId = 2,
 cateId = 1,
 `name` = '첫번째 시리즈';
+
+#===========================================================
+#0904
+ALTER TABLE `article` DROP COLUMN `seriesId`,
+ADD COLUMN `seriesId` INT(10) UNSIGNED NOT NULL DEFAULT 0;
+
+
+INSERT INTO category
+SET regDate = NOW(),
+updateDate = NOW(),
+boardId = 1, 
+`name` = '로맨스';
+
+INSERT INTO category
+SET regDate = NOW(),
+updateDate = NOW(),
+boardId = 1, 
+`name` = '판타지';
+
+INSERT INTO category
+SET regDate = NOW(),
+updateDate = NOW(),
+boardId = 1, 
+`name` = '로맨스판타지';
+
+INSERT INTO category
+SET regDate = NOW(),
+updateDate = NOW(),
+boardId = 1, 
+`name` = '무협';
+
+INSERT INTO category
+SET regDate = NOW(),
+updateDate = NOW(),
+boardId = 1, 
+`name` = '역사';
+
+INSERT INTO category
+SET regDate = NOW(),
+updateDate = NOW(),
+boardId = 1, 
+`name` = '게임';
+
+INSERT INTO category
+SET regDate = NOW(),
+updateDate = NOW(),
+boardId = 1, 
+`name` = '스포츠';
+
+INSERT INTO category
+SET regDate = NOW(),
+updateDate = NOW(),
+boardId = 1, 
+`name` = '패러디';
+
+INSERT INTO category
+SET regDate = NOW(),
+updateDate = NOW(),
+boardId = 1, 
+`name` = '일반문학';

@@ -83,8 +83,19 @@ public class ArticleController {
 		
 		List<Article> articles;
 		
+		Series series = null;
 		String str = "";
-		if(req.getParameter("memberId")!=null) {
+		
+		if(req.getParameter("memberId")!=null && req.getParameter("cateId")!=null) {
+			String strMemberId = req.getParameter("memberId");
+			int memberId = Integer.parseInt(strMemberId);
+			String strCateId = req.getParameter("cateId");
+			int cateId = Integer.parseInt(strCateId);
+			articles = articleService.getArticlesByMemberIdAndCateId(memberId, cateId);
+			int selectMode = 1;
+			model.addAttribute("selectMode", selectMode);
+		}
+		else if(req.getParameter("memberId")!=null) {
 			str = req.getParameter("memberId");
 			int memberId = Integer.parseInt(str);
 			articles = articleService.getArticlesByMemberIdAndBoardId(memberId, boardId);
@@ -93,6 +104,7 @@ public class ArticleController {
 			str = req.getParameter("seriesId");
 			int seriesId = Integer.parseInt(str);
 			articles = articleService.getArticlesBySeriesId(seriesId);
+			series = seriesService.getSeriesById(seriesId);
 		}
 		else if(req.getParameter("cateId")!=null) {
 			str = req.getParameter("cateId");
@@ -102,10 +114,9 @@ public class ArticleController {
 		else {
 			articles = articleService.getArticlesByBoardId(boardId);
 		}
-		model.addAttribute("articles", articles);
 		
-//		List<Series> series = seriesService.getSeriesByMemberId(memberId);
-//		model.addAttribute("series", series);
+		model.addAttribute("series", series);
+		model.addAttribute("articles", articles);
 		
 		return "article/list";
 	}
@@ -239,7 +250,7 @@ public class ArticleController {
 	
 	// MySeries >> 현재는 단순 리스팅만 하지만 후에 이 페이지에서 시리즈 추가/삭제/수정 등 가능하도록 변경할 예정
 	@RequestMapping("/usr/article/{boardCode}-list/mySeries")
-	public String showMyPage(HttpSession session, @PathVariable("boardCode") String boardCode, String listUrl, Model model) {
+	public String showMyAllSeries(HttpSession session, @PathVariable("boardCode") String boardCode, String listUrl, Model model) {
 		if ( listUrl == null ) {
 			listUrl = "./" + boardCode + "-list";
 		}
@@ -247,9 +258,42 @@ public class ArticleController {
 		Board board = boardService.getBoardByCode(boardCode);
 		model.addAttribute("board", board);
 		int memberId = (int) session.getAttribute("loginedMemberId");
-		List<Series> series = seriesService.getSeriesByMemberId(memberId);
+		List<Series> series = seriesService.getAllSeriesByMemberId(memberId);
 		model.addAttribute("series", series);
 		
 		return "article/mySeries";
+	}
+	
+	@RequestMapping("/usr/article/{boardCode}-addSeries")
+	public String addSeries(HttpSession session, @PathVariable("boardCode") String boardCode, String listUrl, Model model) {
+		if ( listUrl == null ) {
+			listUrl = "./" + boardCode + "-list";
+		}
+		model.addAttribute("listUrl", listUrl);
+		Board board = boardService.getBoardByCode(boardCode);
+		model.addAttribute("board", board);
+		List<Category> categories = articleService.getCategories(board.getId());
+		model.addAttribute("categories", categories);
+		
+		return "article/addSeries";
+	}
+	
+	@RequestMapping("/usr/article/{boardCode}-doAddSeries")
+	public String doAddSeries(@RequestParam Map<String, Object> param, HttpServletRequest req, @PathVariable("boardCode") String boardCode, Model model) {
+		Board board = boardService.getBoardByCode(boardCode);
+		model.addAttribute("board", board);
+		
+		String redirectUri = (String) param.get("redirectUri");
+		
+		int memberId = (int) req.getAttribute("loginedMemberId");
+		param.put("memberId", memberId);
+		
+		int id = seriesService.addSeries(param);
+		
+		redirectUri = redirectUri.replace("#id", id + "");
+		model.addAttribute("msg", String.format(id+"번째 시리즈를 작성하였습니다."));
+		model.addAttribute("redirectUri", redirectUri);
+
+		return "common/redirect";
 	}
 }
