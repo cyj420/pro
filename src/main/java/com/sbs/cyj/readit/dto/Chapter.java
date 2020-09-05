@@ -9,12 +9,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Category {
+public class Chapter {
 	private int id;
-	private String name;
+	private String title;
+	private String body;
 	private String regDate;
 	private String updateDate;
 	private String delDate;
 	private boolean delStatus;
+	private boolean displayStatus;
+	private int cateId;
+	private int memberId;
+	private int novelId;
 	private Map<String, Object> extra;
 }

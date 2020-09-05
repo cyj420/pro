@@ -1,12 +1,10 @@
 package com.sbs.cyj.readit.dao;
 
-import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import com.sbs.cyj.readit.dto.Member;
-import com.sbs.cyj.readit.dto.Series;
 
 @Mapper
 public interface MemberDao {
@@ -32,4 +30,6 @@ public interface MemberDao {
 	Member isJoinableLoginId(String loginId);
 
 	void doAuthMail(int id);
+
+	Member getMemberByNickname(String nickname);
 }

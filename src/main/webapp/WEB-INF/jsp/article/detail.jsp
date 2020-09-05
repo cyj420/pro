@@ -49,18 +49,6 @@ img{
 				<td>${article.regDate}</td>
 			</tr>
 			<tr>
-				<th>카테고리명</th>
-				<td>${article.extra.cateName}</td>
-			</tr>
-			<c:if test="${series != null }">
-				<tr>
-					<th>시리즈명</th>
-					<td>
-					<a href="/usr/article/${board.code}-list?seriesId=${article.seriesId}">${series.name}</a> [${ch }]
-					</td>
-				</tr>
-			</c:if>
-			<tr>
 				<th>닉네임</th>
 				<td>
 				<a href="/usr/article/${board.code}-list?memberId=${article.memberId}">${article.extra.writer}</a>
@@ -90,22 +78,6 @@ img{
 		</tbody>
 	</table>
 	<!-- 본문 END -->
-	
-	<!-- 동일 시리즈 이전글/다음글 START -->
-	<c:if test="${series != null }">
-		<div>시리즈명 : <a href="/usr/article/${board.code}-list?seriesId=${article.seriesId}">${series.name}</a></div>
-		<c:if test="${preCh != null }">
-			<div>
-				이전글 : <a href="/usr/article/${board.code}-detail?id=${preCh}">${preChName }</a>
-			</div>
-		</c:if>
-		<c:if test="${nextCh != null }">
-			<div>
-				다음글 : <a href="/usr/article/${board.code}-detail?id=${nextCh}">${nextChName }</a>
-			</div>
-		</c:if>
-	</c:if>
-	<!-- 동일 시리즈 이전글/다음글 END -->
 	
 	<!-- 댓글 작성 START -->
 	<c:if test="${loginedMember != null}">

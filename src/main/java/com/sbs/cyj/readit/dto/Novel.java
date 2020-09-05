@@ -9,15 +9,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Series {
+public class Novel {
 	private int id;
+	private String name;
 	private String regDate;
 	private String updateDate;
 	private String delDate;
 	private boolean delStatus;
 	private boolean displayStatus;
-	private int memberId;
 	private int cateId;
-	private String name;
+	private int memberId;
 	private Map<String, Object> extra;
 }

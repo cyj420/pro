@@ -5,7 +5,6 @@ import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -13,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sbs.cyj.readit.dao.MemberDao;
+import com.sbs.cyj.readit.dto.Category;
 import com.sbs.cyj.readit.dto.Member;
 import com.sbs.cyj.readit.dto.ResultData;
-import com.sbs.cyj.readit.dto.Series;
 import com.sbs.cyj.readit.util.Util;
 
 @Service
@@ -201,5 +200,9 @@ public class MemberService {
 		String nowTime = form.format(dateTime);
 		
 		return nowTime;
+	}
+
+	public Member getMemberByNickname(String nickname) {
+		return memberDao.getMemberByNickname(nickname);
 	}
 }

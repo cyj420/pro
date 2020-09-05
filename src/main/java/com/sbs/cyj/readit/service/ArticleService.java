@@ -1,6 +1,5 @@
 package com.sbs.cyj.readit.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,8 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.sbs.cyj.readit.dao.ArticleDao;
 import com.sbs.cyj.readit.dto.Article;
-import com.sbs.cyj.readit.dto.Category;
-import com.sbs.cyj.readit.dto.File;
 import com.sbs.cyj.readit.dto.Member;
 import com.sbs.cyj.readit.dto.ResultData;
 import com.sbs.cyj.readit.util.Util;
@@ -19,8 +16,6 @@ import com.sbs.cyj.readit.util.Util;
 public class ArticleService {
 	@Autowired
 	private ArticleDao articleDao;
-	@Autowired
-	private FileService fileService;
 
 	public int write(Map<String, Object> param) {
 		articleDao.write(param);
@@ -28,10 +23,6 @@ public class ArticleService {
 		int id = Util.getAsInt(param.get("id"));
 		
 		return id;
-	}
-
-	public List<Article> getArticles() {
-		return articleDao.getArticles();
 	}
 	
 	public Article getArticleById(int id) {
@@ -43,16 +34,6 @@ public class ArticleService {
 		
 		updateForPrintInfo(actor, article);
 		
-		List<File> files = fileService.getFiles("article", article.getId(), "common", "attachment");
-
-		Map<String, File> filesMap = new HashMap<>();
-
-		for (File file : files) {
-			filesMap.put(file.getFileNo() + "", file);
-		}
-
-		Util.putExtraVal(article, "file__common__attachment", filesMap);
-
 		return article;
 	}
 	
@@ -73,10 +54,6 @@ public class ArticleService {
 
 	public List<Article> getArticlesByMemberIdAndBoardId(int memberId, int boardId) {
 		return articleDao.getArticlesByMemberIdAndBoardId(memberId, boardId);
-	}
-
-	public List<Category> getCategories(int boardId) {
-		return articleDao.getCategories(boardId);
 	}
 
 	public List<Article> getArticlesByBoardId(int boardId) {
@@ -107,16 +84,8 @@ public class ArticleService {
 		return actorCanModify(actor, article);
 	}
 
-	public List<Article> getArticlesBySeriesId(int seriesId) {
-		return articleDao.getArticlesBySeriesId(seriesId);
-	}
-
-	public List<Article> getArticlesByCateId(int cateId) {
-		return articleDao.getArticlesByCateId(cateId);
-	}
-
-	public List<Article> getArticlesByMemberIdAndCateId(int memberId, int cateId) {
-		return articleDao.getArticlesByMemberIdAndCateId(memberId, cateId);
+	public List<Article> getArticlesByMemberId(int memberId) {
+		return articleDao.getArticlesByMemberId(memberId);
 	}
 
 }

@@ -16,9 +16,6 @@
 					<th>날짜</th>
 					<th>작성자</th>
 					<th>제목</th>
-					<c:if test="${selectMode == 1}">
-						<th>시리즈 선택</th>
-					</c:if>
 				</tr>
 			</thead>
 			<tbody>
@@ -30,18 +27,10 @@
 						<td>
 							<a href="/usr/article/${board.code}-detail?id=${article.id}">${article.title}</a>
 						</td>
-						<td>
-							<c:if test="${selectMode == 1}">
-								<input type="checkbox">
-							</c:if>
-						</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
-		<c:if test="${series != null}">
-			<button><a href="/usr/article/${board.code}-list?memberId=${series.memberId}&cateId=${series.cateId}">해당 시리즈에 게시물 추가</a></button>
-		</c:if>
 	</form>
 </div>
 <%@ include file="../part/foot.jspf"%>

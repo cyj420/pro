@@ -1,4 +1,4 @@
-# DB 세팅
+.# DB 세팅
 DROP DATABASE IF EXISTS `readit`;
 CREATE DATABASE `readit`;
 USE `readit`;
@@ -237,53 +237,88 @@ ADD COLUMN `seriesId` INT(10) UNSIGNED NOT NULL DEFAULT 0;
 INSERT INTO category
 SET regDate = NOW(),
 updateDate = NOW(),
-boardId = 1, 
 `name` = '로맨스';
 
 INSERT INTO category
 SET regDate = NOW(),
 updateDate = NOW(),
-boardId = 1, 
 `name` = '판타지';
 
 INSERT INTO category
 SET regDate = NOW(),
 updateDate = NOW(),
-boardId = 1, 
 `name` = '로맨스판타지';
 
 INSERT INTO category
 SET regDate = NOW(),
 updateDate = NOW(),
-boardId = 1, 
 `name` = '무협';
 
 INSERT INTO category
 SET regDate = NOW(),
 updateDate = NOW(),
-boardId = 1, 
 `name` = '역사';
 
 INSERT INTO category
 SET regDate = NOW(),
 updateDate = NOW(),
-boardId = 1, 
 `name` = '게임';
 
 INSERT INTO category
 SET regDate = NOW(),
 updateDate = NOW(),
-boardId = 1, 
 `name` = '스포츠';
 
 INSERT INTO category
 SET regDate = NOW(),
 updateDate = NOW(),
-boardId = 1, 
 `name` = '패러디';
 
 INSERT INTO category
 SET regDate = NOW(),
 updateDate = NOW(),
-boardId = 1, 
 `name` = '일반문학';
+
+
+
+#===========================================================
+#0905
+#member의 nickname을 unique로 변경
+
+CREATE TABLE novel (
+  `id` INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `name` CHAR(100) NOT NULL,
+  regDate DATETIME NOT NULL,
+  updateDate DATETIME NOT NULL,
+  delDate DATETIME DEFAULT NULL,
+  delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+  displayStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 1,
+  cateId INT(10) UNSIGNED NOT NULL,
+  memberId INT(10) UNSIGNED NOT NULL
+);
+
+DROP TABLE IF EXISTS chapter;
+CREATE TABLE chapter (
+  `id` INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  title CHAR(100) NOT NULL UNIQUE,
+  `body` LONGTEXT NOT NULL,
+  regDate DATETIME NOT NULL,
+  updateDate DATETIME NOT NULL,
+  delDate DATETIME DEFAULT NULL,
+  delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+  displayStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 1,
+  cateId INT(10) UNSIGNED NOT NULL,
+  memberId INT(10) UNSIGNED NOT NULL,
+  novelId INT(10) UNSIGNED NOT NULL DEFAULT 0
+);
+
+DROP TABLE IF EXISTS category;
+CREATE TABLE category (
+  `id` INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `name` CHAR(100) NOT NULL,
+  regDate DATETIME NOT NULL,
+  updateDate DATETIME NOT NULL,
+  delDate DATETIME DEFAULT NULL,
+  delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+  displayStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 1
+);

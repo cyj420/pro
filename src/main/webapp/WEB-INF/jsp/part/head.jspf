@@ -42,10 +42,15 @@ var param = ${paramJson};
 	</c:if>
 	<div>
 	<a href="/usr/home/main">[HOME]</a>
+	<a href="/usr/novel/total-list">[TotalList]</a>
+	<c:if test="${loginedMember != null}">
+		<c:forEach items="${novels}" var="b">
+			<a href="/usr/novel/${loginedMember.nickname}-list">[${loginedMember.nickname }-LIST]</a>
+			<a href="/usr/novel/${loginedMember.nickname}-write">[${loginedMember.nickname }-Write]</a>
+		</c:forEach>
+	</c:if>
+	
 	<c:forEach items="${boards}" var="b">
-		<c:if test="${b.id == 1 }">
-			<a href="/usr/article/${b.code}-list/mySeries">My Series</a>
-		</c:if>
 		<a href="/usr/article/${b.code}-list">[${b.name }-LIST]</a>
 	</c:forEach>
 	<c:if test="${loginedMember != null }">

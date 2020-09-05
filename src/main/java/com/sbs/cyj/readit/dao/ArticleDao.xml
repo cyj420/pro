@@ -11,28 +11,14 @@
 		title = #{title},
 		`body` = #{body},
 		memberId = #{memberId},
-		boardId = #{boardId},
-		cateId = #{cateId}
+		boardId = #{boardId}
 	</insert>
 	
-	<!-- 
-	<select id="getArticles" resultType="Article">
-		SELECT A.*, M.nickname AS extra
-		FROM article AS A
-		INNER JOIN `Member` AS M
-		ON M.id = A.memberId
-		AND A.displayStatus = 1
-		ORDER BY A.id DESC;
-	</select>
-	 -->
-	
 	<select id="getArticleById" resultMap="article">
-		SELECT A.*, M.nickname AS extra__writer, C.name AS extra__cateName
+		SELECT A.*, M.nickname AS extra__writer
 		FROM article AS A
 		INNER JOIN `Member` AS M
-		INNER JOIN category AS C
 		ON M.id = A.memberId
-		AND C.id = A.cateId
 		WHERE A.displayStatus = 1
 		AND A.id = #{id};
 	</select>
@@ -48,13 +34,8 @@
 		ORDER BY A.id DESC;
 	</select>
 	
-	<select id="getCategories" resultType="Category">
-		SELECT * FROM category
-		WHERE boardId = #{boardId};
-	</select>
-	
 	<select id="getArticlesByBoardId" resultMap="article">
-		SELECT A.id, A.regDate, A.updateDate, A.delDate, A.delStatus, A.displayStatus, A.title, A.memberId, A.cateId, A.boardId,  
+		SELECT A.id, A.regDate, A.updateDate, A.delDate, A.delStatus, A.displayStatus, A.title, A.memberId, A.boardId,  
 		M.nickname AS extra__writer
 		FROM article AS A
 		INNER JOIN `member` AS M
@@ -64,33 +45,12 @@
 		ORDER BY A.id DESC;
 	</select>
 	
-	<select id="getArticlesBySeriesId" resultMap="article">
-		SELECT A.*, M.nickname AS extra__writer
-		FROM article AS A
-		INNER JOIN `Member` AS M
-		ON M.id = A.memberId
-		AND A.seriesId = #{seriesId}
-		AND A.displayStatus = 1
-		ORDER BY A.id DESC;
-	</select>
-	
-	<select id="getArticlesByCateId" resultMap="article">
-		SELECT A.*, M.nickname AS extra__writer
-		FROM article AS A
-		INNER JOIN `Member` AS M
-		ON M.id = A.memberId
-		AND A.cateId = #{cateId}
-		AND A.displayStatus = 1
-		ORDER BY A.id DESC;
-	</select>
-	
-	<select id="getArticlesByMemberIdAndCateId" resultMap="article">
+	<select id="getArticlesByMemberId" resultMap="article">
 		SELECT A.*, M.nickname AS extra__writer
 		FROM article AS A
 		INNER JOIN `Member` AS M
 		ON M.id = A.memberId
 		AND A.memberId = #{memberId}
-		AND A.cateId = #{cateId}
 		AND A.displayStatus = 1
 		ORDER BY A.id DESC;
 	</select>
@@ -107,10 +67,9 @@
 	<update id="modify">
 		UPDATE article
 		<set>
-			updateDate = NOW(),
 			<if test="title != null">title = #{title},</if>
 			<if test="body != null">body = #{body},</if>
-			cateId = #{cateId}
+			updateDate = NOW()
 		</set>
 		WHERE id = #{id}
 	</update>
@@ -126,8 +85,6 @@
 		<id property="body" column="body" />
 		<id property="memberId" column="memberId" />
 		<id property="boardId" column="boardId" />
-		<id property="cateId" column="cateId" />
-		<id property="seriesId" column="seriesId" />
 		<association property="extra" javaType="map">
 			<id property="writer" column="extra__writer" />
 			<id property="cateName" column="extra__cateName" />

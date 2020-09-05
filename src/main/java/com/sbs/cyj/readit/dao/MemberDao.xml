@@ -67,6 +67,11 @@
 		WHERE `loginId` = #{loginId}
 	</select>
 	
+	<select id="getMemberByNickname" resultMap="member">
+		SELECT * FROM `member`
+		WHERE nickname = #{nickname}
+	</select>
+	
 	<update id="resetLoginPw">
 		UPDATE `member`
 		SET 

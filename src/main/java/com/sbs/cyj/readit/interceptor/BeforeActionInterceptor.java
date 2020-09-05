@@ -15,8 +15,10 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import com.sbs.cyj.readit.config.AppConfig;
 import com.sbs.cyj.readit.dto.Board;
 import com.sbs.cyj.readit.dto.Member;
+import com.sbs.cyj.readit.dto.Novel;
 import com.sbs.cyj.readit.service.BoardService;
 import com.sbs.cyj.readit.service.MemberService;
+import com.sbs.cyj.readit.service.NovelService;
 import com.sbs.cyj.readit.util.Util;
 
 @Component("beforeActionInterceptor") // 컴포넌트 이름 설정
@@ -31,6 +33,8 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 	private MemberService memberService;
 	@Autowired
 	private BoardService boardService;
+	@Autowired
+	private NovelService novelService;
 
 	@Autowired
 	private AppConfig appConfig;
@@ -110,7 +114,11 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 
 		List<Board> boards = boardService.getBoards();
 
+		List<Novel> novels = novelService.getNovels();
+		
 		request.setAttribute("boards", boards);
+		
+		request.setAttribute("novels", novels);
 
 		request.setAttribute("activeProfile", activeProfile);
 
