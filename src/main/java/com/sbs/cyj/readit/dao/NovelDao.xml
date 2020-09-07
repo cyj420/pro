@@ -25,6 +25,25 @@
 		AND N.displayStatus = 1;
 	</select>
 	
+	<insert id="genNovelDefault" useGeneratedKeys="true" keyProperty="id" >
+		INSERT
+		INTO novel
+		SET regDate = NOW(),
+		updateDate = NOW(),
+		`name` = #{nickname},
+		cateId = 1,
+		memberId = #{id};
+	</insert>
+	
+	<select id="getNovelById" resultMap="novel">
+		SELECT N.*, M.nickname AS extra__writer
+		FROM novel AS N
+		INNER JOIN `member` AS M
+		ON N.memberId = M.id
+		AND N.displayStatus = 1
+		WHERE N.id = #{id};
+	</select>
+	
 	<resultMap type="Novel" id="novel">
 		<id property="id" column="id" />
 		<id property="name" column="name" />

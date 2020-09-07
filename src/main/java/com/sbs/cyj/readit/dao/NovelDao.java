@@ -1,7 +1,6 @@
 package com.sbs.cyj.readit.dao;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -16,6 +15,10 @@ public interface NovelDao {
 	List<Novel> getNovelsByMemberId(int memberId);
 
 	List<Novel> getNovels();
+
+	void genNovelDefault(String id, String nickname);
+
+	Novel getNovelById(int id);
 
 
 }

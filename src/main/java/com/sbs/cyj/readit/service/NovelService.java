@@ -25,5 +25,13 @@ public class NovelService {
 	public List<Novel> getNovels() {
 		return novelDao.getNovels();
 	}
+	
+	public void genNovelDefault(String id, String nickname) {
+		novelDao.genNovelDefault(id, nickname);
+	}
+
+	public Novel getNovelById(int id) {
+		return novelDao.getNovelById(id);
+	}
 
 }

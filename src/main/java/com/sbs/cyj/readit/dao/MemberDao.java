@@ -32,4 +32,6 @@ public interface MemberDao {
 	void doAuthMail(int id);
 
 	Member getMemberByNickname(String nickname);
+
+	Member isJoinableNickname(String nickname);
 }

@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sbs.cyj.readit.dao.MemberDao;
-import com.sbs.cyj.readit.dto.Category;
 import com.sbs.cyj.readit.dto.Member;
 import com.sbs.cyj.readit.dto.ResultData;
 import com.sbs.cyj.readit.util.Util;
@@ -119,6 +118,15 @@ public class MemberService {
 
 	public boolean isJoinableLoginId(String loginId) {
 		if(memberDao.isJoinableLoginId(loginId) == null) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public boolean isJoinableNickname(String nickname) {
+		if(memberDao.isJoinableNickname(nickname) == null) {
 			return true;
 		}
 		else {

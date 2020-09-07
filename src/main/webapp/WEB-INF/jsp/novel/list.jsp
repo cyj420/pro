@@ -1,7 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="pageTitle" value="${loginId} 노벨 리스트" />
+<c:if test="${chapters != null }">
+	<c:set var="pageTitle" value="[${nickname}] ${novel.name } 리스트" />
+</c:if>
+<c:if test="${chapters == null }">
+	<c:set var="pageTitle" value="${nickname} 노벨 리스트" />
+</c:if>
 <%@ include file="../part/head.jspf"%>
 <div class="con">
 	<table>
@@ -18,16 +23,31 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${novels}" var="novel">
-				<tr>
-					<td>${novel.id}</td>
-					<td>${novel.regDate}</td>
-					<td><a href="/usr/novel/${novel.extra.writer}-list">${novel.extra.writer}</a></td>
-					<td>
-						<a href="/usr/novel/${novel.extra.writer}-detail?id=${novel.id}">${novel.name}</a>
-					</td>
-				</tr>
-			</c:forEach>
+			<c:if test="${chapters == null }">
+				<c:forEach items="${novels}" var="novel">
+					<tr>
+						<td>${novel.id}</td>
+						<td>${novel.regDate}</td>
+						<td><a href="/usr/novel/${novel.extra.writer}-list">${novel.extra.writer}</a></td>
+						<td>
+							<a href="/usr/novel/${novel.extra.writer}-list?novelId=${novel.id}">${novel.name}</a>
+						</td>
+					</tr>
+				</c:forEach>
+			</c:if>
+			
+			<c:if test="${chapters != null }">
+				<c:forEach items="${chapters}" var="chapter">
+					<tr>
+						<td>${chapter.id}</td>
+						<td>${chapter.regDate}</td>
+						<td><a href="/usr/novel/${novel.extra.writer}-list">${chapter.extra.writer}</a></td>
+						<td>
+							<a href="/usr/novel/${novel.extra.writer}-detail?id=${chapter.id}">${chapter.title}</a>
+						</td>
+					</tr>
+				</c:forEach>
+			</c:if>
 		</tbody>
 	</table>
 </div>

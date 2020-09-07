@@ -12,8 +12,26 @@
 		`body` = #{body},
 		cateId = #{cateId},
 		memberId = #{memberId},
-		novelId = #{novelId}
+		novelId = #{novelId};
 	</insert>
+	
+	<select id="getChapterById" resultMap="chapter">
+		SELECT C.*, M.nickname AS extra__writer
+		FROM chapter AS C
+		INNER JOIN `Member` AS M
+		ON M.id = C.memberId
+		AND C.displayStatus = 1
+		WHERE C.id = #{id};
+	</select>
+	
+	<select id="getChaptersByNovelId" resultMap="chapter">
+		SELECT C.*, M.nickname AS extra__writer
+		FROM chapter AS C
+		INNER JOIN `Member` AS M
+		ON M.id = C.memberId
+		AND C.displayStatus = 1
+		WHERE novelId = #{novelId};
+	</select>
 	
 	<resultMap type="Chapter" id="chapter">
 		<id property="id" column="id" />
@@ -28,6 +46,7 @@
 		<id property="memberId" column="memberId" />
 		<id property="novelId" column="novelId" />
 		<association property="extra" javaType="map">
+			<id property="writer" column="extra__writer" />
 		</association>
 	</resultMap>
 </mapper>

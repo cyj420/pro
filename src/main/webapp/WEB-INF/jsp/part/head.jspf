@@ -43,11 +43,9 @@ var param = ${paramJson};
 	<div>
 	<a href="/usr/home/main">[HOME]</a>
 	<a href="/usr/novel/total-list">[TotalList]</a>
-	<c:if test="${loginedMember != null}">
-		<c:forEach items="${novels}" var="b">
-			<a href="/usr/novel/${loginedMember.nickname}-list">[${loginedMember.nickname }-LIST]</a>
-			<a href="/usr/novel/${loginedMember.nickname}-write">[${loginedMember.nickname }-Write]</a>
-		</c:forEach>
+	<c:if test="${loginedMember.authStatus == true}">
+		<a href="/usr/novel/${loginedMember.nickname}-list">[novel-List]</a>
+		<a href="/usr/novel/${loginedMember.nickname}-write">[novel-Write]</a>
 	</c:if>
 	
 	<c:forEach items="${boards}" var="b">

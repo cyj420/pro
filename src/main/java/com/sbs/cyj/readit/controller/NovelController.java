@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sbs.cyj.readit.dto.Category;
+import com.sbs.cyj.readit.dto.Chapter;
 import com.sbs.cyj.readit.dto.Member;
 import com.sbs.cyj.readit.dto.Novel;
 import com.sbs.cyj.readit.service.ChapterService;
@@ -53,7 +54,7 @@ public class NovelController {
 		int memberId = (int) req.getAttribute("loginedMemberId");
 		Member member = memberService.getMemberById(memberId);
 
-		param.put("memberId", member.getLoginId());
+		param.put("memberId", member.getId());
 		
 		int id = chapterService.write(param);
 		
@@ -66,7 +67,7 @@ public class NovelController {
 		return "common/redirect";
 	}
 	
-	// 게시글 리스트
+	// 게시글 리스트 (전체)
 	@RequestMapping("usr/novel/total-list")
 	public String showTotalList(Model model, String listUrl, HttpServletRequest req) {
 		Member member = (Member) req.getAttribute("loginedMember");
@@ -94,6 +95,16 @@ public class NovelController {
 		
 		List<Novel> novels = novelService.getNovelsByMemberId(memberId);
 		
+		if(req.getParameter("novelId")!=null) {
+			String strNovelId = req.getParameter("novelId");
+			int novelId = Integer.parseInt(strNovelId);
+			
+			List<Chapter> chapters = chapterService.getChaptersByNovelId(novelId);
+			model.addAttribute("chapters", chapters);
+			
+			Novel novel = novelService.getNovelById(novelId);
+			model.addAttribute("novel", novel);
+		}
 //		List<Chapter> chapters = chapterService.getChaptersByNovelId(novelId);
 		
 //		if(req.getParameter("memberId")!=null && req.getParameter("cateId")!=null) {
@@ -131,26 +142,22 @@ public class NovelController {
 		return "novel/list";
 	}
 //	
-//	// 게시글 상세보기
-//	@RequestMapping("usr/article/{boardCode}-detail")
-//	public String showDetail(@RequestParam Map<String, Object> param, Model model, @PathVariable("boardCode") String boardCode, String listUrl, HttpServletRequest req) {
-//		if ( listUrl == null ) {
-//			listUrl = "./" + boardCode + "-list";
-//		}
-//		model.addAttribute("listUrl", listUrl);
-//
-//		Board board = boardService.getBoardByCode(boardCode);
-//		model.addAttribute("board", board);
-//
-//		Member loginedMember = (Member)req.getAttribute("loginedMember");
-//		model.addAttribute("loginedMember", loginedMember);
-//		
-//		int id = Integer.parseInt((String) param.get("id")); 
-//		Article article = articleService.getArticleById(loginedMember, id);
-//		model.addAttribute("article", article);
-//		
-//		Series series = seriesService.getSeriesByArticleId(article.getId());
-//		
+	// 게시글 상세보기
+	@RequestMapping("usr/novel/{nickname}-detail")
+	public String showDetail(@RequestParam Map<String, Object> param, Model model, @PathVariable("nickname") String nickname, String listUrl, HttpServletRequest req) {
+		if ( listUrl == null ) {
+			listUrl = "./" + nickname + "-list";
+		}
+		model.addAttribute("listUrl", listUrl);
+
+		Member loginedMember = (Member)req.getAttribute("loginedMember");
+		model.addAttribute("loginedMember", loginedMember);
+		
+		int id = Integer.parseInt((String) param.get("id")); 
+		Chapter chapter = chapterService.getChapterById(id);
+		
+		model.addAttribute("chapter", chapter);
+		
 //		if(series != null) {
 //			model.addAttribute("series", series);
 //	
@@ -180,9 +187,9 @@ public class NovelController {
 //			model.addAttribute("size", size);
 //			model.addAttribute("ch", ch);
 //		}
-//		
-//		return "article/detail";
-//	}
+		
+		return "novel/detail";
+	}
 //	
 //	// 게시글 삭제
 //	@RequestMapping("usr/article/{boardCode}-doDelete")

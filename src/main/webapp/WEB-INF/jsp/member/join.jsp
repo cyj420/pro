@@ -8,6 +8,7 @@
 
 <script>
 	var MemberJoinForm__validLoginId = '';
+	var MemberJoinForm__validNickname = '';
 	
 	var MemberJoinForm__submitDone = false;
 
@@ -18,11 +19,6 @@
 		}
 
 		form.loginId.value = form.loginId.value.trim();
-		/* 여기서 문제 발생. 왜???
-		form.loginId.value = form.loginId.value.replaceAll('-', '');
-		form.loginId.value = form.loginId.value.replaceAll('_', '');
-		form.loginId.value = form.loginId.value.replaceAll(' ', '');
-		 */
 
 		if (form.loginId.value.length == 0) {
 			alert('로그인 아이디를 입력해주세요.');
@@ -30,7 +26,7 @@
 			return;
 		}
 
-		 if (form.loginId.value != MemberJoinForm__validLoginId) {
+		if (form.loginId.value != MemberJoinForm__validLoginId) {
 			alert('다른 아이디를 입력해주세요.');
 			form.loginId.focus();
 			return;
@@ -68,6 +64,12 @@
 
 		if (form.nickname.value.length == 0) {
 			alert('닉네임을 입력해주세요.');
+			form.nickname.focus();
+			return;
+		}
+
+		if (form.nickname.value != MemberJoinForm__validNickname) {
+			alert('다른 닉네임을 입력해주세요.');
 			form.nickname.focus();
 			return;
 		}
@@ -119,8 +121,40 @@
 		);
 	}
 
+	function MemberJoinForm__checkNicknameDup(input){
+		var form = input.form;
+
+		form.nickname.value = form.nickname.value.trim();
+
+		if(form.nickname.value.length == 0){
+			$(form.nickname).next().empty();
+			return;
+		}
+		
+		$.get(
+			'getNicknameDup',
+			{
+				nickname: form.nickname.value
+			},
+			function(data){
+				var $message = $(form.nickname).next();
+
+				if(data.resultCode.substr(0, 2) == 'S-'){
+					$message.empty().append('<div style="color: green;">' + data.msg + '</div>');
+					MemberJoinForm__validNickname = data.body;
+				}
+				else {
+					$message.empty().append('<div style="color: red;">' + data.msg + '</div>');
+					MemberJoinForm__validNickname = '';
+				}
+			}, 
+			'json'
+		);
+	}
+
 	<!-- lodash 라이브러리 (debounce) 를 이용한 딜레이(0.5초) 설정  -->
 	MemberJoinForm__checkLoginIdDup = _.debounce(MemberJoinForm__checkLoginIdDup, 500);
+	MemberJoinForm__checkNicknameDup = _.debounce(MemberJoinForm__checkNicknameDup, 500);
 </script>
 <form method="POST" action="doJoin"
 	onsubmit="MemberJoinForm__submit(this); return false;">
@@ -172,7 +206,8 @@
 				<td>
 					<div>
 						<input type="text" placeholder="닉네임 입력해주세요." name="nickname"
-							maxlength="20" />
+						onkeyup="MemberJoinForm__checkNicknameDup(this);" maxlength="30" autocomplete="off"/>
+						<div class="message-msg"></div>
 					</div>
 				</td>
 			</tr>

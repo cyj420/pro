@@ -16,6 +16,7 @@ import com.sbs.cyj.readit.dto.Member;
 import com.sbs.cyj.readit.dto.ResultData;
 import com.sbs.cyj.readit.service.AttrService;
 import com.sbs.cyj.readit.service.MemberService;
+import com.sbs.cyj.readit.service.NovelService;
 import com.sbs.cyj.readit.util.Util;
 
 @Controller
@@ -24,6 +25,8 @@ public class MemberController {
 	private MemberService memberService;
 	@Autowired
 	private AttrService attrService;
+	@Autowired
+	private NovelService novelService;
 
 	// 회원가입
 	@RequestMapping("/usr/member/join")
@@ -220,17 +223,31 @@ public class MemberController {
 		}
 	}
 	
+	// 닉네임 중복 체크
+	@RequestMapping("/usr/member/getNicknameDup")
+	@ResponseBody
+	public ResultData doGetNicknameDup(@RequestParam String nickname, Model model) {
+		if (memberService.isJoinableNickname(nickname)) {
+			return new ResultData("S-1", String.format("사용할 수 있는 닉네임입니다."), nickname);
+		} else {
+			return new ResultData("F-1", String.format("이미 존재하는 닉네임입니다."), nickname);
+		}
+	}
+	
 	// 메일 인증하기
 	@RequestMapping("/usr/member/doAuthMail")
 	public String doAuthMail(Model model, HttpSession session, @RequestParam String code) {
 		String msg = "";
 		if(session.getAttribute("loginedMemberId")!=null) {
 			int id = (int) session.getAttribute("loginedMemberId");
+			Member member = memberService.getMemberById(id);
 			
 			if(!memberService.getMemberById(id).isAuthStatus()) {
 				if(code.equals(attrService.getValue("member__"+id+"__extra__mailAuthCode"))){
 					memberService.doAuthMail(id);
 					msg = "인증 성공";
+					String strId = ""+id;
+					novelService.genNovelDefault(strId, member.getNickname());
 				}
 				else {
 					String str = attrService.getValue("member__"+id+"__extra__mailAuthCode");
