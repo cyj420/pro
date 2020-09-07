@@ -246,6 +246,7 @@ public class MemberController {
 				if(code.equals(attrService.getValue("member__"+id+"__extra__mailAuthCode"))){
 					memberService.doAuthMail(id);
 					msg = "인증 성공";
+					memberService.removeAuthMailCode(id);
 					String strId = ""+id;
 					novelService.genNovelDefault(strId, member.getNickname());
 				}
@@ -278,7 +279,7 @@ public class MemberController {
 		
 		if(memberId>0) {
 			String code = attrService.getValue("member__"+memberId+"__extra__mailAuthCode");
-			if(code == null) {
+			if(code.trim().length() == 0) {
 				code = memberService.genMailAuthCode(memberId);
 			}
 			memberService.sendAuthMail(member.getEmail(), code, member.getNickname());

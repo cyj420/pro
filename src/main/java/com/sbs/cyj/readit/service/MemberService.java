@@ -198,7 +198,6 @@ public class MemberService {
 	public String genMailAuthCode(int actorId) {
 		String authCode = UUID.randomUUID().toString();
 		attrService.setValue("member__" + actorId + "__extra__mailAuthCode", authCode, Util.getDateStrLater(60 * 60));
-
 		return authCode;
 	}
 
@@ -212,5 +211,9 @@ public class MemberService {
 
 	public Member getMemberByNickname(String nickname) {
 		return memberDao.getMemberByNickname(nickname);
+	}
+
+	public void removeAuthMailCode(int id) {
+		attrService.remove("member__" + id + "__extra__mailAuthCode");
 	}
 }
