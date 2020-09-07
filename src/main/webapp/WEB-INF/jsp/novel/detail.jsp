@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="pageTitle" value="${nickname} 게시물  상세보기" />
+<c:set var="pageTitle" value="${chapter.title} 소설  상세보기" />
 <%@ include file="../part/head.jspf"%>
 <%@ include file="../part/toastuiEditor.jspf"%>
 <style>
@@ -77,7 +77,7 @@ img{
 	<!-- 본문 END -->
 	
 	<!-- 댓글 작성 START -->
-	<%-- <c:if test="${loginedMember != null}">
+	<c:if test="${loginedMember != null}">
 		<h2>댓글 작성</h2>
 		<script>
 			function ReplyWriteForm__submit(form) {
@@ -88,7 +88,8 @@ img{
 					return;
 				}
 				$.post('./../reply/doWriteReplyAjax', {
-					articleId : param.id,
+					relType : 'novel',
+					relId : param.id,
 					body : form.body.value
 				}, function(data) {
 					alert(data.msg);
@@ -117,13 +118,13 @@ img{
 				</tbody>
 			</table>
 		</form>
-	</c:if> --%>
+	</c:if>
 	
 	<!-- 댓글 작성 END -->
 	
 	<!-- 댓글 리스트 START -->
 	
-	<%-- <h2>댓글 리스트</h2>
+	<h2>댓글 리스트</h2>
 	<div class="reply-list table-box con">
 		<table>
 			<colgroup>
@@ -174,7 +175,8 @@ img{
 
 		function ReplyList__loadMore() {
 			$.get('./../reply/getForPrintReplies', {
-				articleId : param.id,
+				relType : 'novel',
+				relId : param.id,
 				from : ReplyList__lastLodedId + 1
 			}, function(data) {
 				if ( data.body.replies && data.body.replies.length > 0 ) {
@@ -267,7 +269,7 @@ img{
 		}
 		
 		ReplyList__loadMore();
-	</script> --%>
+	</script>
 	
 	<!-- 댓글 리스트 END -->
 	

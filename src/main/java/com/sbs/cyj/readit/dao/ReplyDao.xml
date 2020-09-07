@@ -9,7 +9,8 @@
 		SET regDate = NOW(),
 		updateDate = NOW(),
 		memberId = #{memberId},
-		articleId = #{articleId},
+		relType = #{relType},
+		relId = #{relId},
 		`body` = #{body}
 	</insert>
 	
@@ -18,9 +19,10 @@
 		SELECT R.*,
 		M.nickname AS extra__writer
 		FROM reply AS R
-		INNER JOIN member AS M
+		INNER JOIN MEMBER AS M
 		ON R.memberId = M.id
-		WHERE R.articleId = #{articleId}
+		WHERE R.relType = #{relType}
+		AND R.relId = #{relId}
 		AND R.displayStatus = 1
 		AND R.id >= #{from}
 		ORDER BY R.id ASC

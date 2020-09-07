@@ -17,7 +17,8 @@ public class Reply {
 	private String delDate;
 	private boolean displayStatus;
 	private int memberId;
-	private int articleId;
+	private String relType;
+	private int relId;
 	private String body;
 	private Map<String, Object> extra;
 	

@@ -91,7 +91,8 @@ img{
 					return;
 				}
 				$.post('./../reply/doWriteReplyAjax', {
-					articleId : param.id,
+					relType : 'article',
+					relId : param.id,
 					body : form.body.value
 				}, function(data) {
 					alert(data.msg);
@@ -177,7 +178,8 @@ img{
 
 		function ReplyList__loadMore() {
 			$.get('./../reply/getForPrintReplies', {
-				articleId : param.id,
+				relType : 'article',
+				relId : param.id,
 				from : ReplyList__lastLodedId + 1
 			}, function(data) {
 				if ( data.body.replies && data.body.replies.length > 0 ) {

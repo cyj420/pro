@@ -26,7 +26,7 @@ public class ReplyController {
 	// 댓글 작성
 	@RequestMapping("/usr/reply/doWriteReplyAjax")
 	@ResponseBody
-	public String doWriteReplyAjax(@RequestParam Map<String, Object> param, @RequestParam int articleId, String body, Model model, HttpServletRequest req) {
+	public String doWriteReplyAjax(@RequestParam Map<String, Object> param, @RequestParam String relType, @RequestParam int relId, String body, Model model, HttpServletRequest req) {
 		int memberId = (int) req.getAttribute("loginedMemberId");
 		param.put("memberId", memberId);
 		
@@ -35,7 +35,6 @@ public class ReplyController {
 
 		String redirectUri = (String) param.get("redirectUri");
 		System.out.println("redirectUri : " + redirectUri);
-//		redirectUri = redirectUri.replace("#id", id + "");
 		
 		model.addAttribute("msg", msg);
 		model.addAttribute("redirectUri", redirectUri);
