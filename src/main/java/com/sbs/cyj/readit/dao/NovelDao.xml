@@ -54,6 +54,7 @@
 		<id property="displayStatus" column="displayStatus" />
 		<id property="cateId" column="cateId" />
 		<id property="memberId" column="memberId" />
+		<id property="seriesStatus" column="seriesStatus" />
 		<association property="extra" javaType="map">
 			<id property="writer" column="extra__writer" />
 		</association>

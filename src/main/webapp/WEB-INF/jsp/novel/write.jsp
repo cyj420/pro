@@ -44,7 +44,7 @@
 					</td>
 				</tr>
 				<tr>
-					<th>소설 선택</th>
+					<th>Novel 선택</th>
 					<td>
 						<div>
 							<select name="novelId">

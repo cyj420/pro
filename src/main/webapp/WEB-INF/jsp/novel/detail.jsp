@@ -54,6 +54,14 @@ img{
 				<a href="/usr/novel/${chapter.extra.writer}-list">${chapter.extra.writer}</a>
 				</td>
 			</tr>
+			<c:if test="${chapter.extra.series == 1}">
+				<tr>
+					<th>시리즈명</th>
+					<td>
+					<a href="/usr/novel/${chapter.extra.writer}-list?novelId=${chapter.novelId}">${chapter.extra.novelName}</a>
+					</td>
+				</tr>
+			</c:if>
 			<tr>
 				<th>제목</th>
 				<td>${chapter.title}</td>

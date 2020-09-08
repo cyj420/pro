@@ -322,3 +322,8 @@ CREATE TABLE category (
   delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
   displayStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 1
 );
+
+#===========================================================
+#0908
+ALTER TABLE `novel`
+ADD COLUMN `seriesStatus` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;

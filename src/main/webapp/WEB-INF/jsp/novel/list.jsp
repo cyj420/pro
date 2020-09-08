@@ -19,7 +19,12 @@
 				<th>번호</th>
 				<th>날짜</th>
 				<th>작성자</th>
-				<th>제목</th>
+				<c:if test="${chapters == null }">
+					<th>시리즈명</th>
+				</c:if>
+				<c:if test="${chapters != null }">
+					<th>제목</th>
+				</c:if>
 			</tr>
 		</thead>
 		<tbody>

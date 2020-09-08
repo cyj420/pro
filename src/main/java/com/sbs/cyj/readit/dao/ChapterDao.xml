@@ -16,11 +16,13 @@
 	</insert>
 	
 	<select id="getChapterById" resultMap="chapter">
-		SELECT C.*, M.nickname AS extra__writer
+		SELECT C.*, M.nickname AS extra__writer, N.name AS extra__novelName, N.seriesStatus AS extra__series
 		FROM chapter AS C
 		INNER JOIN `Member` AS M
+		INNER JOIN novel AS N
 		ON M.id = C.memberId
 		AND C.displayStatus = 1
+		AND C.novelId = N.id
 		WHERE C.id = #{id};
 	</select>
 	
@@ -47,6 +49,8 @@
 		<id property="novelId" column="novelId" />
 		<association property="extra" javaType="map">
 			<id property="writer" column="extra__writer" />
+			<id property="novelName" column="extra__novelName" />
+			<id property="series" column="extra__series" />
 		</association>
 	</resultMap>
 </mapper>

@@ -141,7 +141,7 @@ public class NovelController {
 		
 		return "novel/list";
 	}
-//	
+
 	// 게시글 상세보기
 	@RequestMapping("usr/novel/{nickname}-detail")
 	public String showDetail(@RequestParam Map<String, Object> param, Model model, @PathVariable("nickname") String nickname, String listUrl, HttpServletRequest req) {
