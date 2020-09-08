@@ -9,11 +9,13 @@
 	</select>
 	
 	<select id="getNovelsByMemberId" resultMap="novel">
-		SELECT N.*, M.nickname AS extra__writer
+		SELECT N.*, M.nickname AS extra__writer, C.name AS extra__cateName
 		FROM novel AS N
 		INNER JOIN `member` AS M
+		INNER JOIN category AS C
 		ON N.memberId = M.id
 		AND N.displayStatus = 1
+		AND N.cateId = C.id
 		AND M.id = #{memberId};
 	</select>
 	
@@ -64,6 +66,7 @@
 		<id property="seriesStatus" column="seriesStatus" />
 		<association property="extra" javaType="map">
 			<id property="writer" column="extra__writer" />
+			<id property="cateName" column="extra__cateName" />
 		</association>
 	</resultMap>
 </mapper>

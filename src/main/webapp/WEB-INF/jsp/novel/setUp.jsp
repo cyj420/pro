@@ -19,41 +19,37 @@
 				<th>번호</th>
 				<th>날짜</th>
 				<th>작성자</th>
-				<c:if test="${chapters == null }">
-					<th>시리즈명</th>
-				</c:if>
-				<c:if test="${chapters != null }">
-					<th>제목</th>
-				</c:if>
+				<th>시리즈명</th>
+				<th>연작 유무</th>
+				<th>카테고리</th>
 			</tr>
 		</thead>
 		<tbody>
-			<c:if test="${chapters == null }">
-				<c:forEach items="${novels}" var="novel">
-					<tr>
-						<td>${novel.id}</td>
-						<td>${novel.regDate}</td>
-						<td><a href="/usr/novel/${novel.extra.writer}-list">${novel.extra.writer}</a></td>
-						<td>
-							<a href="/usr/novel/${novel.extra.writer}-list?novelId=${novel.id}">${novel.name}</a>
-						</td>
-					</tr>
-				</c:forEach>
-			</c:if>
-			
-			<c:if test="${chapters != null }">
-				<c:forEach items="${chapters}" var="chapter">
-					<tr>
-						<td>${chapter.id}</td>
-						<td>${chapter.regDate}</td>
-						<td><a href="/usr/novel/${novel.extra.writer}-list">${chapter.extra.writer}</a></td>
-						<td>
-							<a href="/usr/novel/${novel.extra.writer}-detail?id=${chapter.id}">${chapter.title}</a>
-						</td>
-					</tr>
-				</c:forEach>
-			</c:if>
+			<c:forEach items="${novels}" var="novel">
+				<tr>
+					<td>${novel.id}</td>
+					<td>${novel.regDate}</td>
+					<td><a href="/usr/novel/${novel.extra.writer}-list">${novel.extra.writer}</a></td>
+					<td>
+						<a href="/usr/novel/${novel.extra.writer}-list?novelId=${novel.id}">${novel.name}</a>
+					</td>
+					<td>
+						<c:if test="${novel.seriesStatus == true}">
+							O
+						</c:if>
+						<c:if test="${novel.seriesStatus == false}">
+							X
+						</c:if>
+					</td>
+					<td>
+						${novel.extra.cateName}
+					</td>
+				</tr>
+			</c:forEach>
 		</tbody>
 	</table>
+	<a href="./genNovel">
+		<button>novel 생성</button>
+	</a>
 </div>
 <%@ include file="../part/foot.jspf"%>

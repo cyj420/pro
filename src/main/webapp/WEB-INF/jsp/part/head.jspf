@@ -44,7 +44,7 @@ var param = ${paramJson};
 	<a href="/usr/home/main">[HOME]</a>
 	<a href="/usr/novel/total-list">[Total List]</a>
 	<c:if test="${loginedMember.authStatus == true}">
-		<a href="/usr/novel/${loginedMember.nickname}-setUp">[My Novel]</a>
+		<a href="/usr/novel/${loginedMember.nickname}-setUp">[My Novel SetUp]</a>
 		<a href="/usr/novel/${loginedMember.nickname}-list">[My Novel List]</a>
 		<a href="/usr/novel/${loginedMember.nickname}-write">[Chapter Write]</a>
 	</c:if>

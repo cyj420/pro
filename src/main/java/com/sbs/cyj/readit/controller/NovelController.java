@@ -29,7 +29,7 @@ public class NovelController {
 	@Autowired
 	private ChapterService chapterService;
 	
-	// 소설 작성
+	// 챕터 작성
 	@RequestMapping("usr/novel/{nickname}-write")
 	public String showWrite(@PathVariable("nickname") String nickname, Model model, String listUrl, HttpServletRequest req) {
 		if ( listUrl == null ) {
@@ -285,4 +285,25 @@ public class NovelController {
 		
 		return "novel/setUp";
 	}
+	
+	// 소설 tod성
+	@RequestMapping("usr/novel/genNovel")
+	public String showGenNovel(Model model, String listUrl, HttpServletRequest req) {
+		model.addAttribute("listUrl", listUrl);
+		
+		System.out.println("=========================");
+		System.out.println("listUrl : "+listUrl);
+		System.out.println("=========================");
+		
+		int memberId = (int) req.getAttribute("loginedMemberId");
+		Member member = memberService.getMemberById(memberId);
+		model.addAttribute("member", member);
+		
+		List<Category> categories = novelService.getCategories();
+		model.addAttribute("categories", categories);
+
+		return "novel/genNovel";
+	}
+	
+	
 }
