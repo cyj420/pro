@@ -1,6 +1,7 @@
 package com.sbs.cyj.readit.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,12 +27,26 @@ public class NovelService {
 		return novelDao.getNovels();
 	}
 	
-	public void genNovelDefault(String id, String nickname) {
-		novelDao.genNovelDefault(id, nickname);
-	}
 
 	public Novel getNovelById(int id) {
 		return novelDao.getNovelById(id);
 	}
+
+	public boolean checkNovelExistByMemberId(int memberId) {
+		Novel novel = null;
+		List<Novel> novels = novelDao.checkNovelExistByMemberId(memberId);
+		if(novels.size() > 0) {
+			novel = novels.get(0);
+		}
+		if(novel == null) {
+			return false;
+		}
+		return true;
+	}
+
+	public void genDefaultNovel(Map<String, Object> param) {
+		novelDao.genDefaultNovel(param);
+	}
+
 
 }

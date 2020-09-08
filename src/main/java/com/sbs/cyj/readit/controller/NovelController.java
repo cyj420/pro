@@ -83,7 +83,8 @@ public class NovelController {
 		return "novel/list";
 	}
 	
-	// 게시글 리스트
+	// 소설 리스트
+	// param에 novelId가 존재한다면 챕터 리스트 
 	@RequestMapping("usr/novel/{nickname}-list")
 	public String showList(@PathVariable("nickname") String nickname, Model model, String listUrl, HttpServletRequest req) {
 		if ( listUrl == null ) {
@@ -142,7 +143,7 @@ public class NovelController {
 		return "novel/list";
 	}
 
-	// 게시글 상세보기
+	// 소설 상세보기
 	@RequestMapping("usr/novel/{nickname}-detail")
 	public String showDetail(@RequestParam Map<String, Object> param, Model model, @PathVariable("nickname") String nickname, String listUrl, HttpServletRequest req) {
 		if ( listUrl == null ) {
@@ -264,53 +265,24 @@ public class NovelController {
 //
 //		return "common/redirect";
 //	}
-//	
-//	// MySeries >> 현재는 단순 리스팅만 하지만 후에 이 페이지에서 시리즈 추가/삭제/수정 등 가능하도록 변경할 예정
-//	@RequestMapping("/usr/article/{boardCode}-list/mySeries")
-//	public String showMyAllSeries(HttpSession session, @PathVariable("boardCode") String boardCode, String listUrl, Model model) {
-//		if ( listUrl == null ) {
-//			listUrl = "./" + boardCode + "-list";
-//		}
-//		model.addAttribute("listUrl", listUrl);
-//		Board board = boardService.getBoardByCode(boardCode);
-//		model.addAttribute("board", board);
-//		int memberId = (int) session.getAttribute("loginedMemberId");
-//		List<Series> series = seriesService.getAllSeriesByMemberId(memberId);
-//		model.addAttribute("series", series);
-//		
-//		return "article/mySeries";
-//	}
-//	
-//	@RequestMapping("/usr/article/{boardCode}-addSeries")
-//	public String addSeries(HttpSession session, @PathVariable("boardCode") String boardCode, String listUrl, Model model) {
-//		if ( listUrl == null ) {
-//			listUrl = "./" + boardCode + "-list";
-//		}
-//		model.addAttribute("listUrl", listUrl);
-//		Board board = boardService.getBoardByCode(boardCode);
-//		model.addAttribute("board", board);
-//		List<Category> categories = articleService.getCategories(board.getId());
-//		model.addAttribute("categories", categories);
-//		
-//		return "article/addSeries";
-//	}
-//	
-//	@RequestMapping("/usr/article/{boardCode}-doAddSeries")
-//	public String doAddSeries(@RequestParam Map<String, Object> param, HttpServletRequest req, @PathVariable("boardCode") String boardCode, Model model) {
-//		Board board = boardService.getBoardByCode(boardCode);
-//		model.addAttribute("board", board);
-//		
-//		String redirectUri = (String) param.get("redirectUri");
-//		
-//		int memberId = (int) req.getAttribute("loginedMemberId");
-//		param.put("memberId", memberId);
-//		
-//		int id = seriesService.addSeries(param);
-//		
-//		redirectUri = redirectUri.replace("#id", id + "");
-//		model.addAttribute("msg", String.format(id+"번째 시리즈를 작성하였습니다."));
-//		model.addAttribute("redirectUri", redirectUri);
-//
-//		return "common/redirect";
-//	}
+	
+	// 소설 설정 (소설 단위의 수정 및 삭제)
+	@RequestMapping("usr/novel/{nickname}-setUp")
+	public String showSetUp(@RequestParam Map<String, Object> param, Model model, @PathVariable("nickname") String nickname, String listUrl, HttpServletRequest req) {
+		if ( listUrl == null ) {
+			listUrl = "./" + nickname + "-list";
+		}
+		model.addAttribute("listUrl", listUrl);
+
+		Member loginedMember = (Member)req.getAttribute("loginedMember");
+		model.addAttribute("loginedMember", loginedMember);
+		
+		int memberId = memberService.getMemberByNickname(nickname).getId();
+
+		List<Novel> novels = novelService.getNovelsByMemberId(memberId);
+		
+		model.addAttribute("novels", novels);
+		
+		return "novel/setUp";
+	}
 }

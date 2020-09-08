@@ -1,5 +1,6 @@
 package com.sbs.cyj.readit.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -247,8 +248,15 @@ public class MemberController {
 					memberService.doAuthMail(id);
 					msg = "인증 성공";
 					memberService.removeAuthMailCode(id);
-					String strId = ""+id;
-					novelService.genNovelDefault(strId, member.getNickname());
+					
+					Map<String, Object> param = new HashMap<String, Object>();
+					
+					param.put("memberId", id);
+					param.put("nickname", member.getNickname());
+					
+					if(!novelService.checkNovelExistByMemberId(id)) {
+						novelService.genDefaultNovel(param);
+					}
 				}
 				else {
 					String str = attrService.getValue("member__"+id+"__extra__mailAuthCode");
@@ -295,7 +303,7 @@ public class MemberController {
 		return "common/redirect";
 	}
 	
-	// MyPrivate 들어가기 전 PW 체크
+	// 개인정보 들어가기 전 PW 체크
 	@RequestMapping("/usr/member/checkPw")
 	public String showCheckPw() {
 		return "member/checkPw";
@@ -313,6 +321,43 @@ public class MemberController {
 			model.addAttribute("msg", "비밀번호가 일치하지 않습니다.");
 			return "common/redirect";
 		}
+		
+		String authCode = memberService.genCheckPasswordAuthCode(memberId);
+
+		if (redirectUri == null || redirectUri.length() == 0) {
+			redirectUri = "/usr/member/myPage";
+		}
+
+		redirectUri = Util.getNewUri(redirectUri, "checkPasswordAuthCode", authCode);
+
+		model.addAttribute("redirectUri", redirectUri);
+
+		return "common/redirect";
+	}
+	
+	// 회원 정보
+	@RequestMapping("/usr/member/myPage")
+	public String showMyPage(HttpSession session, String checkPasswordAuthCode, Model model) {
+		int memberId = (int) session.getAttribute("loginedMemberId");
+		ResultData checkValidCheckPasswordAuthCodeResultData = memberService.checkValidCheckPasswordAuthCode(memberId, checkPasswordAuthCode);
+
+		if (checkPasswordAuthCode == null || checkPasswordAuthCode.length() == 0) {
+			model.addAttribute("historyBack", true);
+			model.addAttribute("msg", "비밀번호 체크 인증코드가 없습니다.");
+			return "common/redirect";
+		}
+
+		if (checkValidCheckPasswordAuthCodeResultData.isFail()) {
+			model.addAttribute("historyBack", true);
+			model.addAttribute("msg", checkValidCheckPasswordAuthCodeResultData.getMsg());
+			return "common/redirect";
+		}
+		return "member/myPage";
+	}
+	
+	@RequestMapping("/usr/member/doMyPage")
+	public String doMyPage(String redirectUri, Model model, HttpServletRequest req) {
+		int memberId = (int) req.getAttribute("loginedMemberId");
 		
 		String authCode = memberService.genCheckPasswordAuthCode(memberId);
 
@@ -348,32 +393,51 @@ public class MemberController {
 	}
 
 	@RequestMapping("/usr/member/doModify")
-	@ResponseBody
-	public String doModify(@RequestParam Map<String, Object> param, HttpSession session) {
+	public String doModify(String redirectUri, @RequestParam Map<String, Object> param, HttpSession session, Model model) {
 		int memberId = (int) session.getAttribute("loginedMemberId");
 		Member member = memberService.getMemberById(memberId);
 		
-		String email = (String) param.get("email");
-		if(member.getEmail().equals(email)) {
-			param.put("email", null);
-		}
+		String loginPwReal = (String) param.get("loginPwReal"); 
 		
-		String newPw = (String) param.get("newLoginPwReal"); 
-		
-		if(newPw.length() != 0) {
-			if(attrService.getValue("member__" + member.getId() + "__extra__useTempPassword").equals("1")) {
-				attrService.remove("member__" + memberId + "__extra__useTempPassword");
+		if(loginPwReal.equals(member.getLoginPw())) {
+			String email = (String) param.get("email");
+			if(member.getEmail().equals(email)) {
+				param.put("email", null);
 			}
 			
-			String now = memberService.getNowTime();
-			attrService.setValue("member__" + member.getId() + "__extra__lastPasswordChangeDate", now, "2030-01-01 01:01:01");
+			String newPw = (String) param.get("newLoginPwReal"); 
+			
+			if(newPw.length() != 0) {
+				if(attrService.getValue("member__" + member.getId() + "__extra__useTempPassword").equals("1")) {
+					attrService.remove("member__" + memberId + "__extra__useTempPassword");
+				}
+				
+				String now = memberService.getNowTime();
+				attrService.setValue("member__" + member.getId() + "__extra__lastPasswordChangeDate", now, "2030-01-01 01:01:01");
+			}
+			
+			memberService.modify(param);
+			int id = Integer.parseInt((String) param.get("id"));
+			session.setAttribute("loginedMemberId", id);
+			session.setAttribute("loginedMember", memberService.getMemberById(id));
 		}
-		
-		memberService.modify(param);
-		int id = Integer.parseInt((String) param.get("id"));
-		session.setAttribute("loginedMemberId", id);
-		session.setAttribute("loginedMember", memberService.getMemberById(id));
+		else {
+			model.addAttribute("historyBack", true);
+			model.addAttribute("msg", "회원 정보 수정 실패 - 비밀번호가 다릅니다.");
+			return "common/redirect";
+		}
 
-		return "<script> alert('회원 정보 수정 완료'); location.replace('../home/main'); </script>";
+		if (redirectUri == null || redirectUri.length() == 0) {
+			redirectUri = "/usr/member/myPage";
+		}
+
+		String authCode = memberService.genCheckPasswordAuthCode(memberId);
+		
+		redirectUri = Util.getNewUri(redirectUri, "checkPasswordAuthCode", authCode);
+
+		model.addAttribute("msg", "회원 정보 수정 완료");
+		model.addAttribute("redirectUri", redirectUri);
+
+		return "common/redirect";
 	}
 }

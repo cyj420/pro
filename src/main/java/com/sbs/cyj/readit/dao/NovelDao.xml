@@ -25,14 +25,14 @@
 		AND N.displayStatus = 1;
 	</select>
 	
-	<insert id="genNovelDefault" useGeneratedKeys="true" keyProperty="id" >
+	<insert id="genDefaultNovel" useGeneratedKeys="true" keyProperty="id" >
 		INSERT
 		INTO novel
 		SET regDate = NOW(),
 		updateDate = NOW(),
 		`name` = #{nickname},
 		cateId = 1,
-		memberId = #{id};
+		memberId = #{memberId};
 	</insert>
 	
 	<select id="getNovelById" resultMap="novel">
@@ -42,6 +42,13 @@
 		ON N.memberId = M.id
 		AND N.displayStatus = 1
 		WHERE N.id = #{id};
+	</select>
+	
+	<select id="checkNovelExistByMemberId" resultMap="novel">
+		SELECT *
+		FROM novel
+		WHERE displayStatus = 1
+		AND memberId = #{memberId};
 	</select>
 	
 	<resultMap type="Novel" id="novel">
