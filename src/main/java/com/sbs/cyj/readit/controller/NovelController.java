@@ -286,7 +286,7 @@ public class NovelController {
 		return "novel/setUp";
 	}
 	
-	// 소설 tod성
+	// 소설 생성
 	@RequestMapping("usr/novel/genNovel")
 	public String showGenNovel(Model model, String listUrl, HttpServletRequest req) {
 		model.addAttribute("listUrl", listUrl);

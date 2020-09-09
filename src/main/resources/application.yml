@@ -1,10 +1,3 @@
-server:
-  port: 8085
-  error:
-    include-exception: true
-    include-stacktrace: always
-    include-message: always
-    include-binding-errors: always
 spring:
   profiles:
     active: local # 기본적으로 local이 선택된다는 뜻
@@ -16,7 +9,7 @@ spring:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     url: jdbc:log4jdbc:mysql://127.0.0.1:3306/readit?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull
     username: root
-    password: sbs123414
+    password: 
   mail:
     host: smtp.gmail.com
     port: 587
@@ -30,7 +23,33 @@ spring:
             enable: true
 mybatis:
   type-aliases-package: com.sbs.cyj.readit.dto
+server:
+  error:
+    include-exception: true
+    include-stacktrace: always
+    include-message: always
+    include-binding-errors: always
 custom:
   logoText: 블로그
-  emailFrom: no-reply@audiotiontree.com
-  emailFromName: 오디션 트리 
+  emailFrom: no-reply@ilcho.site
+  emailFromName: ReadIt
+
+---
+
+spring:
+  profiles: local
+server:
+  port: 8085
+  
+---
+
+spring:
+  profiles: production
+  servlet:
+    multipart:
+      location: /tmp
+  datasource:
+    username: juin
+    password: 비밀번호 입력하기
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/readit?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull 
