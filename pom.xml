@@ -42,6 +42,21 @@
 			<version>1.6.2</version>
 		</dependency>
 		
+		<!-- 
+		redis 자체를 쓰기 위한
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+
+		스프링 세션을 레디스로 관리하기 위한
+		<dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-data-redis</artifactId>
+			<version>2.3.0.RELEASE</version>
+		</dependency> 
+		-->
+		
 		<!-- SQL 로거 -->
 		<dependency>
 			<groupId>org.bgee.log4jdbc-log4j2</groupId>
@@ -119,10 +134,8 @@
 				<version>2.2</version>
 				<configuration>
 					<url>http://readit.ilcho.site:8080/manager/text</url>
-					<server>TomcatServer</server>
+					<server>readit_ilcho_site__manager_text</server>
 					<path>/</path>
-					<username>deployer</username>
-					<password>비밀번호 입력하기</password>
 				</configuration>
 			</plugin>
 			<plugin>

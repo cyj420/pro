@@ -1,6 +1,15 @@
 spring:
   profiles:
     active: local # 기본적으로 local이 선택된다는 뜻
+  <!-- redis:
+    host: localhost
+    port: 6379 -->
+  session:
+    timeout: 600
+    store-type: redis
+    redis:
+      flush-mode: on-save
+      namespace: spring:session
   mvc:
     view:
       prefix: /WEB-INF/jsp/
@@ -49,7 +58,7 @@ spring:
     multipart:
       location: /tmp
   datasource:
-    username: juin
-    password: 비밀번호 입력하기
+    username: juinLocal
+    password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/readit?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull 
