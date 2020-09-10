@@ -18,7 +18,7 @@
 	<select id="getChapterById" resultMap="chapter">
 		SELECT C.*, M.nickname AS extra__writer, N.name AS extra__novelName, N.seriesStatus AS extra__series
 		FROM chapter AS C
-		INNER JOIN `Member` AS M
+		INNER JOIN `member` AS M
 		INNER JOIN novel AS N
 		ON M.id = C.memberId
 		AND C.displayStatus = 1
@@ -29,7 +29,7 @@
 	<select id="getChaptersByNovelId" resultMap="chapter">
 		SELECT C.*, M.nickname AS extra__writer
 		FROM chapter AS C
-		INNER JOIN `Member` AS M
+		INNER JOIN `member` AS M
 		ON M.id = C.memberId
 		AND C.displayStatus = 1
 		WHERE novelId = #{novelId};

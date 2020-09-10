@@ -17,7 +17,7 @@
 	<select id="getArticleById" resultMap="article">
 		SELECT A.*, M.nickname AS extra__writer
 		FROM article AS A
-		INNER JOIN `Member` AS M
+		INNER JOIN `member` AS M
 		ON M.id = A.memberId
 		WHERE A.displayStatus = 1
 		AND A.id = #{id};
@@ -26,7 +26,7 @@
 	<select id="getArticlesByMemberIdAndBoardId" resultMap="article">
 		SELECT A.*, M.nickname AS extra__writer
 		FROM article AS A
-		INNER JOIN `Member` AS M
+		INNER JOIN `member` AS M
 		ON M.id = A.memberId
 		AND A.memberId = #{memberId}
 		AND A.boardId = #{boardId}
@@ -48,7 +48,7 @@
 	<select id="getArticlesByMemberId" resultMap="article">
 		SELECT A.*, M.nickname AS extra__writer
 		FROM article AS A
-		INNER JOIN `Member` AS M
+		INNER JOIN `member` AS M
 		ON M.id = A.memberId
 		AND A.memberId = #{memberId}
 		AND A.displayStatus = 1

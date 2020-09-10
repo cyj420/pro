@@ -19,7 +19,7 @@
 		SELECT R.*,
 		M.nickname AS extra__writer
 		FROM reply AS R
-		INNER JOIN MEMBER AS M
+		INNER JOIN `member` AS M
 		ON R.memberId = M.id
 		WHERE R.relType = #{relType}
 		AND R.relId = #{relId}
