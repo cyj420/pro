@@ -11,11 +11,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sbs.cyj.readit.dto.Category;
 import com.sbs.cyj.readit.dto.Chapter;
 import com.sbs.cyj.readit.dto.Member;
 import com.sbs.cyj.readit.dto.Novel;
+import com.sbs.cyj.readit.dto.ResultData;
 import com.sbs.cyj.readit.service.ChapterService;
 import com.sbs.cyj.readit.service.MemberService;
 import com.sbs.cyj.readit.service.NovelService;
@@ -321,5 +323,17 @@ public class NovelController {
 		model.addAttribute("redirectUri", redirectUri);
 		
 		return "common/redirect";
+	}
+	
+	// 자동으로 제목 체크
+	@RequestMapping("/usr/novel/getAutoNovelTitle")
+	@ResponseBody
+	public ResultData doGetAutoNovelTitle(@RequestParam int novelId, Model model) {
+		if(chapterService.getChaptersByNovelId(novelId).size()>1) {
+			int size = chapterService.getChaptersByNovelId(novelId).size()+1;
+			return new ResultData("S-1", ""+size, novelId);
+		} else {
+			return new ResultData("F-1", String.format("없음..."), novelId);
+		}
 	}
 }

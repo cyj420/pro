@@ -25,6 +25,27 @@
 		
 		form.submit();
 	}
+
+	function NovelWriteForm__getAutoNovelTitle(input){
+		var form = input.form;
+
+		$.get(
+			'getAutoNovelTitle',
+			{
+				novelId: form.novelId.value
+			},
+			function(data){
+				var $title = form.title;
+
+				if(data.resultCode.substr(0, 2) == 'S-'){
+				}
+				else {
+				}
+			}, 
+			'json'
+		);
+	}
+	NovelWriteForm__getAutoNovelTitle = _.debounce(NovelWriteForm__getAutoNovelTitle, 100);
 </script>
 <div class="con">
 	<form method="post" action="${member.nickname}-doWrite" method="post" onsubmit="NovelWriteForm__submit(this); return false;" >
@@ -39,7 +60,7 @@
 					<th>제목</th>
 					<td>
 						<div>
-							<input type="text" placeholder="제목을 입력해주세요." name="title"/>
+							<input type="text" placeholder="제목을 입력해주세요." name="title" />
 						</div>
 					</td>
 				</tr>
@@ -47,7 +68,7 @@
 					<th>Novel 선택</th>
 					<td>
 						<div>
-							<select name="novelId">
+							<select name="novelId" onchange="NovelWriteForm__getAutoNovelTitle(this);">
 								<c:forEach items="${novels}" var="n">
 									<option value="${n.id}">${n.name}</option>
 								</c:forEach>
