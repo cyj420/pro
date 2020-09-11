@@ -77,7 +77,6 @@ public class MemberController {
 		}
 
 		session.setAttribute("loginedMemberId", member.getId());
-		session.setAttribute("loginedMember", member.getId());
 
 		if (redirectUri == null || redirectUri.length() == 0) {
 			redirectUri = "/usr/home/main";
@@ -108,7 +107,6 @@ public class MemberController {
 	@RequestMapping("/usr/member/doLogout")
 	public String doLogout(Model model, HttpSession session, String redirectUri) {
 		session.removeAttribute("loginedMemberId");
-		session.removeAttribute("loginedMember");
 
 		if (redirectUri.length() == 0) {
 			System.out.println("redirectUri.length() == 0");
@@ -194,7 +192,6 @@ public class MemberController {
 		if((int)session.getAttribute("loginedMemberId") == id) {
 			memberService.withdrawal(id);
 			session.removeAttribute("loginedMemberId");
-			session.removeAttribute("loginedMember");
 			
 			msg = "탈퇴 완료"; 
 		}
@@ -237,10 +234,10 @@ public class MemberController {
 	
 	// 메일 인증하기
 	@RequestMapping("/usr/member/doAuthMail")
-	public String doAuthMail(Model model, HttpSession session, @RequestParam String code) {
+	public String doAuthMail(Model model, HttpServletRequest req, @RequestParam String code) {
 		String msg = "";
-		if(session.getAttribute("loginedMemberId")!=null) {
-			int id = (int) session.getAttribute("loginedMemberId");
+		if(req.getAttribute("loginedMemberId")!=null) {
+			int id = (int) req.getAttribute("loginedMemberId");
 			Member member = memberService.getMemberById(id);
 			
 			if(!memberService.getMemberById(id).isAuthStatus()) {
@@ -280,9 +277,9 @@ public class MemberController {
 	
 	// 인증 메일 보내기
 	@RequestMapping("/usr/member/sendAuthMail")
-	public String doSendAuthMail(Model model, HttpSession session) {
+	public String doSendAuthMail(Model model, HttpServletRequest req) {
 		String msg = "";
-		int memberId = (int) session.getAttribute("loginedMemberId");
+		int memberId = (int) req.getAttribute("loginedMemberId");
 		Member member = memberService.getMemberById(memberId);
 		
 		if(memberId>0) {
@@ -337,8 +334,8 @@ public class MemberController {
 	
 	// 회원 정보
 	@RequestMapping("/usr/member/myPage")
-	public String showMyPage(HttpSession session, String checkPasswordAuthCode, Model model) {
-		int memberId = (int) session.getAttribute("loginedMemberId");
+	public String showMyPage(HttpServletRequest req, String checkPasswordAuthCode, Model model) {
+		int memberId = (int) req.getAttribute("loginedMemberId");
 		ResultData checkValidCheckPasswordAuthCodeResultData = memberService.checkValidCheckPasswordAuthCode(memberId, checkPasswordAuthCode);
 
 		if (checkPasswordAuthCode == null || checkPasswordAuthCode.length() == 0) {
@@ -374,8 +371,8 @@ public class MemberController {
 	
 	// 회원 정보 수정
 	@RequestMapping("/usr/member/modify")
-	public String showModify(HttpSession session, String checkPasswordAuthCode, Model model) {
-		int memberId = (int) session.getAttribute("loginedMemberId");
+	public String showModify(HttpServletRequest req, String checkPasswordAuthCode, Model model) {
+		int memberId = (int) req.getAttribute("loginedMemberId");
 		ResultData checkValidCheckPasswordAuthCodeResultData = memberService.checkValidCheckPasswordAuthCode(memberId, checkPasswordAuthCode);
 
 		if (checkPasswordAuthCode == null || checkPasswordAuthCode.length() == 0) {
@@ -393,8 +390,8 @@ public class MemberController {
 	}
 
 	@RequestMapping("/usr/member/doModify")
-	public String doModify(String redirectUri, @RequestParam Map<String, Object> param, HttpSession session, Model model) {
-		int memberId = (int) session.getAttribute("loginedMemberId");
+	public String doModify(String redirectUri, @RequestParam Map<String, Object> param, HttpSession session, HttpServletRequest req, Model model) {
+		int memberId = (int) req.getAttribute("loginedMemberId");
 		Member member = memberService.getMemberById(memberId);
 		
 		String loginPwReal = (String) param.get("loginPwReal"); 
@@ -419,7 +416,6 @@ public class MemberController {
 			memberService.modify(param);
 			int id = Integer.parseInt((String) param.get("id"));
 			session.setAttribute("loginedMemberId", id);
-			session.setAttribute("loginedMember", memberService.getMemberById(id));
 		}
 		else {
 			model.addAttribute("historyBack", true);

@@ -23,5 +23,7 @@ public interface NovelDao {
 
 	void genDefaultNovel(Map<String, Object> param);
 
+	void genNovel(Map<String, Object> param);
+
 
 }

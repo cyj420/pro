@@ -116,9 +116,20 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 
 		List<Novel> novels = novelService.getNovels();
 		
+		boolean haveNovel = false; 
+		if(isLogined) {
+			for(int i=0; i<novels.size(); i++) {
+				if(novels.get(i).getMemberId() == loginedMemberId) {
+					haveNovel = true;
+				}
+			}
+		}
+		
 		request.setAttribute("boards", boards);
 		
 		request.setAttribute("novels", novels);
+		
+		request.setAttribute("haveNovel", haveNovel);
 
 		request.setAttribute("activeProfile", activeProfile);
 

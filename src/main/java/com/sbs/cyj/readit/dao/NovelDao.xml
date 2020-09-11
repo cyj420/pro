@@ -53,6 +53,16 @@
 		AND memberId = #{memberId};
 	</select>
 	
+	<insert id="genNovel" useGeneratedKeys="true" keyProperty="id" >
+		INSERT
+		INTO novel
+		SET regDate = NOW(),
+		updateDate = NOW(),
+		`name` = #{name},
+		cateId = #{cateId},
+		memberId = #{memberId};
+	</insert>
+	
 	<resultMap type="Novel" id="novel">
 		<id property="id" column="id" />
 		<id property="name" column="name" />

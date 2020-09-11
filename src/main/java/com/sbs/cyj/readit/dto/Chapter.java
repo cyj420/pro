@@ -18,7 +18,6 @@ public class Chapter {
 	private String delDate;
 	private boolean delStatus;
 	private boolean displayStatus;
-	private int cateId;
 	private int memberId;
 	private int novelId;
 	private Map<String, Object> extra;

@@ -40,8 +40,8 @@ public class NovelController {
 		Member member = memberService.getMemberById(memberId);
 		model.addAttribute("member", member);
 		
-		List<Category> categories = novelService.getCategories();
-		model.addAttribute("categories", categories);
+//		List<Category> categories = novelService.getCategories();
+//		model.addAttribute("categories", categories);
 		
 		List<Novel> novels = novelService.getNovelsByMemberId(memberId);
 		model.addAttribute("novels", novels);
@@ -54,7 +54,11 @@ public class NovelController {
 		int memberId = (int) req.getAttribute("loginedMemberId");
 		Member member = memberService.getMemberById(memberId);
 
+		int novelId = Integer.parseInt((String) param.get("novelId")); 
+		int cateId = novelService.getNovelById(novelId).getCateId();
+		
 		param.put("memberId", member.getId());
+		param.put("cateId", cateId);
 		
 		int id = chapterService.write(param);
 		
@@ -291,10 +295,6 @@ public class NovelController {
 	public String showGenNovel(Model model, String listUrl, HttpServletRequest req) {
 		model.addAttribute("listUrl", listUrl);
 		
-		System.out.println("=========================");
-		System.out.println("listUrl : "+listUrl);
-		System.out.println("=========================");
-		
 		int memberId = (int) req.getAttribute("loginedMemberId");
 		Member member = memberService.getMemberById(memberId);
 		model.addAttribute("member", member);
@@ -305,5 +305,21 @@ public class NovelController {
 		return "novel/genNovel";
 	}
 	
-	
+	// 소설 생성
+	@RequestMapping("usr/novel/doGenNovel")
+	public String doGenNovel(@RequestParam Map<String, Object> param, HttpServletRequest req, Model model) {
+		int memberId = (int) req.getAttribute("loginedMemberId");
+		
+		param.put("memberId", memberId);
+		
+		int id = novelService.genNovel(param);
+		
+		String redirectUri = (String) param.get("redirectUri");
+		redirectUri = redirectUri.replace("#id", id + "");
+
+		model.addAttribute("msg", String.format(id+"번째 시리즈를 생성하였습니다."));
+		model.addAttribute("redirectUri", redirectUri);
+		
+		return "common/redirect";
+	}
 }

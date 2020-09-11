@@ -327,3 +327,7 @@ CREATE TABLE category (
 #0908
 ALTER TABLE `novel`
 ADD COLUMN `seriesStatus` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
+
+#===========================================================
+#0911
+ALTER TABLE chapter DROP COLUMN cateId;

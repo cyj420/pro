@@ -10,7 +10,6 @@
 		updateDate = NOW(),
 		title = #{title},
 		`body` = #{body},
-		cateId = #{cateId},
 		memberId = #{memberId},
 		novelId = #{novelId};
 	</insert>
@@ -44,7 +43,6 @@
 		<id property="delDate" column="delDate" />
 		<id property="delStatus" column="delStatus" />
 		<id property="displayStatus" column="displayStatus" />
-		<id property="cateId" column="cateId" />
 		<id property="memberId" column="memberId" />
 		<id property="novelId" column="novelId" />
 		<association property="extra" javaType="map">

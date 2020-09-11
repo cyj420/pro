@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.sbs.cyj.readit.dao.NovelDao;
 import com.sbs.cyj.readit.dto.Category;
 import com.sbs.cyj.readit.dto.Novel;
+import com.sbs.cyj.readit.util.Util;
 
 @Service
 public class NovelService {
@@ -46,6 +47,14 @@ public class NovelService {
 
 	public void genDefaultNovel(Map<String, Object> param) {
 		novelDao.genDefaultNovel(param);
+	}
+
+	public int genNovel(Map<String, Object> param) {
+		novelDao.genNovel(param);
+		
+		int id = Util.getAsInt(param.get("id"));
+		
+		return id;
 	}
 
 
