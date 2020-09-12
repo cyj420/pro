@@ -84,8 +84,8 @@
 					<td>
 						<div>
 							<select name="seriesStatus">
-								<option value="true">장편</option>
-								<option value="false">단편</option>
+								<option value="1">장편</option>
+								<option value="0">단편</option>
 							</select>
 						</div>
 					</td>

@@ -57,5 +57,9 @@ public class NovelService {
 		return id;
 	}
 
+	public void delete(int id) {
+		novelDao.delete(id);
+	}
+
 
 }

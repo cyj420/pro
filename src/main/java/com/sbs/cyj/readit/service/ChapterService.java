@@ -30,4 +30,8 @@ public class ChapterService {
 	public List<Chapter> getChaptersByNovelId(int novelId) {
 		return chapterDao.getChaptersByNovelId(novelId);
 	}
+
+	public void deleteChaptersByNovelId(int novelId) {
+		chapterDao.deleteChaptersByNovelId(novelId);
+	}
 }

@@ -59,7 +59,8 @@
 		<id property="delDate" column="delDate" />
 		<id property="displayStatus" column="displayStatus" />
 		<id property="memberId" column="memberId" />
-		<id property="articleId" column="articleId" />
+		<id property="relType" column="relType" />
+		<id property="relId" column="relId" />
 		<id property="body" column="body" />
 		<association property="extra" javaType="map">
 			<id property="writer" column="extra__writer" />

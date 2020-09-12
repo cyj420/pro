@@ -331,3 +331,9 @@ ADD COLUMN `seriesStatus` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
 #===========================================================
 #0911
 ALTER TABLE chapter DROP COLUMN cateId;
+
+#===========================================================
+#0912
+ALTER TABLE `reply` DROP COLUMN `articleId`,
+ADD COLUMN `relType` CHAR(20) NOT NULL AFTER `memberID`,
+ADD COLUMN `relId` INT(10) UNSIGNED NOT NULL AFTER `relType`;

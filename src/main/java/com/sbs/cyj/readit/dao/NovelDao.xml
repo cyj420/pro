@@ -60,8 +60,18 @@
 		updateDate = NOW(),
 		`name` = #{name},
 		cateId = #{cateId},
-		memberId = #{memberId};
+		memberId = #{memberId},
+		seriesStatus = #{seriesStatus};
 	</insert>
+	
+	<update id="delete">
+		UPDATE novel
+		SET updateDate = NOW(),
+		delDate = NOW(),
+		delStatus = 1,
+		displayStatus = 0
+		WHERE id = #{id}
+	</update>
 	
 	<resultMap type="Novel" id="novel">
 		<id property="id" column="id" />

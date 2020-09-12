@@ -25,5 +25,7 @@ public interface NovelDao {
 
 	void genNovel(Map<String, Object> param);
 
+	void delete(int id);
+
 
 }

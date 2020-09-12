@@ -16,4 +16,6 @@ public interface ChapterDao {
 
 	List<Chapter> getChaptersByNovelId(int novelId);
 
+	void deleteChaptersByNovelId(int novelId);
+
 }

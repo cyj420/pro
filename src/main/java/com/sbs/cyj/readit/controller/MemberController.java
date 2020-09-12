@@ -251,9 +251,9 @@ public class MemberController {
 					param.put("memberId", id);
 					param.put("nickname", member.getNickname());
 					
-					if(!novelService.checkNovelExistByMemberId(id)) {
-						novelService.genDefaultNovel(param);
-					}
+//					if(!novelService.checkNovelExistByMemberId(id)) {
+//						novelService.genDefaultNovel(param);
+//					}
 				}
 				else {
 					String str = attrService.getValue("member__"+id+"__extra__mailAuthCode");

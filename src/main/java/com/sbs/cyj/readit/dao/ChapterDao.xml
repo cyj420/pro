@@ -34,6 +34,15 @@
 		WHERE novelId = #{novelId};
 	</select>
 	
+	<update id="deleteChaptersByNovelId">
+		UPDATE chapter
+		set updateDate = NOW(),
+		delDate = NOW(),
+		delStatus = 1,
+		displayStatus = 0
+		WHERE novelId = #{novelId};
+	</update>
+	
 	<resultMap type="Chapter" id="chapter">
 		<id property="id" column="id" />
 		<id property="title" column="title" />
