@@ -43,9 +43,6 @@ public class NovelController {
 		Member member = memberService.getMemberById(memberId);
 		model.addAttribute("member", member);
 
-//		List<Category> categories = novelService.getCategories();
-//		model.addAttribute("categories", categories);
-
 		List<Novel> novels = novelService.getNovelsByMemberId(memberId);
 		model.addAttribute("novels", novels);
 
@@ -74,6 +71,42 @@ public class NovelController {
 
 		return "common/redirect";
 	}
+	
+	// 챕터 삭제
+	@RequestMapping("usr/novel/{nickname}-doDeleteChapter")
+	public String doDeleteChapter(HttpServletRequest req, @PathVariable("nickname") String nickname, String listUrl, Model model) {
+		if (listUrl == null) {
+			listUrl = "./" + nickname + "-list";
+		}
+		model.addAttribute("listUrl", listUrl);
+		
+		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
+
+		int id = Integer.parseInt(req.getParameter("id"));
+		Chapter chapter = chapterService.getChapterById(id);
+		
+		List<Chapter> chapters = chapterService.getChaptersByNovelId(chapter.getNovelId());
+
+		if(loginedMemberId == chapter.getMemberId()) {
+			chapterService.deleteChapterById(id);
+
+			model.addAttribute("msg", "삭제되었습니다.");
+		}
+		else {
+			model.addAttribute("msg", "잘못된 접근입니다.");
+		}
+		
+		String redirectUri = listUrl;
+		
+		if(chapters.size()>0) {
+			redirectUri = listUrl+"?novelId="+chapter.getNovelId();
+		}
+
+		model.addAttribute("redirectUri", redirectUri);
+		
+		return "common/redirect";
+	}
+
 
 	// 게시글 리스트 (전체)
 	@RequestMapping("usr/novel/total-list")
@@ -280,7 +313,6 @@ public class NovelController {
 		return "novel/genNovel";
 	}
 
-	// 소설 생성
 	@RequestMapping("usr/novel/doGenNovel")
 	public String doGenNovel(@RequestParam Map<String, Object> param, HttpServletRequest req, Model model) {
 		int memberId = (int) req.getAttribute("loginedMemberId");

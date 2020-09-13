@@ -34,4 +34,8 @@ public class ChapterService {
 	public void deleteChaptersByNovelId(int novelId) {
 		chapterDao.deleteChaptersByNovelId(novelId);
 	}
+
+	public void deleteChapterById(int id) {
+		chapterDao.deleteChapterById(id);
+	}
 }

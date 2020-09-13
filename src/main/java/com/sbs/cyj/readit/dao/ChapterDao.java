@@ -18,4 +18,6 @@ public interface ChapterDao {
 
 	void deleteChaptersByNovelId(int novelId);
 
+	void deleteChapterById(int id);
+
 }

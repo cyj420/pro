@@ -76,20 +76,6 @@
 						</div>
 					</td>
 				</tr>
-				<%-- 
-				<tr>
-					<th>카테고리 선택</th>
-					<td>
-						<div>
-							<select name="cateId">
-								<c:forEach items="${categories}" var="c">
-									<option value="${c.id}">${c.name}</option>
-								</c:forEach>
-							</select>
-						</div>
-					</td>
-				</tr>
-				 --%>
 				<tr>
 					<th>내용</th>
 					<td>
