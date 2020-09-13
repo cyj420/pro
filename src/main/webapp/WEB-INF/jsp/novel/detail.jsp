@@ -78,7 +78,76 @@ img{
 			</c:if>
 			<tr>
 				<th>내용</th>
-				<td>${chapter.body}</td>
+				
+				<script>
+				var synth = window.speechSynthesis;
+
+				function SpeakForm__start(form) {
+				  form.body.value = form.body.value.trim();
+
+				  var bodyBitsOrigin = form.body.value.split('\n');
+				  var bodyBits = [];
+
+				  for ( var key in bodyBitsOrigin ) {
+				    var bodyBit = bodyBitsOrigin[key];
+				    bodyBit = bodyBit.trim();
+
+				    if ( bodyBit.length == 0 ) {
+				      continue;
+				    }
+
+				    bodyBits.push(bodyBit);
+				  }
+
+				  SpeakEngine__start(bodyBits);
+				}
+
+				var SpeakEngine__nowWork = false;
+				var SpeakEngine__bodyBits = [];
+				var SpeakEngine__bodyBitsCurrentIndex = -1;
+
+				function SpeakEngine__start(bodyBits) {
+				  if ( SpeakEngine__nowWork ) {
+				    return;
+				  }
+
+				  SpeakEngine__nowWork = true;
+
+				  SpeakEngine__bodyBits = bodyBits;
+				  SpeakEngine__bodyBitsCurrentIndex = 0;
+
+				  SpeakEngine__startNextPart();
+				}
+
+				function SpeakEngine__startNextPart() {
+				  var utterThis = new SpeechSynthesisUtterance(SpeakEngine__bodyBits[SpeakEngine__bodyBitsCurrentIndex]);
+				  
+				  utterThis.onend = function (event) {
+				    console.log('SpeechSynthesisUtterance.onend');
+				    SpeakEngine__bodyBitsCurrentIndex++;
+				    if ( SpeakEngine__bodyBitsCurrentIndex >= SpeakEngine__bodyBits.length ) {
+				      SpeakEngine__nowWork = false;
+				    }
+				    else {
+				      SpeakEngine__startNextPart();
+				    }
+				  }
+				  
+				  utterThis.onerror = function (event) {
+				    console.error('SpeechSynthesisUtterance.onerror');
+				    SpeakEngine__nowWork = false;
+				  }
+				  
+				  synth.speak(utterThis);
+				}
+				</script>
+				
+				<td>
+					<form action="" onsubmit="SpeakForm__start(this); return false;">
+						<textarea name="body" rows="30" cols="50" readonly="readonly">${chapter.body}</textarea>
+						<input type="submit" value="읽기">
+					</form>
+				</td>
 			</tr>
 		</tbody>
 	</table>
