@@ -87,6 +87,12 @@ public class NovelController {
 		
 		List<Chapter> chapters = chapterService.getChaptersByNovelId(chapter.getNovelId());
 
+		String redirectUri = listUrl;
+		
+		if(chapters.size()>1) {
+			redirectUri = listUrl+"?novelId="+chapter.getNovelId();
+		}
+
 		if(loginedMemberId == chapter.getMemberId()) {
 			chapterService.deleteChapterById(id);
 
@@ -95,18 +101,54 @@ public class NovelController {
 		else {
 			model.addAttribute("msg", "잘못된 접근입니다.");
 		}
-		
-		String redirectUri = listUrl;
-		
-		if(chapters.size()>0) {
-			redirectUri = listUrl+"?novelId="+chapter.getNovelId();
-		}
 
 		model.addAttribute("redirectUri", redirectUri);
 		
 		return "common/redirect";
 	}
 
+	// 챕터 수정
+	@RequestMapping("usr/novel/{nickname}-modifyChapter")
+	public String showModifyChapter(@PathVariable("nickname") String nickname, Model model, String listUrl, HttpServletRequest req) {
+		if (listUrl == null) {
+			listUrl = "./" + nickname + "-list";
+		}
+		model.addAttribute("listUrl", listUrl);
+		
+		int id = Integer.parseInt(req.getParameter("id"));
+		Chapter chapter = chapterService.getChapterById(id);
+		
+		int memberId = (int) req.getAttribute("loginedMemberId");
+		Member member = memberService.getMemberById(memberId);
+		model.addAttribute("member", member);
+
+		model.addAttribute("chapter", chapter);
+
+		return "novel/modifyChapter";
+	}
+	
+	@RequestMapping("usr/novel/{nickname}-doModifyChapter")
+	public String doModifyChapter(@RequestParam Map<String, Object> param, HttpServletRequest req,
+			@PathVariable("nickname") String nickname, Model model) {
+		int memberId = (int) req.getAttribute("loginedMemberId");
+		Member member = memberService.getMemberById(memberId);
+
+		int novelId = Integer.parseInt((String) param.get("novelId"));
+		int cateId = novelService.getNovelById(novelId).getCateId();
+
+		param.put("memberId", member.getId());
+		param.put("cateId", cateId);
+
+		int id = chapterService.modifyChapter(param);
+
+		String redirectUri = (String) param.get("redirectUri");
+		redirectUri = redirectUri.replace("#id", id + "");
+
+		model.addAttribute("msg", String.format(id + "번째 글을 수정하였습니다."));
+		model.addAttribute("redirectUri", redirectUri);
+
+		return "common/redirect";
+	}
 
 	// 게시글 리스트 (전체)
 	@RequestMapping("usr/novel/total-list")

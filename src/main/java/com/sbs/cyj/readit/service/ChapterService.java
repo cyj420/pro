@@ -38,4 +38,12 @@ public class ChapterService {
 	public void deleteChapterById(int id) {
 		chapterDao.deleteChapterById(id);
 	}
+
+	public int modifyChapter(Map<String, Object> param) {
+		chapterDao.modifyChapter(param);
+		
+		int id = Util.getAsInt(param.get("id"));
+		
+		return id;
+	}
 }

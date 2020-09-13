@@ -20,4 +20,6 @@ public interface ChapterDao {
 
 	void deleteChapterById(int id);
 
+	void modifyChapter(Map<String, Object> param);
+
 }

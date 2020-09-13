@@ -70,17 +70,9 @@ img{
 				<tr>
 					<th>비고</th>
 					<td>
-					<%-- <form method="post" action="${chapter.extra.writer}-doModifyChapter?id=${chapter.id}" method="post">
-						<input type="hidden" name="redirectUri" value="/usr/novel/${chapter.extra.writer}-list">
-						<button type="submit">수정</button>
-					</form> --%>
 					<a href="/usr/novel/${chapter.extra.writer}-modifyChapter?id=${chapter.id}">수정</a>
 					/
 					<a href="/usr/novel/${chapter.extra.writer}-doDeleteChapter?id=${chapter.id}" onclick="if ( confirm('정말 삭제하시겠습니까?') == false ) { return false; }">삭제</a>
-					<%-- <form method="post" action="${chapter.extra.writer}-doDeleteChapter?id=${chapter.id}" method="post">
-						<input type="hidden" name="redirectUri" value="/usr/novel/${chapter.extra.writer}-list">
-						<button type="submit" onclick="if ( confirm('정말 삭제하시겠습니까?') == false ) { return false; }">삭제</button>
-					</form> --%>
 					</td>
 				</tr>
 			</c:if>

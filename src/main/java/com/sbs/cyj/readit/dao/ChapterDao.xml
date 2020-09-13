@@ -52,6 +52,15 @@
 		WHERE id = #{id};
 	</update>
 	
+	<update id="modifyChapter">
+		UPDATE chapter
+		set updateDate = NOW(),
+		title = #{title},
+		body = #{body},
+		novelId = #{novelId}
+		WHERE id = #{id};
+	</update>
+	
 	<resultMap type="Chapter" id="chapter">
 		<id property="id" column="id" />
 		<id property="title" column="title" />
