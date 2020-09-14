@@ -21,11 +21,14 @@
 	</select>
 	
 	<select id="getNovels" resultMap="novel">
-		SELECT N.*, M.nickname AS extra__writer
+		SELECT N.*, M.nickname AS extra__writer, C.name AS extra__cateName
 		FROM novel AS N
 		INNER JOIN `member` AS M
+		INNER JOIN category AS C
 		ON N.memberId = M.id
 		AND N.displayStatus = 1
+		AND N.cateId = C.id
+		AND seriesStatus = 1
 		ORDER BY N.id DESC;
 	</select>
 	
@@ -90,6 +93,18 @@
 		seriesStatus = #{seriesStatus}
 		WHERE id = #{id};
 	</update>
+	
+	<select id="getNovelsByCateId" resultMap="novel">
+		SELECT N.*, M.nickname AS extra__writer, C.name AS extra__cateName
+		FROM novel AS N
+		INNER JOIN `member` AS M
+		INNER JOIN category AS C
+		ON N.memberId = M.id
+		AND N.displayStatus = 1
+		AND N.cateId = C.id
+		AND C.id = #{cateId}
+		ORDER BY N.id DESC;
+	</select>
 	
 	<resultMap type="Novel" id="novel">
 		<id property="id" column="id" />

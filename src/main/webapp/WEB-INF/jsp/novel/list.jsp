@@ -20,6 +20,7 @@
 				<th>날짜</th>
 				<th>작성자</th>
 				<c:if test="${chapters == null }">
+					<th>카테고리명</th>
 					<th>시리즈명</th>
 				</c:if>
 				<c:if test="${chapters != null }">
@@ -34,9 +35,8 @@
 						<td>${novel.id}</td>
 						<td>${novel.regDate}</td>
 						<td><a href="/usr/novel/${novel.extra.writer}-list">${novel.extra.writer}</a></td>
-						<td>
-							<a href="/usr/novel/${novel.extra.writer}-list?novelId=${novel.id}">${novel.name}</a>
-						</td>
+						<td>${novel.extra.cateName}</td>
+						<td><a href="/usr/novel/${novel.extra.writer}-list?novelId=${novel.id}">${novel.name}</a></td>
 					</tr>
 				</c:forEach>
 			</c:if>

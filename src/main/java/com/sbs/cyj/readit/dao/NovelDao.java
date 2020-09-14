@@ -31,5 +31,7 @@ public interface NovelDao {
 
 	void modifyNovel(Map<String, Object> param);
 
+	List<Novel> getNovelsByCateId(int cateId);
+
 
 }

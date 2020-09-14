@@ -78,5 +78,9 @@ public class NovelService {
 		return id;
 	}
 
+	public List<Novel> getNovelsByCateId(int cateId) {
+		return novelDao.getNovelsByCateId(cateId);
+	}
+
 	
 }
