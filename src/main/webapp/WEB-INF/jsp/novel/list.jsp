@@ -2,10 +2,15 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:if test="${chapters != null }">
-	<c:set var="pageTitle" value="[${nickname}] ${novel.name } 리스트" />
+	<c:set var="pageTitle" value="[${nickname}] 소설명 : ${novel.name }" />
 </c:if>
 <c:if test="${chapters == null }">
-	<c:set var="pageTitle" value="${nickname} 노벨 리스트" />
+	<c:if test="${nickname == null }">
+		<c:set var="pageTitle" value="전체 소설 리스트" />
+	</c:if>
+	<c:if test="${nickname != null }">
+		<c:set var="pageTitle" value="${nickname}의 소설 리스트" />
+	</c:if>
 </c:if>
 <%@ include file="../part/head.jspf"%>
 <div class="con">

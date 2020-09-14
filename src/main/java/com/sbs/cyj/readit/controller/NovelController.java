@@ -225,6 +225,7 @@ public class NovelController {
 //		}
 
 		model.addAttribute("novels", novels);
+		model.addAttribute("nickname", nickname);
 //		model.addAttribute("chapters", chapters);
 
 		return "novel/list";
