@@ -36,6 +36,7 @@ img{
 	box-sizing: border-box;
 	display: block;
 }
+
 </style>
 <div class="con">
 	<table>
@@ -145,6 +146,7 @@ img{
 				<td>
 					<form action="" onsubmit="SpeakForm__start(this); return false;">
 						<textarea name="body" rows="30" cols="50" readonly="readonly">${chapter.body}</textarea>
+						<br>
 						<input type="submit" value="읽기">
 					</form>
 				</td>
@@ -152,6 +154,24 @@ img{
 		</tbody>
 	</table>
 	<!-- 본문 END -->
+	<hr>
+	
+	<!-- 동일 시리즈 이전글/다음글 START -->
+	<c:if test="${chapter.extra.series == 1}">
+		<div>시리즈명 : <a href="/usr/novel/${chapter.extra.writer}-list?novelId=${chapter.novelId}">${novel.name}</a></div>
+		<c:if test="${preCh != null }">
+			<div>
+				이전글 : <a href="/usr/novel/${chapter.extra.writer}-detail?id=${preCh}">${preChName }</a>
+			</div>
+		</c:if>
+		<c:if test="${nextCh != null }">
+			<div>
+				다음글 : <a href="/usr/novel/${chapter.extra.writer}-detail?id=${nextCh}">${nextChName }</a>
+			</div>
+		</c:if>
+	</c:if>
+	<!-- 동일 시리즈 이전글/다음글 END -->
+	<hr>
 	
 	<!-- 댓글 작성 START -->
 	<c:if test="${loginedMember != null}">

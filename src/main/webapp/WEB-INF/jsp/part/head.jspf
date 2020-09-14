@@ -27,19 +27,43 @@
 <script>
 var param = ${paramJson};
 </script>
+<style>
+.logo {
+	width: 150px;
+}
+a:hover {
+	font-weight: bold;
+}
+.member-info {
+	position:absolute;
+	top:10px;
+	right:20px;
+	text-align: right;
+}
+.top-bar {
+	background: #B9DEED;
+	border-bottom: 3px solid black;
+}
+</style>
 </head>
 <body>
-
-<div class="con" style="background: #B9DEED;">
-	<c:if test="${loginedMember != null }">
-		<div>안녕하세요, ${loginedMember.nickname}님 </div>
-		<a href="/usr/member/checkPw">My Page</a>
-		<a href="/usr/member/doLogout?redirectUri=${requestUri}">로그아웃</a>
-	</c:if>
-	<c:if test="${loginedMember == null }">
-		<a href="/usr/member/join">회원가입</a>
-		<a href="/usr/member/login?redirectUri=${encodedAfterLoginUri}">로그인</a>
-	</c:if>
+<div class="con top-bar">
+	<div style="display:inline-block;">
+		<a href="/usr/home/main">
+			<img class="logo" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FpHPPu%2FbtqIwDvRLxf%2FA60ynr2h4fQb04JqSR5iKK%2Fimg.png">
+		</a>
+	</div>
+	<div class="member-info">
+		<c:if test="${loginedMember != null }">
+			<div>안녕하세요, ${loginedMember.nickname}님 </div>
+			<a href="/usr/member/checkPw">MyPage</a>
+			<a href="/usr/member/doLogout?redirectUri=${requestUri}">LOGOUT</a>
+		</c:if>
+		<c:if test="${loginedMember == null }">
+			<a href="/usr/member/join">JOIN</a>
+			<a href="/usr/member/login?redirectUri=${encodedAfterLoginUri}">LOGIN</a>
+		</c:if>
+	</div>
 	<div>
 	<a href="/usr/home/main">[HOME]</a>
 	<a href="/usr/novel/total-list">[Total List]</a>
@@ -63,5 +87,6 @@ var param = ${paramJson};
 	</c:if>
 	</div>
 </div>
+<div class="con">
 
 <h1>${pageTitle}</h1>

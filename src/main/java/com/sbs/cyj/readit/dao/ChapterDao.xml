@@ -31,7 +31,8 @@
 		INNER JOIN `member` AS M
 		ON M.id = C.memberId
 		AND C.displayStatus = 1
-		WHERE novelId = #{novelId};
+		WHERE novelId = #{novelId}
+		ORDER BY C.id DESC;
 	</select>
 	
 	<update id="deleteChaptersByNovelId">

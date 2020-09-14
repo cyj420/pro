@@ -123,6 +123,9 @@ public class NovelController {
 		model.addAttribute("member", member);
 
 		model.addAttribute("chapter", chapter);
+		
+		List<Novel> novels = novelService.getNovelsByMemberId(memberId);
+		model.addAttribute("novels", novels);
 
 		return "novel/modifyChapter";
 	}
@@ -246,47 +249,43 @@ public class NovelController {
 
 		if (novel.isSeriesStatus()) {
 			List<Chapter> chapters = chapterService.getChaptersByNovelId(novel.getId());
-			System.out.println("chapters.size() : " + chapters.size());
-			if (chapters.size() > 1) {
+			int size = chapters.size();
+			
+			if (size > 1) {
+				model.addAttribute("novel", novel);
 				model.addAttribute("chapters", chapters);
+				
+				int ch = 0;
+				int preCh = 0;
+				int nextCh = 0;
+				
+				for(int i=0; i<size; i++) {
+					if(chapters.get(size-i-1).getId() == chapter.getId()) {
+						ch = i+1;
+						if(i != 0) {
+							preCh = chapters.get(size-i).getId();
+							String preChName = chapters.get(size-i).getTitle();
+							model.addAttribute("preCh", preCh);
+							model.addAttribute("preChName", preChName);
+						}
+						if(i != size-1) {
+							nextCh = chapters.get(size-i-2).getId();
+							String nextChName = chapters.get(size-i-2).getTitle();
+							model.addAttribute("nextCh", nextCh);
+							model.addAttribute("nextChName", nextChName);
+						}
+					}
+				}
+				model.addAttribute("size", size);
+				model.addAttribute("ch", ch);
 			}
 		}
 
 		model.addAttribute("chapter", chapter);
 
-//		if(series != null) {
-//			model.addAttribute("series", series);
-//	
-//			// 동일 시리즈 이전글 다음글을 위함
-//			List<Article> articles = articleService.getArticlesBySeriesId(series.getId());
-//			int size = articles.size();
-//			int ch = 0;
-//			int preCh = 0;
-//			int nextCh = 0;
-//			for(int i=0; i<size; i++) {
-//				if(articles.get(size-i-1).getId() == article.getId()) {
-//					ch = i+1;
-//					if(i != 0) {
-//						preCh = articles.get(size-i).getId();
-//						String preChName = articles.get(size-i).getTitle();
-//						model.addAttribute("preCh", preCh);
-//						model.addAttribute("preChName", preChName);
-//					}
-//					if(i != size-1) {
-//						nextCh = articles.get(size-i-2).getId();
-//						String nextChName = articles.get(size-i-2).getTitle();
-//						model.addAttribute("nextCh", nextCh);
-//						model.addAttribute("nextChName", nextChName);
-//					}
-//				}
-//			}
-//			model.addAttribute("size", size);
-//			model.addAttribute("ch", ch);
-//		}
-
 		return "novel/detail";
 	}
-//	
+
 	// 소설 삭제
 	@RequestMapping("usr/novel/{nickname}-doDelete")
 	public String doDelete(@RequestParam Map<String, Object> param, HttpServletRequest req, @PathVariable("nickname") String nickname, String listUrl, Model model) {
@@ -310,6 +309,53 @@ public class NovelController {
 		model.addAttribute("msg", "삭제되었습니다.");
 		model.addAttribute("redirectUri", redirectUri);
 		
+		return "common/redirect";
+	}
+	
+	// 소설 수정
+	@RequestMapping("usr/novel/{nickname}-modify")
+	public String showModifyNovel(@PathVariable("nickname") String nickname, Model model, String listUrl, HttpServletRequest req) {
+		if (listUrl == null) {
+			listUrl = "./" + nickname + "-list";
+		}
+		model.addAttribute("listUrl", listUrl);
+		
+		int id = Integer.parseInt(req.getParameter("id"));
+		Novel novel = novelService.getNovelById(id);
+		
+		int memberId = (int) req.getAttribute("loginedMemberId");
+		Member member = memberService.getMemberById(memberId);
+		model.addAttribute("member", member);
+		
+		List<Category> categories = novelService.getCategories();
+		model.addAttribute("categories", categories);
+
+		model.addAttribute("novel", novel);
+
+		return "novel/modifyNovel";
+	}
+	
+	@RequestMapping("usr/novel/{nickname}-doModify")
+	public String doModifyNovel(@RequestParam Map<String, Object> param, HttpServletRequest req,
+			@PathVariable("nickname") String nickname, Model model) {
+		int memberId = (int) req.getAttribute("loginedMemberId");
+		
+		int writerId = memberService.getMemberByNickname(nickname).getId();
+
+		if(memberId == writerId) {
+			int id = novelService.modifyNovel(param);
+	
+			String redirectUri = (String) param.get("redirectUri");
+			redirectUri = redirectUri.replace("#id", id + "");
+
+			model.addAttribute("msg", String.format(id + "번째 노벨을 수정하였습니다."));
+			model.addAttribute("redirectUri", redirectUri);
+		}
+		else {
+			model.addAttribute("msg", "잘못된 접근입니다.");
+			model.addAttribute("redirectUri", "/home/main");
+		}
+
 		return "common/redirect";
 	}
 
@@ -372,7 +418,18 @@ public class NovelController {
 		return "common/redirect";
 	}
 
-	// 자동으로 제목 체크
+	// ajax - 소설 제목 중복 방지
+	@RequestMapping("/usr/novel/getNameDup")
+	@ResponseBody
+	public ResultData doGetNameDup(@RequestParam String name, Model model) {
+		if (novelService.isExistsNameDup(name)) {
+			return new ResultData("F-1", String.format("이미 존재하는 소설 제목입니다."), name);
+		} else {
+			return new ResultData("S-1", String.format("사용할 수 있는 소설 제목입니다."), name);
+		}
+	}
+	
+	// ajax - 자동 제목 생성
 	@RequestMapping("/usr/novel/getAutoNovelTitle")
 	@ResponseBody
 	public ResultData doGetAutoNovelTitle(@RequestParam int novelId, Model model) {

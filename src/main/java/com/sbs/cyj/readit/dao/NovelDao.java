@@ -27,5 +27,9 @@ public interface NovelDao {
 
 	void delete(int id);
 
+	Novel isExistsNameDup(String name);
+
+	void modifyNovel(Map<String, Object> param);
+
 
 }

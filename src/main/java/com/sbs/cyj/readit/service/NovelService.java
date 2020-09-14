@@ -61,5 +61,22 @@ public class NovelService {
 		novelDao.delete(id);
 	}
 
+	public boolean isExistsNameDup(String name) {
+		Novel novel = novelDao.isExistsNameDup(name);
+		
+		if(novel != null) {
+			return true;
+		}
+		return false;
+	}
 
+	public int modifyNovel(Map<String, Object> param) {
+		novelDao.modifyNovel(param);
+		
+		int id = Util.getAsInt(param.get("id"));
+		
+		return id;
+	}
+
+	
 }

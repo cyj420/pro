@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="pageTitle" value="${nickname} 소설 작성" />
+<c:set var="pageTitle" value="${nickname} 챕터 작성" />
 <%@ include file="../part/head.jspf"%>
 <script>
 	function NovelWriteForm__submit(form) {
@@ -80,7 +80,7 @@
 					<th>내용</th>
 					<td>
 						<div>
-							<input type="text" placeholder="내용을 입력해주세요." name="body"/>
+							<textarea name="body" rows="30" cols="50" placeholder="내용을 입력해주세요."></textarea>
 						</div>
 					</td>
 				</tr>

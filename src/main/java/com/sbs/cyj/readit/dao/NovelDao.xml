@@ -16,7 +16,8 @@
 		ON N.memberId = M.id
 		AND N.displayStatus = 1
 		AND N.cateId = C.id
-		AND M.id = #{memberId};
+		AND M.id = #{memberId}
+		ORDER BY N.id DESC;
 	</select>
 	
 	<select id="getNovels" resultMap="novel">
@@ -24,7 +25,8 @@
 		FROM novel AS N
 		INNER JOIN `member` AS M
 		ON N.memberId = M.id
-		AND N.displayStatus = 1;
+		AND N.displayStatus = 1
+		ORDER BY N.id DESC;
 	</select>
 	
 	<insert id="genDefaultNovel" useGeneratedKeys="true" keyProperty="id" >
@@ -70,7 +72,23 @@
 		delDate = NOW(),
 		delStatus = 1,
 		displayStatus = 0
-		WHERE id = #{id}
+		WHERE id = #{id};
+	</update>
+	
+	<select id="isExistsNameDup" resultMap="novel">
+		SELECT *
+		FROM novel
+		WHERE displayStatus = 1
+		AND name = #{name};
+	</select>
+	
+	<update id="modifyNovel">
+		UPDATE novel
+		SET updateDate = NOW(),
+		name = #{name},
+		cateId = #{cateId},
+		seriesStatus = #{seriesStatus}
+		WHERE id = #{id};
 	</update>
 	
 	<resultMap type="Novel" id="novel">

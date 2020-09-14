@@ -5,7 +5,7 @@
 <%@ include file="../part/head.jspf"%>
 <div class="con">
 	<form method="post" action="${board.code}-doAddArticleIntoSeries" method="post" onsubmit="SeriesAddForm__submit(this); return false;">
-		<table>
+		<table class="table-list">
 			<colgroup>
 				<col width="100" />
 				<col width="200" />

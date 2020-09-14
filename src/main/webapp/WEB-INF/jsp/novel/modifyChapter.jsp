@@ -65,7 +65,7 @@
 					<th>내용</th>
 					<td>
 						<div>
-							<input type="text" value="${chapter.body }" name="body"/>
+							<textarea name="body" rows="30" cols="50" >${chapter.body }</textarea>
 						</div>
 					</td>
 				</tr>
@@ -73,6 +73,7 @@
 					<th>전송</th>
 					<td>
 						<button type="submit">수정</button>
+						<a href="/usr/novel/${chapter.extra.writer }-detail?id=${chapter.id }">취소</a>
 					</td>
 				</tr>
 			</tbody>

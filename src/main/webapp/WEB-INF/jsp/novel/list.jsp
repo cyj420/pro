@@ -9,7 +9,7 @@
 </c:if>
 <%@ include file="../part/head.jspf"%>
 <div class="con">
-	<table>
+	<table class="table-list">
 		<colgroup>
 			<col width="100" />
 			<col width="200" />

@@ -60,6 +60,8 @@
 			'json'
 		);
 	}
+
+	NovelGenForm__checkNameDup = _.debounce(NovelGenForm__checkNameDup, 500);
 </script>
 <div class="con">
 	<form method="post" action="doGenNovel" method="post" onsubmit="NovelGenForm__submit(this); return false;" >
