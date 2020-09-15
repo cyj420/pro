@@ -46,4 +46,8 @@ public class ChapterService {
 		
 		return id;
 	}
+
+	public List<Chapter> getChapters() {
+		return chapterDao.getChapters();
+	}
 }

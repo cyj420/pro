@@ -69,9 +69,21 @@
 					<td>
 						<div>
 							<select name="novelId" onchange="NovelWriteForm__getAutoNovelTitle(this);">
-								<c:forEach items="${novels}" var="n">
-									<option value="${n.id}">${n.name}</option>
-								</c:forEach>
+								<c:if test="${novel == null }">
+									<c:forEach items="${novels}" var="n">
+										<option value="${n.id}">${n.name}</option>
+									</c:forEach>
+								</c:if>
+								<c:if test="${novel != null }">
+									<c:forEach items="${novels}" var="n">
+										<c:if test="${novel.id == n.id }">
+											<option value="${n.id}" selected="selected">${n.name}</option>
+										</c:if>
+										<c:if test="${novel.id != n.id }">
+											<option value="${n.id}" >${n.name}</option>
+										</c:if>
+									</c:forEach>
+								</c:if>
 							</select>
 						</div>
 					</td>

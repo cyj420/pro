@@ -28,11 +28,11 @@
 var param = ${paramJson};
 </script>
 <style>
-.logo {
+.logo img{
 	width: 150px;
 }
-a:hover {
-	font-weight: bold;
+.member-info a:hover {
+	color: red;
 }
 .member-info {
 	position:absolute;
@@ -44,13 +44,14 @@ a:hover {
 	background: #B9DEED;
 	border-bottom: 3px solid black;
 }
+
 </style>
 </head>
 <body>
 <div class="con top-bar">
-	<div style="display:inline-block;">
+	<div class="logo">
 		<a href="/usr/home/main">
-			<img class="logo" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FpHPPu%2FbtqIwDvRLxf%2FA60ynr2h4fQb04JqSR5iKK%2Fimg.png">
+			<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FpHPPu%2FbtqIwDvRLxf%2FA60ynr2h4fQb04JqSR5iKK%2Fimg.png">
 		</a>
 	</div>
 	<div class="member-info">
@@ -65,26 +66,54 @@ a:hover {
 		</c:if>
 	</div>
 	<div>
-	<a href="/usr/home/main">[HOME]</a>
-	<a href="/usr/novel/total-list">[Total List]</a>
-	<c:if test="${loginedMember.authStatus == true}">
-		<a href="/usr/novel/${loginedMember.nickname}-setUp">[My Novel SetUp]</a>
-		<c:if test="${haveNovel}">
-			<a href="/usr/novel/${loginedMember.nickname}-list">[My Novel List]</a>
-			<a href="/usr/novel/${loginedMember.nickname}-write">[Chapter Write]</a>
-		</c:if>
-	</c:if>
-	
-	<c:forEach items="${boards}" var="b">
-		<a href="/usr/article/${b.code}-list">[${b.name }-LIST]</a>
-	</c:forEach>
-	<c:if test="${loginedMember != null }">
-		<c:forEach items="${boards}" var="b">
-			<c:if test="${boardCode == b.code }">
-			<a href="/usr/article/${b.code}-write">[${b.name }-WRITE]</a>
-			</c:if>
-		</c:forEach>
-	</c:if>
+		<nav class="menu-box">
+			<ul class="flex height-100p">
+				<li>
+					<a href="/usr/home/main">[Home]</a>
+				</li>
+				<li class="has-list">
+					<ul><a href="#">[Total List]</a>
+						<li>
+							<a href="/usr/novel/total-list?mode=novel">Novel</a>
+						</li>
+						<li>
+							<a href="/usr/novel/total-list?mode=chapter">Chapter</a>
+						</li>
+					</ul>
+				</li>
+				<c:if test="${loginedMember.authStatus == true}">
+					<li class="has-list">
+						<ul><a href="#">[My Novel]</a>
+							<li>
+								<a href="/usr/novel/${loginedMember.nickname}-setUp">Set Up</a>
+							</li>
+							<c:if test="${haveNovel}">
+								<li>
+									<a href="/usr/novel/${loginedMember.nickname}-list">Novel List</a>
+								</li>
+								<li>
+									<a href="/usr/novel/${loginedMember.nickname}-write">Chapter Write</a>
+								</li>
+							</c:if>
+						</ul>
+					</li>
+				</c:if>
+				<c:forEach items="${boards}" var="b">
+					<li>
+						<a href="/usr/article/${b.code}-list">[${b.name }]</a>
+					</li>
+				</c:forEach>
+				<c:if test="${loginedMember != null }">
+					<li>
+						<c:forEach items="${boards}" var="b">
+							<c:if test="${boardCode == b.code }">
+							<a href="/usr/article/${b.code}-write">[${b.name }-WRITE]</a>
+							</c:if>
+						</c:forEach>
+					</li>
+				</c:if>
+			</ul>
+		</nav>
 	</div>
 </div>
 <div class="con">

@@ -59,7 +59,7 @@ img{
 				<tr>
 					<th>시리즈명</th>
 					<td>
-					<a href="/usr/novel/${chapter.extra.writer}-list?novelId=${chapter.novelId}">${chapter.extra.novelName}</a>
+					<a href="/usr/novel/${chapter.extra.writer}-list?novelId=${chapter.novelId}">${chapter.extra.novelName}</a> [${ch}/${size}]
 					</td>
 				</tr>
 			</c:if>
@@ -78,8 +78,6 @@ img{
 				</tr>
 			</c:if>
 			<tr>
-				<th>내용</th>
-				
 				<script>
 				var synth = window.speechSynthesis;
 
@@ -143,13 +141,14 @@ img{
 				}
 				</script>
 				
-				<td>
-					<form action="" onsubmit="SpeakForm__start(this); return false;">
-						<textarea name="body" rows="30" cols="50" readonly="readonly">${chapter.body}</textarea>
-						<br>
+				<form action="" onsubmit="SpeakForm__start(this); return false;">
+					<th>내용<br>
 						<input type="submit" value="읽기">
-					</form>
-				</td>
+					</th>
+					<td>
+						<textarea name="body" rows="30" cols="50" readonly="readonly">${chapter.body}</textarea>
+					</td>
+				</form>
 			</tr>
 		</tbody>
 	</table>

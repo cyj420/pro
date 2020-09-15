@@ -22,4 +22,6 @@ public interface ChapterDao {
 
 	void modifyChapter(Map<String, Object> param);
 
+	List<Chapter> getChapters();
+
 }

@@ -45,6 +45,14 @@ public class NovelController {
 
 		List<Novel> novels = novelService.getNovelsByMemberId(memberId);
 		model.addAttribute("novels", novels);
+		
+		if (req.getParameter("novelId") != null) {
+			String strNovelId = req.getParameter("novelId");
+			int novelId = Integer.parseInt(strNovelId);
+
+			Novel novel = novelService.getNovelById(novelId);
+			model.addAttribute("novel", novel);
+		}
 
 		return "novel/write";
 	}
@@ -162,11 +170,19 @@ public class NovelController {
 		}
 		model.addAttribute("listUrl", listUrl);
 
-		List<Novel> novels = novelService.getNovels();
+		if (req.getParameter("mode") != null) {
+			String str = req.getParameter("mode");
 
-		model.addAttribute("novels", novels);
-
-		return "novel/list";
+			if(str.equals("novel")) {
+				List<Novel> novels = novelService.getNovels();
+				model.addAttribute("novels", novels);
+			}
+			else if(str.equals("chapter")) {
+				List<Chapter> chapters = chapterService.getChapters();
+				model.addAttribute("chapters", chapters);
+			}
+		}
+		return "novel/totalList";
 	}
 
 	// 소설 리스트
@@ -192,6 +208,7 @@ public class NovelController {
 
 			Novel novel = novelService.getNovelById(novelId);
 			model.addAttribute("novel", novel);
+			model.addAttribute("novelId", novelId);
 		}
 //		List<Chapter> chapters = chapterService.getChaptersByNovelId(novelId);
 
@@ -226,6 +243,7 @@ public class NovelController {
 
 		model.addAttribute("novels", novels);
 		model.addAttribute("nickname", nickname);
+		model.addAttribute("loginedMemberId", (int) req.getAttribute("loginedMemberId"));
 //		model.addAttribute("chapters", chapters);
 
 		return "novel/list";

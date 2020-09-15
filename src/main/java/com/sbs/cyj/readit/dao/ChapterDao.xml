@@ -62,6 +62,17 @@
 		WHERE id = #{id};
 	</update>
 	
+	<select id="getChapters" resultMap="chapter">
+		SELECT C.*, M.nickname AS extra__writer, N.name AS extra__novelName
+		FROM chapter AS C
+		INNER JOIN `member` AS M
+		INNER JOIN novel AS N
+		ON M.id = C.memberId
+		AND C.novelId = N.id
+		AND C.displayStatus = 1
+		ORDER BY C.id DESC;
+	</select>
+	
 	<resultMap type="Chapter" id="chapter">
 		<id property="id" column="id" />
 		<id property="title" column="title" />
