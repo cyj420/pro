@@ -35,5 +35,7 @@ public interface NovelDao {
 
 	void updateTotalHitByNovelId(int novelId, int totalHit);
 
+	List<Novel> getNovelsBySearchKeyword(String searchKeyword);
+
 
 }

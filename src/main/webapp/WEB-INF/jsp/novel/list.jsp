@@ -11,6 +11,16 @@
 </c:if>
 <%@ include file="../part/head.jspf"%>
 <div class="con">
+	<form action="/usr/novel/${nickname}-list">
+		<c:if test="${param.mode == 'chapter'}">
+			<input type="hidden" name="mode" value="novel"/>
+			<button type="submit">소설 별 보기</button>
+		</c:if>
+		<c:if test="${param.mode != 'chapter'}">
+			<input type="hidden" name="mode" value="chapter"/>
+			<button type="submit">챕터 별 보기</button>
+		</c:if>
+	</form>
 	<table class="table-list">
 		<colgroup>
 			<col width="100" />
@@ -71,5 +81,34 @@
 			<a href="/usr/novel/${nickname}-write?novelId=${novel.id}">챕터 작성</a>
 		</button>
 	</c:if>
+	
+	<!-- 검색 시작 -->
+	<div class="con search-box flex flex-jc-c">
+		<form action="/usr/novel/${nickname}-list">
+			<input type="hidden" name="mode" value="${param.mode }"/>
+			<!-- 
+			<input type="hidden" name="page" value="1" />
+			-->
+			<select name="searchKeywordType" type="hidden" >
+				<c:if test="${param.searchKeywordType == null }">
+					<option value="name">소설 제목</option>
+					<c:if test="${chapters != null }">
+						<option value="title">챕터 제목</option>
+					</c:if>
+				</c:if>
+				<c:if test="${param.searchKeywordType != null }">
+					<option value="name">소설 제목</option>
+					<c:if test="${param.searchKeywordType == 'title' }">
+						<c:if test="${chapters != null }">
+							<option value="title" selected="selected">챕터 제목</option>
+						</c:if>
+					</c:if>
+				</c:if>
+			</select> 
+			<input type="text" name="searchKeyword" value="${param.searchKeyword}" />
+			<button type="submit">검색</button>
+		</form>
+	</div>
+	<!-- 검색 끝 -->
 </div>
 <%@ include file="../part/foot.jspf"%>

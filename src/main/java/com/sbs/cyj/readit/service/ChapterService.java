@@ -54,4 +54,8 @@ public class ChapterService {
 	public void updateHitByChapterId(int id) {
 		chapterDao.updateHitByChapterId(id);
 	}
+
+	public List<Chapter> getChaptersBySearchKeywordAndSearchKeywordType(String searchKeyword, String searchKeywordType) {
+		return chapterDao.getChaptersBySearchKeywordAndSearchKeywordType(searchKeyword, searchKeywordType);
+	}
 }

@@ -80,6 +80,19 @@
 		WHERE id = #{id};
 	</update>
 	
+	<select id="getChaptersBySearchKeywordAndSearchKeywordType" resultMap="chapter">
+		SELECT C.*, M.nickname AS extra__writer, N.name AS extra__novelName
+		FROM chapter AS C
+		INNER JOIN `member` AS M
+		INNER JOIN novel AS N
+		ON M.id = C.memberId
+		AND C.novelId = N.id
+		AND C.displayStatus = 1
+		<if test="searchKeywordType == 'title'">AND C.title LIKE CONCAT('%', #{searchKeyword}, '%')</if>
+		<if test="searchKeywordType == 'name'">AND N.name LIKE CONCAT('%', #{searchKeyword}, '%')</if>
+		ORDER BY C.id DESC;
+	</select>
+	
 	<resultMap type="Chapter" id="chapter">
 		<id property="id" column="id" />
 		<id property="title" column="title" />

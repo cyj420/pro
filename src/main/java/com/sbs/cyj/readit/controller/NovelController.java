@@ -174,7 +174,15 @@ public class NovelController {
 			String str = req.getParameter("mode");
 
 			if(str.equals("novel")) {
-				List<Novel> novels = novelService.getNovels();
+				List<Novel> novels = null;
+				
+				if(req.getParameter("searchKeyword") == null) {
+					novels = novelService.getNovels();
+				}
+				else {
+					String searchKeyword = req.getParameter("searchKeyword");
+					novels = novelService.getNovelsBySearchKeyword(searchKeyword);
+				}
 				
 				// 노벨 조회수
 				for(int i=0; i<novels.size(); i++) {
@@ -190,14 +198,32 @@ public class NovelController {
 				}
 				
 				// novels를 다시 불러오는 이유: hit의 최신화
-				novels = novelService.getNovels();
+				if(req.getParameter("searchKeyword") == null) {
+					novels = novelService.getNovels();
+				}
+				else {
+					String searchKeyword = req.getParameter("searchKeyword");
+					novels = novelService.getNovelsBySearchKeyword(searchKeyword);
+				}
 				model.addAttribute("novels", novels);
 			}
 			else if(str.equals("chapter")) {
 				List<Chapter> chapters = chapterService.getChapters();
+				
+				if(req.getParameter("searchKeyword") == null) {
+					chapters = chapterService.getChapters();
+				}
+				else {
+					String searchKeywordType = req.getParameter("searchKeywordType");
+					String searchKeyword = req.getParameter("searchKeyword");
+					
+					chapters = chapterService.getChaptersBySearchKeywordAndSearchKeywordType(searchKeyword, searchKeywordType);
+				}
+				
 				model.addAttribute("chapters", chapters);
 			}
 		}
+		
 		return "novel/totalList";
 	}
 
@@ -215,6 +241,16 @@ public class NovelController {
 
 		List<Novel> novels = novelService.getNovelsByMemberId(memberId);
 
+		if (req.getParameter("mode") != null) {
+			String mode = req.getParameter("mode");
+			
+			if(mode.equals("chapter")) {
+				// 챕터 별 보기일 때의 코드
+			}
+			else {
+				// 소설 별 보기일 때의 코드
+			}
+		}
 		if (req.getParameter("novelId") != null) {
 			String strNovelId = req.getParameter("novelId");
 			int novelId = Integer.parseInt(strNovelId);
@@ -235,36 +271,6 @@ public class NovelController {
 			model.addAttribute("novel", novel);
 			model.addAttribute("novelId", novelId);
 		}
-//		List<Chapter> chapters = chapterService.getChaptersByNovelId(novelId);
-
-//		if(req.getParameter("memberId")!=null && req.getParameter("cateId")!=null) {
-//			String strMemberId = req.getParameter("memberId");
-//			int memberId = Integer.parseInt(strMemberId);
-//			String strCateId = req.getParameter("cateId");
-//			int cateId = Integer.parseInt(strCateId);
-//			novels = novelService.getArticlesByMemberIdAndCateId(memberId, cateId);
-//			int selectMode = 1;
-//			model.addAttribute("selectMode", selectMode);
-//		}
-//		else if(req.getParameter("memberId")!=null) {
-//			str = req.getParameter("memberId");
-//			int memberId = Integer.parseInt(str);
-//			articles = articleService.getArticlesByMemberIdAndBoardId(memberId, boardId);
-//		}
-//		else if(req.getParameter("seriesId")!=null) {
-//			str = req.getParameter("seriesId");
-//			int seriesId = Integer.parseInt(str);
-//			articles = articleService.getArticlesBySeriesId(seriesId);
-//			series = seriesService.getSeriesById(seriesId);
-//		}
-//		else if(req.getParameter("cateId")!=null) {
-//			str = req.getParameter("cateId");
-//			int cateId = Integer.parseInt(str);
-//			articles = articleService.getArticlesByCateId(cateId);
-//		}
-//		else {
-//			articles = articleService.getArticlesByBoardId(boardId);
-//		}
 
 		// 노벨 조회수
 		for(int i=0; i<novels.size(); i++) {

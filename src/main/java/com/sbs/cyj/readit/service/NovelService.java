@@ -86,5 +86,9 @@ public class NovelService {
 		novelDao.updateTotalHitByNovelId(novelId, totalHit);
 	}
 
+	public List<Novel> getNovelsBySearchKeyword(String searchKeyword) {
+		return novelDao.getNovelsBySearchKeyword(searchKeyword);
+	}
+
 	
 }

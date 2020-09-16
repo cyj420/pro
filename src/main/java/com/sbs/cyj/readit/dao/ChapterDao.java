@@ -26,4 +26,6 @@ public interface ChapterDao {
 
 	void updateHitByChapterId(int id);
 
+	List<Chapter> getChaptersBySearchKeywordAndSearchKeywordType(String searchKeyword, String searchKeywordType);
+
 }
