@@ -23,4 +23,6 @@ public interface ArticleDao {
 	void modify(Map<String, Object> param);
 
 	List<Article> getArticlesByMemberId(int memberId);
+
+	void updateHitByArticleId(int id);
 }

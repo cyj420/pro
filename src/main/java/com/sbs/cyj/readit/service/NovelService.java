@@ -82,5 +82,9 @@ public class NovelService {
 		return novelDao.getNovelsByCateId(cateId);
 	}
 
+	public void updateTotalHitByNovelId(int novelId, int totalHit) {
+		novelDao.updateTotalHitByNovelId(novelId, totalHit);
+	}
+
 	
 }

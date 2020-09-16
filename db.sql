@@ -337,3 +337,14 @@ ALTER TABLE chapter DROP COLUMN cateId;
 ALTER TABLE `reply` DROP COLUMN `articleId`,
 ADD COLUMN `relType` CHAR(20) NOT NULL AFTER `memberID`,
 ADD COLUMN `relId` INT(10) UNSIGNED NOT NULL AFTER `relType`;
+
+#===========================================================
+#0916
+ALTER TABLE `article`
+ADD COLUMN hit INT(10) UNSIGNED NOT NULL DEFAULT 0;
+
+ALTER TABLE `chapter`
+ADD COLUMN hit INT(10) UNSIGNED NOT NULL DEFAULT 0;
+
+ALTER TABLE `novel`
+ADD COLUMN totalHit INT(10) UNSIGNED NOT NULL DEFAULT 0;

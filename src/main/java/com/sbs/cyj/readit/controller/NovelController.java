@@ -175,6 +175,22 @@ public class NovelController {
 
 			if(str.equals("novel")) {
 				List<Novel> novels = novelService.getNovels();
+				
+				// 노벨 조회수
+				for(int i=0; i<novels.size(); i++) {
+					int totalHit = 0;
+					
+					List<Chapter> chapters = chapterService.getChaptersByNovelId(novels.get(i).getId());
+					
+					for(int j=0; j<chapters.size(); j++) {
+						totalHit += chapters.get(j).getHit();
+					}
+					
+					novelService.updateTotalHitByNovelId(novels.get(i).getId(), totalHit);
+				}
+				
+				// novels를 다시 불러오는 이유: hit의 최신화
+				novels = novelService.getNovels();
 				model.addAttribute("novels", novels);
 			}
 			else if(str.equals("chapter")) {
@@ -205,6 +221,15 @@ public class NovelController {
 
 			List<Chapter> chapters = chapterService.getChaptersByNovelId(novelId);
 			model.addAttribute("chapters", chapters);
+			
+			int totalHit = 0;
+			
+			for(int i=0; i<chapters.size(); i++) {
+				totalHit += chapters.get(i).getHit();
+			}
+			
+			// 노벨 조회수
+			novelService.updateTotalHitByNovelId(novelId, totalHit);
 
 			Novel novel = novelService.getNovelById(novelId);
 			model.addAttribute("novel", novel);
@@ -241,6 +266,21 @@ public class NovelController {
 //			articles = articleService.getArticlesByBoardId(boardId);
 //		}
 
+		// 노벨 조회수
+		for(int i=0; i<novels.size(); i++) {
+			int totalHit = 0;
+			
+			List<Chapter> chapters = chapterService.getChaptersByNovelId(novels.get(i).getId());
+			
+			for(int j=0; j<chapters.size(); j++) {
+				totalHit += chapters.get(j).getHit();
+			}
+			
+			novelService.updateTotalHitByNovelId(novels.get(i).getId(), totalHit);
+		}
+		
+		// novels를 다시 불러오는 이유: hit의 최신화
+		novels = novelService.getNovelsByMemberId(memberId);
 		model.addAttribute("novels", novels);
 		model.addAttribute("nickname", nickname);
 		model.addAttribute("loginedMemberId", (int) req.getAttribute("loginedMemberId"));
@@ -262,6 +302,10 @@ public class NovelController {
 		model.addAttribute("loginedMember", loginedMember);
 
 		int id = Integer.parseInt((String) param.get("id"));
+		
+		// 조회수
+		chapterService.updateHitByChapterId(id);
+		
 		Chapter chapter = chapterService.getChapterById(id);
 		
 		Novel novel = novelService.getNovelById(chapter.getNovelId());

@@ -33,5 +33,7 @@ public interface NovelDao {
 
 	List<Novel> getNovelsByCateId(int cateId);
 
+	void updateTotalHitByNovelId(int novelId, int totalHit);
+
 
 }

@@ -88,4 +88,8 @@ public class ArticleService {
 		return articleDao.getArticlesByMemberId(memberId);
 	}
 
+	public void updateHitByArticleId(int id) {
+		articleDao.updateHitByArticleId(id);
+	}
+
 }

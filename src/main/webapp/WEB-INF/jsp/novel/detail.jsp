@@ -50,6 +50,10 @@ img{
 				<td>${chapter.regDate}</td>
 			</tr>
 			<tr>
+				<th>조회수</th>
+				<td>${chapter.hit}</td>
+			</tr>
+			<tr>
 				<th>닉네임</th>
 				<td>
 				<a href="/usr/novel/${chapter.extra.writer}-list">${chapter.extra.writer}</a>

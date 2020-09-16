@@ -49,6 +49,10 @@ img{
 				<td>${article.regDate}</td>
 			</tr>
 			<tr>
+				<th>조회수</th>
+				<td>${article.hit}</td>
+			</tr>
+			<tr>
 				<th>닉네임</th>
 				<td>
 				<a href="/usr/article/${board.code}-list?memberId=${article.memberId}">${article.extra.writer}</a>

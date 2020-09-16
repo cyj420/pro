@@ -11,6 +11,7 @@
 				<col width="200" />
 				<col width="200" />
 				<col width="500" />
+				<col width="100" />
 			</colgroup>
 			<thead>
 				<tr>
@@ -18,6 +19,7 @@
 					<th>날짜</th>
 					<th>작성자</th>
 					<th>제목</th>
+					<th>조회수</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -29,6 +31,7 @@
 						<td>
 							<a href="/usr/article/${board.code}-detail?id=${article.id}">${article.title}</a>
 						</td>
+						<td>${article.hit}</td>
 					</tr>
 				</c:forEach>
 			</tbody>

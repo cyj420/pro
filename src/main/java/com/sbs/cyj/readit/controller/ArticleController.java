@@ -103,7 +103,12 @@ public class ArticleController {
 		model.addAttribute("loginedMember", loginedMember);
 		
 		int id = Integer.parseInt((String) param.get("id")); 
+
+		// 조회수
+		articleService.updateHitByArticleId(id);
+		
 		Article article = articleService.getArticleById(loginedMember, id);
+		
 		model.addAttribute("article", article);
 		
 		return "article/detail";

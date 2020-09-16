@@ -106,6 +106,13 @@
 		ORDER BY N.id DESC;
 	</select>
 	
+	<update id="updateTotalHitByNovelId">
+		UPDATE novel
+		SET updateDate = NOW(),
+		totalHit = #{totalHit}
+		WHERE id = #{novelId};
+	</update>
+	
 	<resultMap type="Novel" id="novel">
 		<id property="id" column="id" />
 		<id property="name" column="name" />
@@ -117,6 +124,7 @@
 		<id property="cateId" column="cateId" />
 		<id property="memberId" column="memberId" />
 		<id property="seriesStatus" column="seriesStatus" />
+		<id property="totalHit" column="totalHit" />
 		<association property="extra" javaType="map">
 			<id property="writer" column="extra__writer" />
 			<id property="cateName" column="extra__cateName" />

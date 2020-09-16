@@ -35,7 +35,7 @@
 	</select>
 	
 	<select id="getArticlesByBoardId" resultMap="article">
-		SELECT A.id, A.regDate, A.updateDate, A.delDate, A.delStatus, A.displayStatus, A.title, A.memberId, A.boardId,  
+		SELECT A.id, A.regDate, A.updateDate, A.delDate, A.delStatus, A.displayStatus, A.title, A.memberId, A.boardId, A.hit, 
 		M.nickname AS extra__writer
 		FROM article AS A
 		INNER JOIN `member` AS M
@@ -71,7 +71,14 @@
 			<if test="body != null">body = #{body},</if>
 			updateDate = NOW()
 		</set>
-		WHERE id = #{id}
+		WHERE id = #{id};
+	</update>
+	
+	<update id="updateHitByArticleId">
+		UPDATE article
+		SET updateDate = NOW(),
+		hit = hit+1
+		WHERE id = #{id};
 	</update>
 	
 	<resultMap type="Article" id="article">
@@ -85,6 +92,7 @@
 		<id property="body" column="body" />
 		<id property="memberId" column="memberId" />
 		<id property="boardId" column="boardId" />
+		<id property="hit" column="hit" />
 		<association property="extra" javaType="map">
 			<id property="writer" column="extra__writer" />
 			<id property="cateName" column="extra__cateName" />

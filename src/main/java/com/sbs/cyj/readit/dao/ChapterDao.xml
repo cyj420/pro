@@ -73,6 +73,13 @@
 		ORDER BY C.id DESC;
 	</select>
 	
+	<update id="updateHitByChapterId">
+		UPDATE chapter
+		SET updateDate = NOW(),
+		hit = hit+1
+		WHERE id = #{id};
+	</update>
+	
 	<resultMap type="Chapter" id="chapter">
 		<id property="id" column="id" />
 		<id property="title" column="title" />
@@ -84,6 +91,7 @@
 		<id property="displayStatus" column="displayStatus" />
 		<id property="memberId" column="memberId" />
 		<id property="novelId" column="novelId" />
+		<id property="hit" column="hit" />
 		<association property="extra" javaType="map">
 			<id property="writer" column="extra__writer" />
 			<id property="novelName" column="extra__novelName" />

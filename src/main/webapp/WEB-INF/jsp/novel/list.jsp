@@ -20,6 +20,7 @@
 			<c:if test="${chapters == null }">
 				<col width="300" />
 			</c:if>
+			<col width="100" />
 		</colgroup>
 		<thead>
 			<tr>
@@ -33,6 +34,7 @@
 				<c:if test="${chapters != null }">
 					<th>제목</th>
 				</c:if>
+				<th>조회수</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -44,6 +46,7 @@
 						<td><a href="/usr/novel/${novel.extra.writer}-list">${novel.extra.writer}</a></td>
 						<td>${novel.extra.cateName}</td>
 						<td><a href="/usr/novel/${novel.extra.writer}-list?novelId=${novel.id}">${novel.name}</a></td>
+						<td>${novel.totalHit }</td>
 					</tr>
 				</c:forEach>
 			</c:if>
@@ -57,6 +60,7 @@
 						<td>
 							<a href="/usr/novel/${novel.extra.writer}-detail?id=${chapter.id}">${chapter.title}</a>
 						</td>
+						<td>${chapter.hit}</td>
 					</tr>
 				</c:forEach>
 			</c:if>

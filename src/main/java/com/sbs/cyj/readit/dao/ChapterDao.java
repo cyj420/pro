@@ -24,4 +24,6 @@ public interface ChapterDao {
 
 	List<Chapter> getChapters();
 
+	void updateHitByChapterId(int id);
+
 }

@@ -20,5 +20,6 @@ public class Novel {
 	private int cateId;
 	private int memberId;
 	private boolean seriesStatus;
+	private int totalHit;
 	private Map<String, Object> extra;
 }

@@ -20,5 +20,6 @@ public class Chapter {
 	private boolean displayStatus;
 	private int memberId;
 	private int novelId;
+	private int hit;
 	private Map<String, Object> extra;
 }

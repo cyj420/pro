@@ -50,4 +50,8 @@ public class ChapterService {
 	public List<Chapter> getChapters() {
 		return chapterDao.getChapters();
 	}
+
+	public void updateHitByChapterId(int id) {
+		chapterDao.updateHitByChapterId(id);
+	}
 }
