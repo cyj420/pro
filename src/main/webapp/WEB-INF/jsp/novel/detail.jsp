@@ -63,7 +63,10 @@ img{
 				<tr>
 					<th>시리즈명</th>
 					<td>
-					<a href="/usr/novel/${chapter.extra.writer}-list?novelId=${chapter.novelId}">${chapter.extra.novelName}</a> [${novelCh}/${novelSize}]
+						<a href="/usr/novel/${chapter.extra.writer}-list?novelId=${chapter.novelId}">${chapter.extra.novelName}</a>
+						<c:if test="${novelSize > 1 }">
+							[${novelCh}/${novelSize}]
+						</c:if>
 					</td>
 				</tr>
 			</c:if>
@@ -160,7 +163,7 @@ img{
 	<hr>
 	
 	<!-- 동일 시리즈 이전글/다음글 START -->
-	<c:if test="${chapter.extra.series == 1}">
+	<c:if test="${chapter.extra.series == 1 && novelSize > 1 }">
 		<div>시리즈명 : <a href="/usr/novel/${chapter.extra.writer}-list?novelId=${chapter.novelId}">${novel.name}</a></div>
 		<c:if test="${novelPreCh != null }">
 			<div>
@@ -177,28 +180,30 @@ img{
 	<hr>
 	
 	<!-- 이전글/다음글 START -->
-	<c:if test="${preCh != null }">
-		<c:if test="${searchKeyword == null }">
-			<div>
-				이전글 : <a href="/usr/novel/${chapter.extra.writer}-detail?id=${preCh}">${preChName }</a>
-			</div>
+	<c:if test="${novelId == null }">
+		<c:if test="${preCh != null }">
+			<c:if test="${searchKeyword == null }">
+				<div>
+					이전글 : <a href="/usr/novel/${chapter.extra.writer}-detail?id=${preCh}">${preChName }</a>
+				</div>
+			</c:if>
+			<c:if test="${searchKeyword != null }">
+				<div>
+					이전글 : <a href="/usr/novel/${chapter.extra.writer}-detail?id=${preCh}&mode=${mode}&searchKeywordType=${searchKeywordType}&searchKeyword=${searchKeyword}">${preChName }</a>
+				</div>
+			</c:if>
 		</c:if>
-		<c:if test="${searchKeyword != null }">
-			<div>
-				이전글 : <a href="/usr/novel/${chapter.extra.writer}-detail?id=${preCh}&mode=${mode}&searchKeywordType=${searchKeywordType}&searchKeyword=${searchKeyword}">${preChName }</a>
-			</div>
-		</c:if>
-	</c:if>
-	<c:if test="${nextCh != null }">
-		<c:if test="${searchKeyword == null }">
-			<div>
-				다음글 : <a href="/usr/novel/${chapter.extra.writer}-detail?id=${nextCh}">${nextChName }</a>
-			</div>
-		</c:if>
-		<c:if test="${searchKeyword != null }">
-			<div>
-				다음글 : <a href="/usr/novel/${chapter.extra.writer}-detail?id=${nextCh}&mode=${mode}&searchKeywordType=${searchKeywordType}&searchKeyword=${searchKeyword}">${nextChName }</a>
-			</div>
+		<c:if test="${nextCh != null }">
+			<c:if test="${searchKeyword == null }">
+				<div>
+					다음글 : <a href="/usr/novel/${chapter.extra.writer}-detail?id=${nextCh}">${nextChName }</a>
+				</div>
+			</c:if>
+			<c:if test="${searchKeyword != null }">
+				<div>
+					다음글 : <a href="/usr/novel/${chapter.extra.writer}-detail?id=${nextCh}&mode=${mode}&searchKeywordType=${searchKeywordType}&searchKeyword=${searchKeyword}">${nextChName }</a>
+				</div>
+			</c:if>
 		</c:if>
 	</c:if>
 	<!-- 이전글/다음글 END -->

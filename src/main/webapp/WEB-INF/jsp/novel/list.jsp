@@ -62,9 +62,7 @@
 						<td><a
 							href="/usr/novel/${novel.extra.writer}-list?mode=novel">${novel.extra.writer}</a></td>
 						<td>${novel.extra.cateName}</td>
-						<td><a
-							href="/usr/novel/${novel.extra.writer}-list?mode=novel&novelId=${novel.id}">${novel.name}
-								[${novel.totalCh }]</a></td>
+						<td><a href="/usr/novel/${novel.extra.writer}-list?mode=novel&novelId=${novel.id}">${novel.name} [${novel.totalCh }]</a></td>
 						<td>${novel.totalHit }</td>
 					</tr>
 				</c:forEach>
@@ -82,7 +80,7 @@
 						</td>
 						<td>
 							<c:if test="${param.searchKeyword == null }">
-								<a href="/usr/novel/${chapter.extra.writer}-detail?id=${chapter.id}">${chapter.title}</a>
+								<a href="/usr/novel/${chapter.extra.writer}-detail?id=${chapter.id}&novelId=${chapter.novelId}">${chapter.title}</a>
 							</c:if>
 							<c:if test="${param.searchKeyword != null }">
 								<a href="/usr/novel/${chapter.extra.writer}-detail?id=${chapter.id}&mode=${param.mode}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}">${chapter.title}</a>
@@ -127,8 +125,8 @@
 						</c:if>
 					</c:if>
 				</c:if>
-			</select> <input type="text" name="searchKeyword"
-				value="${param.searchKeyword}" />
+			</select> 
+			<input type="text" name="searchKeyword" value="${param.searchKeyword}" />
 			<button type="submit">검색</button>
 		</form>
 	</div>

@@ -17,13 +17,13 @@ color: red;
 }
 </style>
 <div class="con">
-	<form action="/usr/novel/total-list">
-		<c:if test="${param.mode != 'novel'}">
-			<input type="hidden" name="mode" value="novel"/>
+	<form action="/usr/novel/list">
+		<c:if test="${param.mode != 'totalNovel'}">
+			<input type="hidden" name="mode" value="totalNovel"/>
 			<button type="submit">소설 별 보기</button>
 		</c:if>
-		<c:if test="${param.mode == 'novel'}">
-			<input type="hidden" name="mode" value="chapter"/>
+		<c:if test="${param.mode == 'totalNovel'}">
+			<input type="hidden" name="mode" value="totalChapter"/>
 			<button type="submit">챕터 별 보기</button>
 		</c:if>
 	</form>
@@ -73,7 +73,12 @@ color: red;
 						<td><a href="/usr/novel/${chapter.extra.writer}-list?mode=novel">${chapter.extra.writer}</a></td>
 						<td><a href="/usr/novel/${chapter.extra.writer}-list?mode=novel&novelId=${chapter.novelId}">${chapter.extra.novelName}</a></td>
 						<td>
-							<a href="/usr/novel/${chapter.extra.writer}-detail?id=${chapter.id}">${chapter.title}</a>
+							<c:if test="${param.searchKeyword == null }">
+								<a href="/usr/novel/${chapter.extra.writer}-detail?id=${chapter.id}&novelId=${chapter.novelId}">${chapter.title}</a>
+							</c:if>
+							<c:if test="${param.searchKeyword != null }">
+								<a href="/usr/novel/${chapter.extra.writer}-detail?id=${chapter.id}&mode=${param.mode}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}">${chapter.title}</a>
+							</c:if>
 						</td>
 						<td>${chapter.hit}</td>
 					</tr>
@@ -84,7 +89,7 @@ color: red;
 	
 	<!-- 검색 시작 -->
 	<div class="con search-box flex flex-jc-c">
-		<form action="/usr/novel/total-list">
+		<form action="/usr/novel/list">
 			<input type="hidden" name="mode" value="${param.mode }"/>
 			<!-- 
 			<input type="hidden" name="page" value="1" />

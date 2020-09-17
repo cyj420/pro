@@ -74,10 +74,10 @@ var param = ${paramJson};
 				<li class="has-list">
 					<ul><a href="#">[Total List]</a>
 						<li>
-							<a href="/usr/novel/total-list?mode=novel">Novel</a>
+							<a href="/usr/novel/list?mode=totalNovel">Novel</a>
 						</li>
 						<li>
-							<a href="/usr/novel/total-list?mode=chapter">Chapter</a>
+							<a href="/usr/novel/list?mode=totalChapter">Chapter</a>
 						</li>
 					</ul>
 				</li>

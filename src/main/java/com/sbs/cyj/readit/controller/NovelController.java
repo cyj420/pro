@@ -166,7 +166,7 @@ public class NovelController {
 	}
 
 	// 게시글 리스트 (전체)
-	@RequestMapping("usr/novel/total-list")
+	@RequestMapping("usr/novel/list")
 	public String showTotalList(Model model, String listUrl, HttpServletRequest req) {
 		Member member = (Member) req.getAttribute("loginedMember");
 		if (listUrl == null) {
@@ -177,7 +177,7 @@ public class NovelController {
 		if (req.getParameter("mode") != null) {
 			String str = req.getParameter("mode");
 
-			if (str.equals("novel")) {
+			if (str.equals("totalNovel")) {
 				List<Novel> novels = null;
 
 				if (req.getParameter("searchKeyword") == null) {
@@ -214,7 +214,7 @@ public class NovelController {
 					novels = novelService.getNovelsBySearchKeyword(searchKeyword);
 				}
 				model.addAttribute("novels", novels);
-			} else if (str.equals("chapter")) {
+			} else if (str.equals("totalChapter")) {
 				List<Chapter> chapters = chapterService.getChapters();
 
 				if (req.getParameter("searchKeyword") == null) {
@@ -226,7 +226,6 @@ public class NovelController {
 					chapters = chapterService.getChaptersBySearchKeywordAndSearchKeywordType(searchKeyword,
 							searchKeywordType);
 				}
-
 				model.addAttribute("chapters", chapters);
 			}
 		}
@@ -390,8 +389,17 @@ public class NovelController {
 				String searchKeywordType = req.getParameter("searchKeywordType");
 				String searchKeyword = req.getParameter("searchKeyword");
 				
-				chapters = chapterService.getChaptersBySearchKeywordAndSearchKeywordType(searchKeyword,
-						searchKeywordType);
+				if(mode.substring(0, 5).equals("total")) {
+					// total로 판단
+					chapters = chapterService.getChaptersBySearchKeywordAndSearchKeywordType(searchKeyword,
+							searchKeywordType);
+				}
+				else {
+					// 작가별로 판단
+					int memberId = memberService.getMemberByNickname(nickname).getId();
+					chapters = chapterService.getChaptersByWriterIdAndSearchKeywordAndSearchKeywordType(memberId, 
+							searchKeyword, searchKeywordType);
+				}
 				
 				model.addAttribute("mode", mode);
 				model.addAttribute("searchKeywordType", searchKeywordType);
@@ -426,11 +434,12 @@ public class NovelController {
 						}
 					}
 				}
-//				model.addAttribute("size", size);
 				model.addAttribute("ch", ch);
 			}
 		}
-
+		if(req.getParameter("novelId") != null) {
+			model.addAttribute("novelId", req.getParameter("novelId"));
+		}
 		model.addAttribute("chapter", chapter);
 
 		return "novel/detail";
