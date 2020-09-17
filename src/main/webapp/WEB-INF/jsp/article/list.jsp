@@ -37,5 +37,22 @@
 			</tbody>
 		</table>
 	</form>
+	
+	<c:if test="${loginedMember != null }">
+		<li>
+			<c:forEach items="${boards}" var="b">
+				<c:if test="${boardCode == b.code }">
+					<c:if test="${b.code == 'notice' }">
+						<c:if test="${loginedMemberId == 1 }">
+							<a href="/usr/article/${b.code}-write"><button>WRITE</button></a>
+						</c:if>
+					</c:if>
+					<c:if test="${b.code != 'notice' }">
+						<a href="/usr/article/${b.code}-write"><button>WRITE</button></a>
+					</c:if>
+				</c:if>
+			</c:forEach>
+		</li>
+	</c:if>
 </div>
 <%@ include file="../part/foot.jspf"%>

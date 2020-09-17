@@ -29,11 +29,20 @@ public class ArticleController {
 	
 	// 게시글 작성
 	@RequestMapping("usr/article/{boardCode}-write")
-	public String showWrite(@PathVariable("boardCode") String boardCode, Model model, String listUrl) {
+	public String showWrite(@PathVariable("boardCode") String boardCode, HttpServletRequest req, Model model, String listUrl) {
 		if ( listUrl == null ) {
 			listUrl = "./" + boardCode + "-list";
 		}
 		model.addAttribute("listUrl", listUrl);
+		if(boardCode.equals("notice")) {
+			int loginedMemberId = (int)req.getAttribute("loginedMemberId");
+			if(loginedMemberId != 1) {
+				model.addAttribute("msg", "공지사항 작성은 관리자만 가능합니다.");
+				model.addAttribute("redirectUri", "../home/main");
+				
+				return "common/redirect";
+			}
+		}
 		Board board = boardService.getBoardByCode(boardCode);
 		model.addAttribute("board", board);
 		

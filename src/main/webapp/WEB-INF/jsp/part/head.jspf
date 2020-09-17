@@ -89,7 +89,7 @@ var param = ${paramJson};
 							</li>
 							<c:if test="${haveNovel}">
 								<li>
-									<a href="/usr/novel/${loginedMember.nickname}-list">Novel List</a>
+									<a href="/usr/novel/${loginedMember.nickname}-list?mode=novel">Novel List</a>
 								</li>
 								<li>
 									<a href="/usr/novel/${loginedMember.nickname}-write">Chapter Write</a>
@@ -103,6 +103,7 @@ var param = ${paramJson};
 						<a href="/usr/article/${b.code}-list">[${b.name }]</a>
 					</li>
 				</c:forEach>
+				<%-- 
 				<c:if test="${loginedMember != null }">
 					<li>
 						<c:forEach items="${boards}" var="b">
@@ -112,6 +113,7 @@ var param = ${paramJson};
 						</c:forEach>
 					</li>
 				</c:if>
+				--%>
 			</ul>
 		</nav>
 	</div>

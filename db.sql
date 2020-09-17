@@ -348,3 +348,8 @@ ADD COLUMN hit INT(10) UNSIGNED NOT NULL DEFAULT 0;
 
 ALTER TABLE `novel`
 ADD COLUMN totalHit INT(10) UNSIGNED NOT NULL DEFAULT 0;
+
+#===========================================================
+#0917
+ALTER TABLE `novel` 
+ADD COLUMN totalCh INT(10) UNSIGNED NOT NULL DEFAULT 0; 

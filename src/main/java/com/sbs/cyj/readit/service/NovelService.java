@@ -105,4 +105,10 @@ public class NovelService {
 	public void updateTotalChByNovelId(int novelId, int totalCh) {
 		novelDao.updateTotalChByNovelId(novelId, totalCh);
 	}
+
+	public List<Novel> getNovelsByMemberIdForSetup(int memberId) {
+		return novelDao.getNovelsByMemberIdForSetup(memberId);
+	}
+	
+	
 }

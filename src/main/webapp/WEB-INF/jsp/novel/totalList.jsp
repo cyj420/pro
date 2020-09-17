@@ -57,9 +57,9 @@ color: red;
 					<tr>
 						<td>${novel.id}</td>
 						<td>${novel.regDate}</td>
-						<td><a href="/usr/novel/${novel.extra.writer}-list">${novel.extra.writer}</a></td>
+						<td><a href="/usr/novel/${novel.extra.writer}-list?mode=novel">${novel.extra.writer}</a></td>
 						<td>${novel.extra.cateName}</td>
-						<td><a href="/usr/novel/${novel.extra.writer}-list?novelId=${novel.id}">${novel.name} [${novel.totalCh }]</a></td>
+						<td><a href="/usr/novel/${novel.extra.writer}-list?mode=novel&novelId=${novel.id}">${novel.name} [${novel.totalCh }]</a></td>
 						<td>${novel.totalHit }</td>
 					</tr>
 				</c:forEach>
@@ -70,8 +70,8 @@ color: red;
 					<tr>
 						<td>${chapter.id}</td>
 						<td>${chapter.regDate}</td>
-						<td><a href="/usr/novel/${chapter.extra.writer}-list">${chapter.extra.writer}</a></td>
-						<td><a href="/usr/novel/${chapter.extra.writer}-list?novelId=${chapter.novelId}">${chapter.extra.novelName}</a></td>
+						<td><a href="/usr/novel/${chapter.extra.writer}-list?mode=novel">${chapter.extra.writer}</a></td>
+						<td><a href="/usr/novel/${chapter.extra.writer}-list?mode=novel&novelId=${chapter.novelId}">${chapter.extra.novelName}</a></td>
 						<td>
 							<a href="/usr/novel/${chapter.extra.writer}-detail?id=${chapter.id}">${chapter.title}</a>
 						</td>

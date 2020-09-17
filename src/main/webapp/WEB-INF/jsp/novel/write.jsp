@@ -75,10 +75,11 @@
 									</c:forEach>
 								</c:if>
 								<c:if test="${novel != null }">
+									<option value="${novel.id}" selected="selected">${novel.name}</option>
 									<c:forEach items="${novels}" var="n">
-										<c:if test="${novel.id == n.id }">
+										<%-- <c:if test="${novel.id == n.id }">
 											<option value="${n.id}" selected="selected">${n.name}</option>
-										</c:if>
+										</c:if> --%>
 										<c:if test="${novel.id != n.id }">
 											<option value="${n.id}" >${n.name}</option>
 										</c:if>

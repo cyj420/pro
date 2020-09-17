@@ -45,4 +45,6 @@ public interface NovelDao {
 
 	void updateTotalChByNovelId(int novelId, int totalCh);
 
+	List<Novel> getNovelsByMemberIdForSetup(int memberId);
+
 }
