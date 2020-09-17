@@ -21,5 +21,6 @@ public class Novel {
 	private int memberId;
 	private boolean seriesStatus;
 	private int totalHit;
+	private int totalCh;
 	private Map<String, Object> extra;
 }

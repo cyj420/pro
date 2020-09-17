@@ -37,5 +37,12 @@ public interface NovelDao {
 
 	List<Novel> getNovelsBySearchKeyword(String searchKeyword);
 
+	List<Novel> getNovelsByMemberIdAndSearchKeyword(int memberId, String searchKeyword);
+
+	void upTotalChByNovelId(int novelId);
+
+	void downTotalChByNovelId(int novelId);
+
+	void updateTotalChByNovelId(int novelId, int totalCh);
 
 }

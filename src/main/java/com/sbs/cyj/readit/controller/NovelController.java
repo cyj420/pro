@@ -45,7 +45,7 @@ public class NovelController {
 
 		List<Novel> novels = novelService.getNovelsByMemberId(memberId);
 		model.addAttribute("novels", novels);
-		
+
 		if (req.getParameter("novelId") != null) {
 			String strNovelId = req.getParameter("novelId");
 			int novelId = Integer.parseInt(strNovelId);
@@ -70,6 +70,7 @@ public class NovelController {
 		param.put("cateId", cateId);
 
 		int id = chapterService.write(param);
+		novelService.upTotalChByNovelId(novelId);
 
 		String redirectUri = (String) param.get("redirectUri");
 		redirectUri = redirectUri.replace("#id", id + "");
@@ -79,65 +80,68 @@ public class NovelController {
 
 		return "common/redirect";
 	}
-	
+
 	// 챕터 삭제
 	@RequestMapping("usr/novel/{nickname}-doDeleteChapter")
-	public String doDeleteChapter(HttpServletRequest req, @PathVariable("nickname") String nickname, String listUrl, Model model) {
+	public String doDeleteChapter(HttpServletRequest req, @PathVariable("nickname") String nickname, String listUrl,
+			Model model) {
 		if (listUrl == null) {
 			listUrl = "./" + nickname + "-list";
 		}
 		model.addAttribute("listUrl", listUrl);
-		
+
 		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
 
 		int id = Integer.parseInt(req.getParameter("id"));
 		Chapter chapter = chapterService.getChapterById(id);
-		
+
 		List<Chapter> chapters = chapterService.getChaptersByNovelId(chapter.getNovelId());
 
 		String redirectUri = listUrl;
-		
-		if(chapters.size()>1) {
-			redirectUri = listUrl+"?novelId="+chapter.getNovelId();
+
+		if (chapters.size() > 1) {
+			redirectUri = listUrl + "?novelId=" + chapter.getNovelId();
 		}
 
-		if(loginedMemberId == chapter.getMemberId()) {
+		if (loginedMemberId == chapter.getMemberId()) {
+			int novelId = chapterService.getChapterById(id).getNovelId();
 			chapterService.deleteChapterById(id);
+			novelService.downTotalChByNovelId(novelId);
 
 			model.addAttribute("msg", "삭제되었습니다.");
-		}
-		else {
+		} else {
 			model.addAttribute("msg", "잘못된 접근입니다.");
 		}
 
 		model.addAttribute("redirectUri", redirectUri);
-		
+
 		return "common/redirect";
 	}
 
 	// 챕터 수정
 	@RequestMapping("usr/novel/{nickname}-modifyChapter")
-	public String showModifyChapter(@PathVariable("nickname") String nickname, Model model, String listUrl, HttpServletRequest req) {
+	public String showModifyChapter(@PathVariable("nickname") String nickname, Model model, String listUrl,
+			HttpServletRequest req) {
 		if (listUrl == null) {
 			listUrl = "./" + nickname + "-list";
 		}
 		model.addAttribute("listUrl", listUrl);
-		
+
 		int id = Integer.parseInt(req.getParameter("id"));
 		Chapter chapter = chapterService.getChapterById(id);
-		
+
 		int memberId = (int) req.getAttribute("loginedMemberId");
 		Member member = memberService.getMemberById(memberId);
 		model.addAttribute("member", member);
 
 		model.addAttribute("chapter", chapter);
-		
+
 		List<Novel> novels = novelService.getNovelsByMemberId(memberId);
 		model.addAttribute("novels", novels);
 
 		return "novel/modifyChapter";
 	}
-	
+
 	@RequestMapping("usr/novel/{nickname}-doModifyChapter")
 	public String doModifyChapter(@RequestParam Map<String, Object> param, HttpServletRequest req,
 			@PathVariable("nickname") String nickname, Model model) {
@@ -173,57 +177,60 @@ public class NovelController {
 		if (req.getParameter("mode") != null) {
 			String str = req.getParameter("mode");
 
-			if(str.equals("novel")) {
+			if (str.equals("novel")) {
 				List<Novel> novels = null;
-				
-				if(req.getParameter("searchKeyword") == null) {
+
+				if (req.getParameter("searchKeyword") == null) {
 					novels = novelService.getNovels();
-				}
-				else {
+					
+					for(int i=0; i<novels.size(); i++) {
+						int novelId = novels.get(i).getId();
+						List<Chapter> chapters = chapterService.getChaptersByNovelId(novelId);
+						novelService.updateTotalChByNovelId(novelId, chapters.size());
+					}
+				} else {
 					String searchKeyword = req.getParameter("searchKeyword");
 					novels = novelService.getNovelsBySearchKeyword(searchKeyword);
 				}
-				
+
 				// 노벨 조회수
-				for(int i=0; i<novels.size(); i++) {
+				for (int i = 0; i < novels.size(); i++) {
 					int totalHit = 0;
-					
+
 					List<Chapter> chapters = chapterService.getChaptersByNovelId(novels.get(i).getId());
-					
-					for(int j=0; j<chapters.size(); j++) {
+
+					for (int j = 0; j < chapters.size(); j++) {
 						totalHit += chapters.get(j).getHit();
 					}
-					
+
 					novelService.updateTotalHitByNovelId(novels.get(i).getId(), totalHit);
 				}
-				
+
 				// novels를 다시 불러오는 이유: hit의 최신화
-				if(req.getParameter("searchKeyword") == null) {
+				if (req.getParameter("searchKeyword") == null) {
 					novels = novelService.getNovels();
-				}
-				else {
+				} else {
 					String searchKeyword = req.getParameter("searchKeyword");
 					novels = novelService.getNovelsBySearchKeyword(searchKeyword);
 				}
 				model.addAttribute("novels", novels);
-			}
-			else if(str.equals("chapter")) {
+			} else if (str.equals("chapter")) {
 				List<Chapter> chapters = chapterService.getChapters();
-				
-				if(req.getParameter("searchKeyword") == null) {
+
+				if (req.getParameter("searchKeyword") == null) {
 					chapters = chapterService.getChapters();
-				}
-				else {
+				} else {
 					String searchKeywordType = req.getParameter("searchKeywordType");
 					String searchKeyword = req.getParameter("searchKeyword");
-					
-					chapters = chapterService.getChaptersBySearchKeywordAndSearchKeywordType(searchKeyword, searchKeywordType);
+
+					chapters = chapterService.getChaptersBySearchKeywordAndSearchKeywordType(searchKeyword,
+							searchKeywordType);
 				}
-				
+
 				model.addAttribute("chapters", chapters);
 			}
 		}
-		
+
 		return "novel/totalList";
 	}
 
@@ -240,30 +247,46 @@ public class NovelController {
 		int memberId = memberService.getMemberByNickname(nickname).getId();
 
 		List<Novel> novels = novelService.getNovelsByMemberId(memberId);
+		
+		// 소설당 챕터 개수 파악하기 위함
+		for(int i=0; i<novels.size(); i++) {
+			int novelId = novels.get(i).getId();
+			List<Chapter> chapters = chapterService.getChaptersByNovelId(novelId);
+			novelService.updateTotalChByNovelId(novelId, chapters.size());
+		}
 
 		if (req.getParameter("mode") != null) {
 			String mode = req.getParameter("mode");
-			
-			if(mode.equals("chapter")) {
-				// 챕터 별 보기일 때의 코드
-			}
-			else {
-				// 소설 별 보기일 때의 코드
+
+			if (mode.equals("chapter")) {
+				// 챕터 별 보기일 때
+				List<Chapter> chapters = null;
+				
+				if (req.getParameter("searchKeyword") != null) {
+					String searchKeywordType = req.getParameter("searchKeywordType");
+					String searchKeyword = req.getParameter("searchKeyword");
+					chapters = chapterService.getChaptersByWriterIdAndSearchKeywordAndSearchKeywordType(memberId, searchKeyword, searchKeywordType);
+				}
+				else {
+					chapters = chapterService.getChaptersByWriterId(memberId);
+				}
+				model.addAttribute("chapters", chapters);
 			}
 		}
+
 		if (req.getParameter("novelId") != null) {
 			String strNovelId = req.getParameter("novelId");
 			int novelId = Integer.parseInt(strNovelId);
 
 			List<Chapter> chapters = chapterService.getChaptersByNovelId(novelId);
 			model.addAttribute("chapters", chapters);
-			
+
 			int totalHit = 0;
-			
-			for(int i=0; i<chapters.size(); i++) {
+
+			for (int i = 0; i < chapters.size(); i++) {
 				totalHit += chapters.get(i).getHit();
 			}
-			
+
 			// 노벨 조회수
 			novelService.updateTotalHitByNovelId(novelId, totalHit);
 
@@ -273,24 +296,31 @@ public class NovelController {
 		}
 
 		// 노벨 조회수
-		for(int i=0; i<novels.size(); i++) {
+		for (int i = 0; i < novels.size(); i++) {
 			int totalHit = 0;
-			
+
 			List<Chapter> chapters = chapterService.getChaptersByNovelId(novels.get(i).getId());
-			
-			for(int j=0; j<chapters.size(); j++) {
+
+			for (int j = 0; j < chapters.size(); j++) {
 				totalHit += chapters.get(j).getHit();
 			}
-			
+
 			novelService.updateTotalHitByNovelId(novels.get(i).getId(), totalHit);
 		}
-		
+
 		// novels를 다시 불러오는 이유: hit의 최신화
 		novels = novelService.getNovelsByMemberId(memberId);
+		
+		if(req.getParameter("mode") != null) {
+			if (req.getParameter("mode").equals("novel") && req.getParameter("searchKeyword") != null) {
+				String searchKeyword = req.getParameter("searchKeyword");
+				novels = novelService.getNovelsByMemberIdAndSearchKeyword(memberId, searchKeyword);
+			}
+		}
+		
 		model.addAttribute("novels", novels);
 		model.addAttribute("nickname", nickname);
 		model.addAttribute("loginedMemberId", (int) req.getAttribute("loginedMemberId"));
-//		model.addAttribute("chapters", chapters);
 
 		return "novel/list";
 	}
@@ -308,38 +338,38 @@ public class NovelController {
 		model.addAttribute("loginedMember", loginedMember);
 
 		int id = Integer.parseInt((String) param.get("id"));
-		
+
 		// 조회수
 		chapterService.updateHitByChapterId(id);
-		
+
 		Chapter chapter = chapterService.getChapterById(id);
-		
+
 		Novel novel = novelService.getNovelById(chapter.getNovelId());
 
 		if (novel.isSeriesStatus()) {
 			List<Chapter> chapters = chapterService.getChaptersByNovelId(novel.getId());
 			int size = chapters.size();
-			
+
 			if (size > 1) {
 				model.addAttribute("novel", novel);
 				model.addAttribute("chapters", chapters);
-				
+
 				int ch = 0;
 				int preCh = 0;
 				int nextCh = 0;
-				
-				for(int i=0; i<size; i++) {
-					if(chapters.get(size-i-1).getId() == chapter.getId()) {
-						ch = i+1;
-						if(i != 0) {
-							preCh = chapters.get(size-i).getId();
-							String preChName = chapters.get(size-i).getTitle();
+
+				for (int i = 0; i < size; i++) {
+					if (chapters.get(size - i - 1).getId() == chapter.getId()) {
+						ch = i + 1;
+						if (i != 0) {
+							preCh = chapters.get(size - i).getId();
+							String preChName = chapters.get(size - i).getTitle();
 							model.addAttribute("preCh", preCh);
 							model.addAttribute("preChName", preChName);
 						}
-						if(i != size-1) {
-							nextCh = chapters.get(size-i-2).getId();
-							String nextChName = chapters.get(size-i-2).getTitle();
+						if (i != size - 1) {
+							nextCh = chapters.get(size - i - 2).getId();
+							String nextChName = chapters.get(size - i - 2).getTitle();
 							model.addAttribute("nextCh", nextCh);
 							model.addAttribute("nextChName", nextChName);
 						}
@@ -357,45 +387,47 @@ public class NovelController {
 
 	// 소설 삭제
 	@RequestMapping("usr/novel/{nickname}-doDelete")
-	public String doDelete(@RequestParam Map<String, Object> param, HttpServletRequest req, @PathVariable("nickname") String nickname, String listUrl, Model model) {
+	public String doDelete(@RequestParam Map<String, Object> param, HttpServletRequest req,
+			@PathVariable("nickname") String nickname, String listUrl, Model model) {
 		if (listUrl == null) {
 			listUrl = "./" + nickname + "-list";
 		}
 		model.addAttribute("listUrl", listUrl);
-		
+
 		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
 
 		int id = Integer.parseInt(req.getParameter("id"));
 		Novel novel = novelService.getNovelById(id);
-		
-		if(loginedMemberId == novel.getMemberId()) {
+
+		if (loginedMemberId == novel.getMemberId()) {
 			novelService.delete(id);
 			chapterService.deleteChaptersByNovelId(id);
 		}
 
 		String redirectUri = (String) param.get("redirectUri");
-		
+
 		model.addAttribute("msg", "삭제되었습니다.");
 		model.addAttribute("redirectUri", redirectUri);
-		
+
 		return "common/redirect";
 	}
-	
+
 	// 소설 수정
 	@RequestMapping("usr/novel/{nickname}-modify")
-	public String showModifyNovel(@PathVariable("nickname") String nickname, Model model, String listUrl, HttpServletRequest req) {
+	public String showModifyNovel(@PathVariable("nickname") String nickname, Model model, String listUrl,
+			HttpServletRequest req) {
 		if (listUrl == null) {
 			listUrl = "./" + nickname + "-list";
 		}
 		model.addAttribute("listUrl", listUrl);
-		
+
 		int id = Integer.parseInt(req.getParameter("id"));
 		Novel novel = novelService.getNovelById(id);
-		
+
 		int memberId = (int) req.getAttribute("loginedMemberId");
 		Member member = memberService.getMemberById(memberId);
 		model.addAttribute("member", member);
-		
+
 		List<Category> categories = novelService.getCategories();
 		model.addAttribute("categories", categories);
 
@@ -403,24 +435,23 @@ public class NovelController {
 
 		return "novel/modifyNovel";
 	}
-	
+
 	@RequestMapping("usr/novel/{nickname}-doModify")
 	public String doModifyNovel(@RequestParam Map<String, Object> param, HttpServletRequest req,
 			@PathVariable("nickname") String nickname, Model model) {
 		int memberId = (int) req.getAttribute("loginedMemberId");
-		
+
 		int writerId = memberService.getMemberByNickname(nickname).getId();
 
-		if(memberId == writerId) {
+		if (memberId == writerId) {
 			int id = novelService.modifyNovel(param);
-	
+
 			String redirectUri = (String) param.get("redirectUri");
 			redirectUri = redirectUri.replace("#id", id + "");
 
 			model.addAttribute("msg", String.format(id + "번째 노벨을 수정하였습니다."));
 			model.addAttribute("redirectUri", redirectUri);
-		}
-		else {
+		} else {
 			model.addAttribute("msg", "잘못된 접근입니다.");
 			model.addAttribute("redirectUri", "/home/main");
 		}
@@ -439,19 +470,19 @@ public class NovelController {
 
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
 		model.addAttribute("loginedMember", loginedMember);
-		
+
 		int memberId = memberService.getMemberByNickname(nickname).getId();
-		
-		if(loginedMember.getNickname().equals(nickname)) {
+
+		if (loginedMember.getNickname().equals(nickname)) {
 			List<Novel> novels = novelService.getNovelsByMemberId(memberId);
 			model.addAttribute("novels", novels);
-			
+
 			return "novel/setUp";
 		}
-		
+
 		model.addAttribute("msg", "해당 페이지 접근 권한이 없습니다.");
 		model.addAttribute("redirectUri", "../home/main");
-		
+
 		return "common/redirect";
 	}
 
@@ -497,7 +528,7 @@ public class NovelController {
 			return new ResultData("S-1", String.format("사용할 수 있는 소설 제목입니다."), name);
 		}
 	}
-	
+
 	// ajax - 자동 제목 생성
 	@RequestMapping("/usr/novel/getAutoNovelTitle")
 	@ResponseBody

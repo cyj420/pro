@@ -90,5 +90,19 @@ public class NovelService {
 		return novelDao.getNovelsBySearchKeyword(searchKeyword);
 	}
 
-	
+	public List<Novel> getNovelsByMemberIdAndSearchKeyword(int memberId, String searchKeyword) {
+		return novelDao.getNovelsByMemberIdAndSearchKeyword(memberId, searchKeyword);
+	}
+
+	public void upTotalChByNovelId(int novelId) {
+		novelDao.upTotalChByNovelId(novelId);
+	}
+
+	public void downTotalChByNovelId(int novelId) {
+		novelDao.downTotalChByNovelId(novelId);
+	}
+
+	public void updateTotalChByNovelId(int novelId, int totalCh) {
+		novelDao.updateTotalChByNovelId(novelId, totalCh);
+	}
 }

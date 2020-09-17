@@ -28,4 +28,8 @@ public interface ChapterDao {
 
 	List<Chapter> getChaptersBySearchKeywordAndSearchKeywordType(String searchKeyword, String searchKeywordType);
 
+	List<Chapter> getChaptersByWriterId(int memberId);
+
+	List<Chapter> getChaptersByWriterIdAndSearchKeywordAndSearchKeywordType(int memberId, String searchKeyword, String searchKeywordType);
+
 }

@@ -2,7 +2,12 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:if test="${chapters != null }">
-	<c:set var="pageTitle" value="[${nickname}] 소설명 : ${novel.name }" />
+	<c:if test="${param.mode == null }">
+		<c:set var="pageTitle" value="[${nickname}] 소설명 : ${novel.name } [${novel.totalCh }]" />
+	</c:if>
+	<c:if test="${param.mode != null }">
+		<c:set var="pageTitle" value="${nickname}의 챕터 리스트" />
+	</c:if>
 </c:if>
 <c:if test="${chapters == null }">
 	<c:if test="${nickname != null }">
@@ -12,13 +17,15 @@
 <%@ include file="../part/head.jspf"%>
 <div class="con">
 	<form action="/usr/novel/${nickname}-list">
-		<c:if test="${param.mode == 'chapter'}">
-			<input type="hidden" name="mode" value="novel"/>
-			<button type="submit">소설 별 보기</button>
-		</c:if>
-		<c:if test="${param.mode != 'chapter'}">
-			<input type="hidden" name="mode" value="chapter"/>
-			<button type="submit">챕터 별 보기</button>
+		<c:if test="${novelId == null }">
+			<c:if test="${param.mode == 'chapter'}">
+				<input type="hidden" name="mode" value="novel"/>
+				<button type="submit">소설 별 보기</button>
+			</c:if>
+			<c:if test="${param.mode != 'chapter'}">
+				<input type="hidden" name="mode" value="chapter"/>
+				<button type="submit">챕터 별 보기</button>
+			</c:if>
 		</c:if>
 	</form>
 	<table class="table-list">
@@ -27,9 +34,7 @@
 			<col width="200" />
 			<col width="150" />
 			<col width="300" />
-			<c:if test="${chapters == null }">
-				<col width="300" />
-			</c:if>
+			<col width="300" />
 			<col width="100" />
 		</colgroup>
 		<thead>
@@ -39,10 +44,10 @@
 				<th>작성자</th>
 				<c:if test="${chapters == null }">
 					<th>카테고리명</th>
-					<th>시리즈명</th>
 				</c:if>
+				<th>소설 제목</th>
 				<c:if test="${chapters != null }">
-					<th>제목</th>
+					<th>챕터 제목</th>
 				</c:if>
 				<th>조회수</th>
 			</tr>
@@ -55,7 +60,7 @@
 						<td>${novel.regDate}</td>
 						<td><a href="/usr/novel/${novel.extra.writer}-list">${novel.extra.writer}</a></td>
 						<td>${novel.extra.cateName}</td>
-						<td><a href="/usr/novel/${novel.extra.writer}-list?novelId=${novel.id}">${novel.name}</a></td>
+						<td><a href="/usr/novel/${novel.extra.writer}-list?novelId=${novel.id}">${novel.name} [${novel.totalCh }]</a></td>
 						<td>${novel.totalHit }</td>
 					</tr>
 				</c:forEach>
@@ -66,9 +71,10 @@
 					<tr>
 						<td>${chapter.id}</td>
 						<td>${chapter.regDate}</td>
-						<td><a href="/usr/novel/${novel.extra.writer}-list">${chapter.extra.writer}</a></td>
+						<td><a href="/usr/novel/${chapter.extra.writer}-list">${chapter.extra.writer}</a></td>
+						<td><a href="/usr/novel/${chapter.extra.writer}-list?novelId=${chapter.novelId}">${chapter.extra.novelName}</a></td>
 						<td>
-							<a href="/usr/novel/${novel.extra.writer}-detail?id=${chapter.id}">${chapter.title}</a>
+							<a href="/usr/novel/${chapter.extra.writer}-detail?id=${chapter.id}">${chapter.title}</a>
 						</td>
 						<td>${chapter.hit}</td>
 					</tr>
@@ -85,7 +91,12 @@
 	<!-- 검색 시작 -->
 	<div class="con search-box flex flex-jc-c">
 		<form action="/usr/novel/${nickname}-list">
-			<input type="hidden" name="mode" value="${param.mode }"/>
+			<c:if test="${param.mode != null}">
+				<input type="hidden" name="mode" value="${param.mode }"/>
+			</c:if>
+			<c:if test="${param.mode == null}">
+				<input type="hidden" name="mode" value="novel"/>
+			</c:if>
 			<!-- 
 			<input type="hidden" name="page" value="1" />
 			-->

@@ -17,7 +17,6 @@ import com.sbs.cyj.readit.dto.Member;
 import com.sbs.cyj.readit.dto.ResultData;
 import com.sbs.cyj.readit.service.AttrService;
 import com.sbs.cyj.readit.service.MemberService;
-import com.sbs.cyj.readit.service.NovelService;
 import com.sbs.cyj.readit.util.Util;
 
 @Controller
@@ -26,8 +25,6 @@ public class MemberController {
 	private MemberService memberService;
 	@Autowired
 	private AttrService attrService;
-	@Autowired
-	private NovelService novelService;
 
 	// 회원가입
 	@RequestMapping("/usr/member/join")
@@ -250,10 +247,6 @@ public class MemberController {
 					
 					param.put("memberId", id);
 					param.put("nickname", member.getNickname());
-					
-//					if(!novelService.checkNovelExistByMemberId(id)) {
-//						novelService.genDefaultNovel(param);
-//					}
 				}
 				else {
 					String str = attrService.getValue("member__"+id+"__extra__mailAuthCode");

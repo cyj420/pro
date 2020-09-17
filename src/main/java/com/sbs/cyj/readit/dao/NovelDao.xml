@@ -126,6 +126,41 @@
 		ORDER BY N.id DESC;
 	</select>
 	
+	<select id="getNovelsByMemberIdAndSearchKeyword" resultMap="novel">
+		SELECT N.*, M.nickname AS extra__writer, C.name AS extra__cateName
+		FROM novel AS N
+		INNER JOIN `member` AS M
+		INNER JOIN category AS C
+		ON N.memberId = M.id
+		AND N.displayStatus = 1
+		AND N.cateId = C.id
+		AND seriesStatus = 1
+		AND N.memberId = #{memberId}
+		AND N.name LIKE CONCAT('%', #{searchKeyword}, '%')
+		ORDER BY N.id DESC;
+	</select>
+	
+	<update id="upTotalChByNovelId">
+		UPDATE novel
+		SET updateDate = NOW(),
+		totalCh = totalCh+1
+		WHERE id = #{novelId};
+	</update>
+	
+	<update id="downTotalChByNovelId">
+		UPDATE novel
+		SET updateDate = NOW(),
+		totalCh = totalCh-1
+		WHERE id = #{novelId};
+	</update>
+	
+	<update id="updateTotalChByNovelId">
+		UPDATE novel
+		SET updateDate = NOW(),
+		totalCh = #{totalCh}
+		WHERE id = #{novelId};
+	</update>
+	
 	<resultMap type="Novel" id="novel">
 		<id property="id" column="id" />
 		<id property="name" column="name" />
@@ -138,6 +173,7 @@
 		<id property="memberId" column="memberId" />
 		<id property="seriesStatus" column="seriesStatus" />
 		<id property="totalHit" column="totalHit" />
+		<id property="totalCh" column="totalCh" />
 		<association property="extra" javaType="map">
 			<id property="writer" column="extra__writer" />
 			<id property="cateName" column="extra__cateName" />

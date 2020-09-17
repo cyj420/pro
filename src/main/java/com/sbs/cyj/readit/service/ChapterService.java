@@ -58,4 +58,12 @@ public class ChapterService {
 	public List<Chapter> getChaptersBySearchKeywordAndSearchKeywordType(String searchKeyword, String searchKeywordType) {
 		return chapterDao.getChaptersBySearchKeywordAndSearchKeywordType(searchKeyword, searchKeywordType);
 	}
+
+	public List<Chapter> getChaptersByWriterId(int memberId) {
+		return chapterDao.getChaptersByWriterId(memberId);
+	}
+
+	public List<Chapter> getChaptersByWriterIdAndSearchKeywordAndSearchKeywordType(int memberId, String searchKeyword, String searchKeywordType) {
+		return chapterDao.getChaptersByWriterIdAndSearchKeywordAndSearchKeywordType(memberId, searchKeyword, searchKeywordType);
+	}
 }

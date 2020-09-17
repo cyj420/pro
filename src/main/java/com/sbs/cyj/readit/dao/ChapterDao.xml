@@ -26,12 +26,14 @@
 	</select>
 	
 	<select id="getChaptersByNovelId" resultMap="chapter">
-		SELECT C.*, M.nickname AS extra__writer
+		SELECT C.*, M.nickname AS extra__writer, N.name AS extra__novelName
 		FROM chapter AS C
 		INNER JOIN `member` AS M
+		INNER JOIN novel AS N
 		ON M.id = C.memberId
+		AND C.novelId = N.id
+		AND C.novelId = #{novelId}
 		AND C.displayStatus = 1
-		WHERE novelId = #{novelId}
 		ORDER BY C.id DESC;
 	</select>
 	
@@ -90,6 +92,32 @@
 		AND C.displayStatus = 1
 		<if test="searchKeywordType == 'title'">AND C.title LIKE CONCAT('%', #{searchKeyword}, '%')</if>
 		<if test="searchKeywordType == 'name'">AND N.name LIKE CONCAT('%', #{searchKeyword}, '%')</if>
+		ORDER BY C.id DESC;
+	</select>
+	
+	<select id="getChaptersByWriterId" resultMap="chapter">
+		SELECT C.*, M.nickname AS extra__writer, N.name AS extra__novelName
+		FROM chapter AS C
+		INNER JOIN `member` AS M
+		INNER JOIN novel AS N
+		ON M.id = C.memberId
+		AND C.novelId = N.id
+		AND C.memberId = #{memberId}
+		AND C.displayStatus = 1
+		ORDER BY C.id DESC;
+	</select>
+	
+	<select id="getChaptersByWriterIdAndSearchKeywordAndSearchKeywordType" resultMap="chapter">
+		SELECT C.*, M.nickname AS extra__writer, N.name AS extra__novelName
+		FROM chapter AS C
+		INNER JOIN `member` AS M
+		INNER JOIN novel AS N
+		ON M.id = C.memberId
+		AND C.novelId = N.id
+		AND C.memberId = #{memberId}
+		<if test="searchKeywordType == 'title'">AND C.title LIKE CONCAT('%', #{searchKeyword}, '%')</if>
+		<if test="searchKeywordType == 'name'">AND N.name LIKE CONCAT('%', #{searchKeyword}, '%')</if>
+		AND C.displayStatus = 1
 		ORDER BY C.id DESC;
 	</select>
 	

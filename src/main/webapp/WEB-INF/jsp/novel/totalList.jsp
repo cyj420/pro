@@ -5,7 +5,7 @@
 	<c:set var="pageTitle" value="전체 챕터 리스트" />
 </c:if>
 <c:if test="${chapters == null }">
-	<c:set var="pageTitle" value="전체 소설 리스트" />
+	<c:set var="pageTitle" value="전체 장편 소설 리스트" />
 </c:if>
 <%@ include file="../part/head.jspf"%>
 <style>
@@ -44,9 +44,9 @@ color: red;
 				<c:if test="${chapters == null }">
 					<th>카테고리명</th>
 				</c:if>
-				<th>시리즈명</th>
+				<th>소설 제목</th>
 				<c:if test="${chapters != null }">
-					<th>제목</th>
+					<th>챕터 제목</th>
 				</c:if>
 				<th>조회수</th>
 			</tr>
@@ -59,7 +59,7 @@ color: red;
 						<td>${novel.regDate}</td>
 						<td><a href="/usr/novel/${novel.extra.writer}-list">${novel.extra.writer}</a></td>
 						<td>${novel.extra.cateName}</td>
-						<td><a href="/usr/novel/${novel.extra.writer}-list?novelId=${novel.id}">${novel.name}</a></td>
+						<td><a href="/usr/novel/${novel.extra.writer}-list?novelId=${novel.id}">${novel.name} [${novel.totalCh }]</a></td>
 						<td>${novel.totalHit }</td>
 					</tr>
 				</c:forEach>
