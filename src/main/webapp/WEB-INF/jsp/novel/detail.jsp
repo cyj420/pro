@@ -167,12 +167,12 @@ img{
 		<div>시리즈명 : <a href="/usr/novel/${chapter.extra.writer}-list?novelId=${chapter.novelId}">${novel.name}</a></div>
 		<c:if test="${novelPreCh != null }">
 			<div>
-				이전글 : <a href="/usr/novel/${chapter.extra.writer}-detail?id=${novelPreCh}">${novelPreChName }</a>
+				이전글 : <a href="/usr/novel/${chapter.extra.writer}-detail?id=${novelPreCh}&novelId=${param.novelId}">${novelPreChName }</a>
 			</div>
 		</c:if>
 		<c:if test="${novelNextCh != null }">
 			<div>
-				다음글 : <a href="/usr/novel/${chapter.extra.writer}-detail?id=${novelNextCh}">${novelNextChName }</a>
+				다음글 : <a href="/usr/novel/${chapter.extra.writer}-detail?id=${novelNextCh}&novelId=${param.novelId}">${novelNextChName }</a>
 			</div>
 		</c:if>
 	</c:if>
@@ -219,19 +219,21 @@ img{
 					form.body.focus();
 					return;
 				}
+				
 				$.post('./../reply/doWriteReplyAjax', {
 					relType : 'novel',
 					relId : param.id,
+					secret : $(secret).is(":checked"),
 					body : form.body.value
 				}, function(data) {
 					alert(data.msg);
 				}, 'json');
+				
 				form.body.value = '';
 			}
 		</script>
 	
 		<form action="" onsubmit="ReplyWriteForm__submit(this); return false;">
-	
 			<table>
 				<tbody>
 					<tr>
@@ -242,6 +244,10 @@ img{
 									class="height-300"></textarea>
 							</div>
 						</td>
+					</tr>
+					<tr>
+						<th>비밀댓글 체크</th>
+						<td><input id="secret" type="checkbox" name="secret"></td>
 					</tr>
 					<tr>
 						<th>작성</th>
@@ -313,16 +319,16 @@ img{
 			}, function(data) {
 				if ( data.body.replies && data.body.replies.length > 0 ) {
 					ReplyList__lastLodedId = data.body.replies[data.body.replies.length - 1].id;
-					ReplyList__drawReplies(data.body.replies);
+					ReplyList__drawReplies(data.body.replies, data.body.canViewSecretReply);
 				}
 				setTimeout(ReplyList__loadMore, 2000);
 			}, 'json');
 		}
 		
-		function ReplyList__drawReplies(replies) {
+		function ReplyList__drawReplies(replies, canViewSecretReply) {
 			for ( var i = 0; i < replies.length; i++ ) {
 				var reply = replies[i];
-				ReplyList__drawReply(reply);
+				ReplyList__drawReply(reply, canViewSecretReply);
 			}
 		}
 
@@ -368,7 +374,7 @@ img{
 			}, 'json');
 		}
 		
-		function ReplyList__drawReply(reply) {
+		function ReplyList__drawReply(reply, canViewSecretReply) {
 			var html = '';
 
 			html = '<tr data-id="'+reply.id+'" data-modify-mode="N">';
@@ -376,7 +382,18 @@ img{
 			html += '<td>' + reply.regDate + '</td>';
 			html += '<td>' + reply.extra.writer + '</td>';
 			html += '<td class="reply-body-td">';
-			html += '<div class="modify-mode-invisible reply-body">' + reply.body + '</div>';
+			if (reply.secretStatus){
+				if (reply.extra.actorCanDelete || canViewSecretReply){
+					html += '<div class="modify-mode-invisible reply-body">🔒︎ ' + reply.body + '</div>';
+				}
+				else{
+					html += '<div class="modify-mode-invisible reply-body">🔒︎ 챕터 작성자 및 댓글 작성자 본인만 볼 수 있습니다.</div>';
+				}
+			}
+			else{
+				html += '<div class="modify-mode-invisible reply-body">' + reply.body + '</div>';
+			}
+			
 			html += '<div class="modify-mode-visible">';
 
 			html += '<form action="" onsubmit="ReplyList__submitModifyForm(this); return false;">';

@@ -353,3 +353,8 @@ ADD COLUMN totalHit INT(10) UNSIGNED NOT NULL DEFAULT 0;
 #0917
 ALTER TABLE `novel` 
 ADD COLUMN totalCh INT(10) UNSIGNED NOT NULL DEFAULT 0; 
+
+#===========================================================
+#0918
+ALTER TABLE `reply` 
+ADD COLUMN secretStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0; 

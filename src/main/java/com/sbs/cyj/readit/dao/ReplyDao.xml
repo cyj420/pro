@@ -11,6 +11,7 @@
 		memberId = #{memberId},
 		relType = #{relType},
 		relId = #{relId},
+		secretStatus = #{secretStatus},
 		`body` = #{body}
 	</insert>
 	
@@ -62,6 +63,7 @@
 		<id property="relType" column="relType" />
 		<id property="relId" column="relId" />
 		<id property="body" column="body" />
+		<id property="secretStatus" column="secretStatus" />
 		<association property="extra" javaType="map">
 			<id property="writer" column="extra__writer" />
 		</association>

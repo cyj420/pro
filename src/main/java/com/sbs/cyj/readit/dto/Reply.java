@@ -20,6 +20,7 @@ public class Reply {
 	private String relType;
 	private int relId;
 	private String body;
+	private boolean secretStatus;
 	private Map<String, Object> extra;
 	
 //	@JsonProperty("forPrintBody")
