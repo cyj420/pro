@@ -109,6 +109,16 @@ public class NovelService {
 	public List<Novel> getNovelsByMemberIdForSetup(int memberId) {
 		return novelDao.getNovelsByMemberIdForSetup(memberId);
 	}
+
+	public List<Novel> getNovelsForPrint(int itemsInOnePage, int page) {
+		int start = itemsInOnePage * ( page - 1 );
+		return novelDao.getNovelsForPrint(start, itemsInOnePage);
+	}
+
+	public List<Novel> getNovelsBySearchKeywordForPrint(String searchKeyword, int itemsInOnePage, int page) {
+		int start = itemsInOnePage * ( page - 1 );
+		return novelDao.getNovelsBySearchKeywordForPrint(searchKeyword, start, itemsInOnePage);
+	}
 	
 	
 }

@@ -163,21 +163,23 @@ img{
 	<hr>
 	
 	<!-- 동일 시리즈 이전글/다음글 START -->
-	<c:if test="${chapter.extra.series == 1 && novelSize > 1 }">
-		<div>시리즈명 : <a href="/usr/novel/${chapter.extra.writer}-list?novelId=${chapter.novelId}">${novel.name}</a></div>
-		<c:if test="${novelPreCh != null }">
-			<div>
-				이전글 : <a href="/usr/novel/${chapter.extra.writer}-detail?id=${novelPreCh}&novelId=${param.novelId}">${novelPreChName }</a>
-			</div>
+	<c:if test="${novelId != null }">
+		<c:if test="${chapter.extra.series == 1 && novelSize > 1 }">
+			<div>시리즈명 : <a href="/usr/novel/${chapter.extra.writer}-list?novelId=${chapter.novelId}">${novel.name}</a></div>
+			<c:if test="${novelPreCh != null }">
+				<div>
+					이전글 : <a href="/usr/novel/${chapter.extra.writer}-detail?id=${novelPreCh}&novelId=${chapter.novelId}">${novelPreChName }</a>
+				</div>
+			</c:if>
+			<c:if test="${novelNextCh != null }">
+				<div>
+					다음글 : <a href="/usr/novel/${chapter.extra.writer}-detail?id=${novelNextCh}&novelId=${chapter.novelId}">${novelNextChName }</a>
+				</div>
+			</c:if>
 		</c:if>
-		<c:if test="${novelNextCh != null }">
-			<div>
-				다음글 : <a href="/usr/novel/${chapter.extra.writer}-detail?id=${novelNextCh}&novelId=${param.novelId}">${novelNextChName }</a>
-			</div>
-		</c:if>
+		<hr>
 	</c:if>
 	<!-- 동일 시리즈 이전글/다음글 END -->
-	<hr>
 	
 	<!-- 이전글/다음글 START -->
 	<c:if test="${novelId == null }">
@@ -387,7 +389,7 @@ img{
 					html += '<div class="modify-mode-invisible reply-body">🔒︎ ' + reply.body + '</div>';
 				}
 				else{
-					html += '<div class="modify-mode-invisible reply-body">🔒︎ 챕터 작성자 및 댓글 작성자 본인만 볼 수 있습니다.</div>';
+					html += '<div class="modify-mode-invisible reply-body">🔒︎ 소설/댓글 작성자 본인만 볼 수 있습니다.</div>';
 				}
 			}
 			else{

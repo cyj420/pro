@@ -15,15 +15,21 @@ font-weight: bold;
 .table-list a:hover{
 color: red;
 }
+.selected-page{
+color:red;
+font-weight:700;
+}
 </style>
 <div class="con">
 	<form action="/usr/novel/list">
 		<c:if test="${param.mode != 'totalNovel'}">
 			<input type="hidden" name="mode" value="totalNovel"/>
+			<input type="hidden" name="page" value="1"/>
 			<button type="submit">소설 별 보기</button>
 		</c:if>
 		<c:if test="${param.mode == 'totalNovel'}">
 			<input type="hidden" name="mode" value="totalChapter"/>
+			<input type="hidden" name="page" value="1"/>
 			<button type="submit">챕터 별 보기</button>
 		</c:if>
 	</form>
@@ -87,13 +93,40 @@ color: red;
 		</tbody>
 	</table>
 	
+	<!-- 페이징 시작 -->
+	<div class="paging">
+		<c:if test="${page > 1 }">
+			<a href="?mode=${param.mode}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=${page-1}">
+			◀
+			</a>
+		</c:if>
+		<c:forEach var="i" begin="1" end="${fullPage}" step="1">
+			<c:if test="${page == i }">
+				<span>
+					<a class="selected-page" 
+					href="?mode=${param.mode}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=${i}">[${i }]
+					</a>
+				</span>
+			</c:if>
+			<c:if test="${page != i }">
+				<span>
+					<a class="not-selected-page" 
+					href="?mode=${param.mode}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=${i}">[${i }]
+					</a>
+				</span>
+			</c:if>
+		</c:forEach>
+		<c:if test="${page < fullPage }">
+			<a href="?mode=${param.mode}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=${page + 1}">▶</a>
+		</c:if>
+	</div>
+	<!-- 페이징 끝 -->
+	
 	<!-- 검색 시작 -->
 	<div class="con search-box flex flex-jc-c">
 		<form action="/usr/novel/list">
 			<input type="hidden" name="mode" value="${param.mode }"/>
-			<!-- 
 			<input type="hidden" name="page" value="1" />
-			-->
 			<select name="searchKeywordType" type="hidden" >
 				<c:if test="${param.searchKeywordType == null }">
 					<option value="name">소설 제목</option>

@@ -177,10 +177,15 @@ public class NovelController {
 		if (req.getParameter("mode") != null) {
 			String str = req.getParameter("mode");
 
+			int page = 1;
+			int fullPage = 0;
+			int itemsInOnePage = 5;
+			String searchKeyword = req.getParameter("searchKeyword");
+
 			if (str.equals("totalNovel")) {
 				List<Novel> novels = null;
 
-				if (req.getParameter("searchKeyword") == null) {
+				if (searchKeyword == null || searchKeyword.trim().length() == 0) {
 					novels = novelService.getNovels();
 
 					for (int i = 0; i < novels.size(); i++) {
@@ -189,7 +194,6 @@ public class NovelController {
 						novelService.updateTotalChByNovelId(novelId, chapters.size());
 					}
 				} else {
-					String searchKeyword = req.getParameter("searchKeyword");
 					novels = novelService.getNovelsBySearchKeyword(searchKeyword);
 				}
 
@@ -207,27 +211,37 @@ public class NovelController {
 				}
 
 				// novels를 다시 불러오는 이유: hit의 최신화
-				if (req.getParameter("searchKeyword") == null) {
-					novels = novelService.getNovels();
+				// 페이징
+				fullPage = (novels.size() - 1) / itemsInOnePage + 1;
+				page = Integer.parseInt(req.getParameter("page"));
+
+				if (searchKeyword == null || searchKeyword.trim().length() == 0) {
+					novels = novelService.getNovelsForPrint(itemsInOnePage, page);
+
 				} else {
-					String searchKeyword = req.getParameter("searchKeyword");
-					novels = novelService.getNovelsBySearchKeyword(searchKeyword);
+					novels = novelService.getNovelsBySearchKeywordForPrint(searchKeyword, itemsInOnePage, page);
 				}
 				model.addAttribute("novels", novels);
 			} else if (str.equals("totalChapter")) {
 				List<Chapter> chapters = chapterService.getChapters();
-
-				if (req.getParameter("searchKeyword") == null) {
-					chapters = chapterService.getChapters();
+				
+				if (searchKeyword == null || searchKeyword.trim().length() == 0) {
+					fullPage = (chapters.size() - 1) / itemsInOnePage + 1;
+					page = Integer.parseInt(req.getParameter("page"));
+					chapters = chapterService.getChaptersForPrint(itemsInOnePage, page);
 				} else {
 					String searchKeywordType = req.getParameter("searchKeywordType");
-					String searchKeyword = req.getParameter("searchKeyword");
-
-					chapters = chapterService.getChaptersBySearchKeywordAndSearchKeywordType(searchKeyword,
-							searchKeywordType);
+					chapters = chapterService.getChaptersBySearchKeywordAndSearchKeywordType(searchKeyword, searchKeywordType);
+					
+					fullPage = (chapters.size() - 1) / itemsInOnePage + 1;
+					page = Integer.parseInt(req.getParameter("page"));
+					
+					chapters = chapterService.getChaptersBySearchKeywordAndSearchKeywordTypeForPrint(searchKeyword, searchKeywordType, itemsInOnePage, page);
 				}
 				model.addAttribute("chapters", chapters);
 			}
+			model.addAttribute("page", page);
+			model.addAttribute("fullPage", fullPage);
 		}
 
 		return "novel/totalList";
@@ -383,33 +397,31 @@ public class NovelController {
 		// 소설과 무관한 이전글/다음글
 		{
 			List<Chapter> chapters = null;
-			
+
 			if (req.getParameter("searchKeyword") != null) {
 				String mode = req.getParameter("mode");
 				String searchKeywordType = req.getParameter("searchKeywordType");
 				String searchKeyword = req.getParameter("searchKeyword");
-				
-				if(mode.substring(0, 5).equals("total")) {
+
+				if (mode.substring(0, 5).equals("total")) {
 					// total로 판단
 					chapters = chapterService.getChaptersBySearchKeywordAndSearchKeywordType(searchKeyword,
 							searchKeywordType);
-				}
-				else {
+				} else {
 					// 작가별로 판단
 					int memberId = memberService.getMemberByNickname(nickname).getId();
-					chapters = chapterService.getChaptersByWriterIdAndSearchKeywordAndSearchKeywordType(memberId, 
+					chapters = chapterService.getChaptersByWriterIdAndSearchKeywordAndSearchKeywordType(memberId,
 							searchKeyword, searchKeywordType);
 				}
-				
+
 				model.addAttribute("mode", mode);
 				model.addAttribute("searchKeywordType", searchKeywordType);
 				model.addAttribute("searchKeyword", searchKeyword);
-			}
-			else {
+			} else {
 				Member writer = memberService.getMemberByNickname(nickname);
 				chapters = chapterService.getChaptersByWriterId(writer.getId());
 			}
-	
+
 			int size = chapters.size();
 
 			if (size > 1) {
@@ -437,7 +449,7 @@ public class NovelController {
 				model.addAttribute("ch", ch);
 			}
 		}
-		if(req.getParameter("novelId") != null) {
+		if (req.getParameter("novelId") != null) {
 			model.addAttribute("novelId", req.getParameter("novelId"));
 		}
 		model.addAttribute("chapter", chapter);

@@ -174,6 +174,33 @@
 		ORDER BY N.id DESC;
 	</select>
 	
+	<select id="getNovelsForPrint" resultMap="novel">
+		SELECT N.*, M.nickname AS extra__writer, C.name AS extra__cateName
+		FROM novel AS N
+		INNER JOIN `member` AS M
+		INNER JOIN category AS C
+		ON N.memberId = M.id
+		AND N.displayStatus = 1
+		AND N.cateId = C.id
+		AND seriesStatus = 1
+		ORDER BY N.id DESC
+		LIMIT #{start}, #{itemsInOnePage};
+	</select>
+	
+	<select id="getNovelsBySearchKeywordForPrint" resultMap="novel">
+		SELECT N.*, M.nickname AS extra__writer, C.name AS extra__cateName
+		FROM novel AS N
+		INNER JOIN `member` AS M
+		INNER JOIN category AS C
+		ON N.memberId = M.id
+		AND N.displayStatus = 1
+		AND N.cateId = C.id
+		AND seriesStatus = 1
+		AND N.name LIKE CONCAT('%', #{searchKeyword}, '%')
+		ORDER BY N.id DESC
+		LIMIT #{start}, #{itemsInOnePage};
+	</select>
+	
 	<resultMap type="Novel" id="novel">
 		<id property="id" column="id" />
 		<id property="name" column="name" />

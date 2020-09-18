@@ -18,15 +18,12 @@ import com.sbs.cyj.readit.dto.Member;
 import com.sbs.cyj.readit.dto.Reply;
 import com.sbs.cyj.readit.dto.ResultData;
 import com.sbs.cyj.readit.service.ChapterService;
-import com.sbs.cyj.readit.service.MemberService;
 import com.sbs.cyj.readit.service.ReplyService;
 
 @Controller
 public class ReplyController {
 	@Autowired
 	private ReplyService replyService;
-	@Autowired
-	private MemberService memberService;
 	@Autowired
 	private ChapterService chapterService;
 	
@@ -75,7 +72,7 @@ public class ReplyController {
 			if(relType.equals("novel")) {
 				Chapter chapter = chapterService.getChapterById(relId);
 				int chapterWriterId = chapter.getMemberId();
-				if(actor.getId() == chapterWriterId) {
+				if( actor.getId() == chapterWriterId || actor.getId() == 1 ) {
 					rsDataBody.put("canViewSecretReply", true);
 				}
 			}

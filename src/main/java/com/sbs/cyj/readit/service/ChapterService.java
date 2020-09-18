@@ -66,4 +66,15 @@ public class ChapterService {
 	public List<Chapter> getChaptersByWriterIdAndSearchKeywordAndSearchKeywordType(int memberId, String searchKeyword, String searchKeywordType) {
 		return chapterDao.getChaptersByWriterIdAndSearchKeywordAndSearchKeywordType(memberId, searchKeyword, searchKeywordType);
 	}
+
+	public List<Chapter> getChaptersForPrint(int itemsInOnePage, int page) {
+		int start = itemsInOnePage * ( page - 1 );
+		return chapterDao.getChaptersForPrint(start, itemsInOnePage);
+	}
+
+	public List<Chapter> getChaptersBySearchKeywordAndSearchKeywordTypeForPrint(String searchKeyword,
+			String searchKeywordType, int itemsInOnePage, int page) {
+		int start = itemsInOnePage * ( page - 1 );
+		return chapterDao.getChaptersBySearchKeywordAndSearchKeywordTypeForPrint(searchKeyword,	searchKeywordType, start, itemsInOnePage);
+	}
 }
