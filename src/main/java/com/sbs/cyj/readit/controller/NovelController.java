@@ -261,10 +261,17 @@ public class NovelController {
 
 		List<Novel> novels = novelService.getNovelsByMemberId(memberId);
 
+		int page = 1;
+		int fullPage = 0;
+		int itemsInOnePage = 5;
+		String searchKeyword = req.getParameter("searchKeyword");
+		
+		List<Chapter> chapters = null;
+		
 		// 소설당 챕터 개수 파악하기 위함
 		for (int i = 0; i < novels.size(); i++) {
 			int novelId = novels.get(i).getId();
-			List<Chapter> chapters = chapterService.getChaptersByNovelId(novelId);
+			chapters = chapterService.getChaptersByNovelId(novelId);
 			novelService.updateTotalChByNovelId(novelId, chapters.size());
 		}
 
@@ -273,11 +280,8 @@ public class NovelController {
 
 			if (mode.equals("chapter")) {
 				// 챕터 별 보기일 때
-				List<Chapter> chapters = null;
-
-				if (req.getParameter("searchKeyword") != null) {
+				if (searchKeyword != null) {
 					String searchKeywordType = req.getParameter("searchKeywordType");
-					String searchKeyword = req.getParameter("searchKeyword");
 					chapters = chapterService.getChaptersByWriterIdAndSearchKeywordAndSearchKeywordType(memberId,
 							searchKeyword, searchKeywordType);
 				} else {
@@ -291,7 +295,14 @@ public class NovelController {
 			String strNovelId = req.getParameter("novelId");
 			int novelId = Integer.parseInt(strNovelId);
 
-			List<Chapter> chapters = chapterService.getChaptersByNovelId(novelId);
+			// 페이징
+			fullPage = (chapters.size() - 1) / itemsInOnePage + 1;
+			if(req.getParameter("page") != null) {
+				page = Integer.parseInt(req.getParameter("page"));
+			}
+			
+			chapters = chapterService.getChaptersByNovelIdForPrint(novelId, itemsInOnePage, page);
+			
 			model.addAttribute("chapters", chapters);
 
 			int totalHit = 0;
@@ -312,7 +323,7 @@ public class NovelController {
 		for (int i = 0; i < novels.size(); i++) {
 			int totalHit = 0;
 
-			List<Chapter> chapters = chapterService.getChaptersByNovelId(novels.get(i).getId());
+			chapters = chapterService.getChaptersByNovelId(novels.get(i).getId());
 
 			for (int j = 0; j < chapters.size(); j++) {
 				totalHit += chapters.get(j).getHit();
@@ -321,16 +332,25 @@ public class NovelController {
 			novelService.updateTotalHitByNovelId(novels.get(i).getId(), totalHit);
 		}
 
-		// novels를 다시 불러오는 이유: hit의 최신화
-		novels = novelService.getNovelsByMemberId(memberId);
-
-		if (req.getParameter("mode") != null) {
-			if (req.getParameter("mode").equals("novel") && req.getParameter("searchKeyword") != null) {
-				String searchKeyword = req.getParameter("searchKeyword");
-				novels = novelService.getNovelsByMemberIdAndSearchKeyword(memberId, searchKeyword);
-			}
+		// 페이징
+		fullPage = (novels.size() - 1) / itemsInOnePage + 1;
+		if(req.getParameter("page") != null) {
+			page = Integer.parseInt(req.getParameter("page"));
 		}
 
+		if (req.getParameter("mode") != null) {
+			if (req.getParameter("mode").equals("novel") && searchKeyword != null) {
+				novels = novelService.getNovelsByMemberIdAndSearchKeyword(memberId, searchKeyword);
+				fullPage = (novels.size() - 1) / itemsInOnePage + 1;
+				novels = novelService.getNovelsByMemberIdAndSearchKeywordForPrint(memberId, searchKeyword, itemsInOnePage, page);
+			}
+		}
+		else {
+			novels = novelService.getNovelsByMemberIdForPrint(memberId, itemsInOnePage, page);
+		}
+		
+		model.addAttribute("page", page);
+		model.addAttribute("fullPage", fullPage);
 		model.addAttribute("novels", novels);
 		model.addAttribute("nickname", nickname);
 		model.addAttribute("loginedMemberId", (int) req.getAttribute("loginedMemberId"));

@@ -119,6 +119,17 @@ public class NovelService {
 		int start = itemsInOnePage * ( page - 1 );
 		return novelDao.getNovelsBySearchKeywordForPrint(searchKeyword, start, itemsInOnePage);
 	}
+
+	public List<Novel> getNovelsByMemberIdAndSearchKeywordForPrint(int memberId, String searchKeyword,
+			int itemsInOnePage, int page) {
+		int start = itemsInOnePage * ( page - 1 );
+		return novelDao.getNovelsByMemberIdAndSearchKeywordForPrint(memberId, searchKeyword, start, itemsInOnePage);
+	}
+
+	public List<Novel> getNovelsByMemberIdForPrint(int memberId, int itemsInOnePage, int page) {
+		int start = itemsInOnePage * ( page - 1 );
+		return novelDao.getNovelsByMemberIdForPrint(memberId, start, itemsInOnePage);
+	}
 	
 	
 }

@@ -51,4 +51,8 @@ public interface NovelDao {
 
 	List<Novel> getNovelsBySearchKeywordForPrint(String searchKeyword, int start, int itemsInOnePage);
 
+	List<Novel> getNovelsByMemberIdAndSearchKeywordForPrint(int memberId, String searchKeyword, int start, int itemsInOnePage);
+
+	List<Novel> getNovelsByMemberIdForPrint(int memberId, int start, int itemsInOnePage);
+
 }

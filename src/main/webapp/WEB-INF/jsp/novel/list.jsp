@@ -16,6 +16,12 @@
 	</c:if>
 </c:if>
 <%@ include file="../part/head.jspf"%>
+<style>
+.selected-page{
+color:red;
+font-weight:700;
+}
+</style>
 <div class="con">
 	<form action="/usr/novel/${nickname}-list">
 		<c:if test="${novelId == null }">
@@ -97,6 +103,35 @@
 			<a href="/usr/novel/${nickname}-write?novelId=${novel.id}">챕터 작성</a>
 		</button>
 	</c:if>
+	
+	<!-- 페이징 시작 -->
+	<div class="paging">
+		<c:if test="${page > 1 }">
+			<a href="?mode=${param.mode}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=${page-1}">
+			◀
+			</a>
+		</c:if>
+		<c:forEach var="i" begin="1" end="${fullPage}" step="1">
+			<c:if test="${page == i }">
+				<span>
+					<a class="selected-page" 
+					href="?mode=${param.mode}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=${i}">[${i }]
+					</a>
+				</span>
+			</c:if>
+			<c:if test="${page != i }">
+				<span>
+					<a class="not-selected-page" 
+					href="?mode=${param.mode}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=${i}">[${i }]
+					</a>
+				</span>
+			</c:if>
+		</c:forEach>
+		<c:if test="${page < fullPage }">
+			<a href="?mode=${param.mode}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=${page + 1}">▶</a>
+		</c:if>
+	</div>
+	<!-- 페이징 끝 -->
 
 	<!-- 검색 시작 -->
 	<div class="con search-box flex flex-jc-c">

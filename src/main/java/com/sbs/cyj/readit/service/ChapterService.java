@@ -77,4 +77,9 @@ public class ChapterService {
 		int start = itemsInOnePage * ( page - 1 );
 		return chapterDao.getChaptersBySearchKeywordAndSearchKeywordTypeForPrint(searchKeyword,	searchKeywordType, start, itemsInOnePage);
 	}
+
+	public List<Chapter> getChaptersByNovelIdForPrint(int novelId, int itemsInOnePage, int page) {
+		int start = itemsInOnePage * ( page - 1 );
+		return chapterDao.getChaptersByNovelIdForPrint(novelId, start, itemsInOnePage);
+	}
 }
