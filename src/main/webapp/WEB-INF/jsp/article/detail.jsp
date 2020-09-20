@@ -83,6 +83,33 @@ img{
 	</table>
 	<!-- 본문 END -->
 	
+	<!-- 이전글/다음글 START -->
+	<c:if test="${preCh != null }">
+		<c:if test="${param.memberId > 0 }">
+			<div>
+				이전글 : <a href="/usr/article/${board.code}-detail?id=${preCh}&memberId=${memberId}&searchKeyword=${param.searchKeyword}">${preChName }</a>
+			</div>
+		</c:if>
+		<c:if test="${param.memberId < 1 }">
+			<div>
+				이전글 : <a href="/usr/article/${board.code}-detail?id=${preCh}&searchKeyword=${param.searchKeyword}">${preChName }</a>
+			</div>
+		</c:if>
+	</c:if>
+	<c:if test="${nextCh != null }">
+		<c:if test="${param.memberId > 0 }">
+			<div>
+				다음글 : <a href="/usr/article/${board.code}-detail?id=${nextCh}&memberId=${memberId}&searchKeyword=${param.searchKeyword}">${nextChName }</a>
+			</div>
+		</c:if>
+		<c:if test="${param.memberId < 1 }">
+			<div>
+				다음글 : <a href="/usr/article/${board.code}-detail?id=${nextCh}&searchKeyword=${param.searchKeyword}">${nextChName }</a>
+			</div>
+		</c:if>
+	</c:if>
+	<!-- 이전글/다음글 END -->
+	
 	<!-- 댓글 작성 START -->
 	<c:if test="${loginedMember != null}">
 		<h2>댓글 작성</h2>
@@ -97,6 +124,7 @@ img{
 				$.post('./../reply/doWriteReplyAjax', {
 					relType : 'article',
 					relId : param.id,
+					secret : false,
 					body : form.body.value
 				}, function(data) {
 					alert(data.msg);

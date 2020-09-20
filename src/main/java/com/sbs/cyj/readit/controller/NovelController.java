@@ -580,6 +580,13 @@ public class NovelController {
 			listUrl = "./" + nickname + "-list";
 		}
 		model.addAttribute("listUrl", listUrl);
+		
+		int page = 1;
+		if (req.getParameter("page") != null) {
+			page = Integer.parseInt(req.getParameter("page"));
+		}
+		int fullPage = 0;
+		int itemsInOnePage = 5;
 
 		Member loginedMember = (Member) req.getAttribute("loginedMember");
 		model.addAttribute("loginedMember", loginedMember);
@@ -588,8 +595,19 @@ public class NovelController {
 
 		if (loginedMember.getNickname().equals(nickname)) {
 			List<Novel> novels = novelService.getNovelsByMemberIdForSetup(memberId);
-			model.addAttribute("novels", novels);
+			
+			// 페이징
+			fullPage = (novels.size() - 1) / itemsInOnePage + 1;
+			if (req.getParameter("page") != null) {
+				page = Integer.parseInt(req.getParameter("page"));
+			}
+			
+			novels = novelService.getNovelsByMemberIdForSetupForPrint(memberId, itemsInOnePage, page);
 
+			model.addAttribute("novels", novels);
+			model.addAttribute("page", page);
+			model.addAttribute("fullPage", fullPage);
+			
 			return "novel/setUp";
 		}
 

@@ -14,9 +14,9 @@ public interface ArticleDao {
 
 	Article getArticleById(int id);
 	
-	List<Article> getArticlesByMemberIdAndBoardId(int memberId, int boardId);
+	List<Article> getArticlesByMemberIdAndBoardIdAndSearchKeyword(int memberId, int boardId, String searchKeyword);
 
-	List<Article> getArticlesByBoardId(int boardId);
+	List<Article> getArticlesByBoardIdAndSearchKeyword(int boardId, String searchKeyword);
 
 	void delete(int id);
 
@@ -25,4 +25,9 @@ public interface ArticleDao {
 	List<Article> getArticlesByMemberId(int memberId);
 
 	void updateHitByArticleId(int id);
+
+	List<Article> getArticlesByMemberIdAndBoardIdAndSearchKeywordForPrint(int memberId, int boardId, String searchKeyword, int start, int itemsInOnePage);
+
+	List<Article> getArticlesByBoardIdAndSearchKeywordForPrint(int boardId, String searchKeyword, int start, int itemsInOnePage);
+
 }

@@ -131,15 +131,9 @@ public class NovelService {
 		return novelDao.getNovelsByMemberIdForPrint(memberId, start, itemsInOnePage);
 	}
 
-//	public List<Novel> getNovelsByIdAndSearchKeyword(int novelId, String searchKeyword) {
-//		return novelDao.getNovelsByIdAndSearchKeyword(novelId, searchKeyword);
-//	}
-//
-//	public List<Novel> getNovelsByIdAndSearchKeywordForPrint(int novelId, String searchKeyword, int itemsInOnePage,
-//			int page) {
-//		int start = itemsInOnePage * ( page - 1 );
-//		return novelDao.getNovelsByIdAndSearchKeywordForPrint(novelId, searchKeyword, start, itemsInOnePage);
-//	}
-	
+	public List<Novel> getNovelsByMemberIdForSetupForPrint(int memberId, int itemsInOnePage, int page) {
+		int start = itemsInOnePage * ( page - 1 );
+		return novelDao.getNovelsByMemberIdForSetupForPrint(memberId, start, itemsInOnePage);
+	}
 	
 }

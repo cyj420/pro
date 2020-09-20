@@ -108,34 +108,69 @@ font-weight:700;
 	<!-- 페이징 시작 -->
 	<div class="paging">
 		<c:if test="${page > 1 }">
-			<a href="?mode=${param.mode}&novelId=${novelId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=${page-1}">
-			◀
-			</a>
+			<c:if test="${param.searchKeyword == null}">
+				<a href="?mode=${param.mode}&novelId=${novelId}&page=${page-1}">
+				◀
+				</a>
+			</c:if>
+			<c:if test="${param.searchKeyword != null}">
+				<a href="?mode=${param.mode}&novelId=${novelId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=${page-1}">
+				◀
+				</a>
+			</c:if>
 		</c:if>
 		<c:forEach var="i" begin="1" end="${fullPage}" step="1">
-			<c:if test="${page == i }">
-				<span>
-					<a class="selected-page" 
-					href="?mode=${param.mode}&novelId=${novelId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=${i}">[${i }]
-					</a>
+			<c:if test="${param.searchKeyword == null}">
+				<c:if test="${page == i }">
+					<span>
+						<a class="selected-page" 
+						href="?mode=${param.mode}&novelId=${novelId}&page=${i}">[${i }]
+						</a>
+					</span>
+				</c:if>
+				<c:if test="${page != i }">
+					<span>
+						<a class="not-selected-page" 
+						href="?mode=${param.mode}&novelId=${novelId}&page=${i}">[${i }]
+						</a>
+					</span>
+				</c:if>
 			</c:if>
-			<c:if test="${page != i }">
-				<span>
-					<a class="not-selected-page" 
-					href="?mode=${param.mode}&novelId=${novelId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=${i}">[${i }]
-					</a>
-				</span>
+			<c:if test="${param.searchKeyword != null}">
+				<c:if test="${page == i }">
+					<span>
+						<a class="selected-page" 
+						href="?mode=${param.mode}&novelId=${novelId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=${i}">[${i }]
+						</a>
+					</span>
+				</c:if>
+				<c:if test="${page != i }">
+					<span>
+						<a class="not-selected-page" 
+						href="?mode=${param.mode}&novelId=${novelId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=${i}">[${i }]
+						</a>
+					</span>
+				</c:if>
 			</c:if>
 		</c:forEach>
 		<c:if test="${page < fullPage }">
-			<a href="?mode=${param.mode}&novelId=${novelId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=${page + 1}">▶</a>
+			<c:if test="${param.searchKeyword == null}">
+				<a href="?mode=${param.mode}&novelId=${novelId}&page=${page+1}">
+				▶
+				</a>
+			</c:if>
+			<c:if test="${param.searchKeyword != null}">
+				<a href="?mode=${param.mode}&novelId=${novelId}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=${page + 1}">
+				▶
+				</a>
+			</c:if>
 		</c:if>
 	</div>
 	<!-- 페이징 끝 -->
 
 	<!-- 검색 시작 -->
 	<div class="con search-box flex flex-jc-c">
-		<c:if test="${param.novelId == null }">
+		<c:if test="${param.novelId < 1 || param.novelId == null }">
 			<form action="/usr/novel/${nickname}-list">
 				<input type="hidden" name="mode" value="${param.mode }" />
 				<select name="searchKeywordType" type="hidden">

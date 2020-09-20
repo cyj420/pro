@@ -12,6 +12,11 @@
 form{
 	display: inline;
 }
+
+.selected-page{
+color:red;
+font-weight:700;
+}
 </style>
 <div class="con">
 	<table class="table-list">
@@ -66,6 +71,35 @@ form{
 			</c:forEach>
 		</tbody>
 	</table>
+	
+	<!-- 페이징 시작 -->
+	<div class="paging">
+		<c:if test="${page > 1 }">
+			<a href="?page=${page-1}">
+			◀
+			</a>
+		</c:if>
+		<c:forEach var="i" begin="1" end="${fullPage}" step="1">
+			<c:if test="${page == i }">
+				<span>
+					<a class="selected-page" 
+					href="?page=${i}">[${i }]
+					</a>
+			</c:if>
+			<c:if test="${page != i }">
+				<span>
+					<a class="not-selected-page" 
+					href="?page=${i}">[${i }]
+					</a>
+				</span>
+			</c:if>
+		</c:forEach>
+		<c:if test="${page < fullPage }">
+			<a href="?page=${page + 1}">▶</a>
+		</c:if>
+	</div>
+	<!-- 페이징 끝 -->
+	
 	<a href="./genNovel">
 		<button>novel 생성</button>
 	</a>

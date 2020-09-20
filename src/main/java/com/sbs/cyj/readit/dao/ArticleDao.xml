@@ -23,24 +23,26 @@
 		AND A.id = #{id};
 	</select>
 	
-	<select id="getArticlesByMemberIdAndBoardId" resultMap="article">
+	<select id="getArticlesByMemberIdAndBoardIdAndSearchKeyword" resultMap="article">
 		SELECT A.*, M.nickname AS extra__writer
 		FROM article AS A
 		INNER JOIN `member` AS M
 		ON M.id = A.memberId
-		AND A.memberId = #{memberId}
+		<if test="memberId != 0">AND A.memberId = #{memberId}</if>
 		AND A.boardId = #{boardId}
+		<if test="searchKeyword != null">AND A.title LIKE CONCAT('%', #{searchKeyword}, '%')</if>
 		AND A.displayStatus = 1
 		ORDER BY A.id DESC;
 	</select>
 	
-	<select id="getArticlesByBoardId" resultMap="article">
+	<select id="getArticlesByBoardIdAndSearchKeyword" resultMap="article">
 		SELECT A.id, A.regDate, A.updateDate, A.delDate, A.delStatus, A.displayStatus, A.title, A.memberId, A.boardId, A.hit, 
 		M.nickname AS extra__writer
 		FROM article AS A
 		INNER JOIN `member` AS M
 		ON M.id = A.memberId
 		AND A.displayStatus = 1
+		<if test="searchKeyword != null">AND A.title LIKE CONCAT('%', #{searchKeyword}, '%')</if>
 		AND A.boardId = #{boardId}
 		ORDER BY A.id DESC;
 	</select>
@@ -80,6 +82,32 @@
 		hit = hit+1
 		WHERE id = #{id};
 	</update>
+	
+	<select id="getArticlesByMemberIdAndBoardIdAndSearchKeywordForPrint" resultMap="article">
+		SELECT A.*, M.nickname AS extra__writer
+		FROM article AS A
+		INNER JOIN `member` AS M
+		ON M.id = A.memberId
+		<if test="memberId != 0">AND A.memberId = #{memberId}</if>
+		AND A.boardId = #{boardId}
+		<if test="searchKeyword != null">AND A.title LIKE CONCAT('%', #{searchKeyword}, '%')</if>
+		AND A.displayStatus = 1
+		ORDER BY A.id DESC
+		LIMIT #{start}, #{itemsInOnePage};
+	</select>
+	
+	<select id="getArticlesByBoardIdAndSearchKeywordForPrint" resultMap="article">
+		SELECT A.id, A.regDate, A.updateDate, A.delDate, A.delStatus, A.displayStatus, A.title, A.memberId, A.boardId, A.hit, 
+		M.nickname AS extra__writer
+		FROM article AS A
+		INNER JOIN `member` AS M
+		ON M.id = A.memberId
+		AND A.displayStatus = 1
+		AND A.boardId = #{boardId}
+		<if test="searchKeyword != null">AND A.title LIKE CONCAT('%', #{searchKeyword}, '%')</if>
+		ORDER BY A.id DESC
+		LIMIT #{start}, #{itemsInOnePage};
+	</select>
 	
 	<resultMap type="Article" id="article">
 		<id property="id" column="id" />

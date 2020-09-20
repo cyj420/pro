@@ -52,12 +52,12 @@ public class ArticleService {
 		Util.putExtraVal(article, "actorCanModify", actorCanModify(actor, article));
 	}
 
-	public List<Article> getArticlesByMemberIdAndBoardId(int memberId, int boardId) {
-		return articleDao.getArticlesByMemberIdAndBoardId(memberId, boardId);
+	public List<Article> getArticlesByMemberIdAndBoardIdAndSearchKeyword(int memberId, int boardId, String searchKeyword) {
+		return articleDao.getArticlesByMemberIdAndBoardIdAndSearchKeyword(memberId, boardId, searchKeyword);
 	}
 
-	public List<Article> getArticlesByBoardId(int boardId) {
-		return articleDao.getArticlesByBoardId(boardId);
+	public List<Article> getArticlesByBoardIdAndSearchKeyword(int boardId, String searchKeyword) {
+		return articleDao.getArticlesByBoardIdAndSearchKeyword(boardId, searchKeyword);
 	}
 
 	public void delete(int id) {
@@ -90,6 +90,17 @@ public class ArticleService {
 
 	public void updateHitByArticleId(int id) {
 		articleDao.updateHitByArticleId(id);
+	}
+
+	public List<Article> getArticlesByMemberIdAndBoardIdAndSearchKeywordForPrint(int memberId, int boardId, 
+			String searchKeyword, int itemsInOnePage, int page) {
+		int start = itemsInOnePage * ( page - 1 );
+		return articleDao.getArticlesByMemberIdAndBoardIdAndSearchKeywordForPrint(memberId, boardId, searchKeyword, start, itemsInOnePage);
+	}
+
+	public List<Article> getArticlesByBoardIdAndSearchKeywordForPrint(int boardId, String searchKeyword, int itemsInOnePage, int page) {
+		int start = itemsInOnePage * ( page - 1 );
+		return articleDao.getArticlesByBoardIdAndSearchKeywordForPrint(boardId, searchKeyword, start, itemsInOnePage);
 	}
 
 }
