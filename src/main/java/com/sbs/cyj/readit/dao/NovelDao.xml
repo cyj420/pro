@@ -137,7 +137,7 @@
 		AND N.cateId = C.id
 		AND seriesStatus = 1
 		AND N.memberId = #{memberId}
-		AND N.name LIKE CONCAT('%', #{searchKeyword}, '%')
+		<if test="searchKeyword != null">AND N.name LIKE CONCAT('%', #{searchKeyword}, '%')</if>
 		ORDER BY N.id DESC;
 	</select>
 	
@@ -195,8 +195,8 @@
 		ON N.memberId = M.id
 		AND N.displayStatus = 1
 		AND N.cateId = C.id
-		AND seriesStatus = 1
-		AND N.name LIKE CONCAT('%', #{searchKeyword}, '%')
+		AND N.seriesStatus = 1
+		<if test="searchKeyword != null">AND N.name LIKE CONCAT('%', #{searchKeyword}, '%')</if>
 		ORDER BY N.id DESC
 		LIMIT #{start}, #{itemsInOnePage};
 	</select>
@@ -209,9 +209,9 @@
 		ON N.memberId = M.id
 		AND N.displayStatus = 1
 		AND N.cateId = C.id
-		AND seriesStatus = 1
+		AND N.seriesStatus = 1
 		AND N.memberId = #{memberId}
-		AND N.name LIKE CONCAT('%', #{searchKeyword}, '%')
+		<if test="searchKeyword != null">AND N.name LIKE CONCAT('%', #{searchKeyword}, '%')</if>
 		ORDER BY N.id DESC
 		LIMIT #{start}, #{itemsInOnePage};
 	</select>
@@ -229,6 +229,37 @@
 		ORDER BY N.id DESC
 		LIMIT #{start}, #{itemsInOnePage};
 	</select>
+	
+	<!-- 
+	<select id="getNovelsByIdAndSearchKeyword" resultMap="novel">
+		SELECT N.*, M.nickname AS extra__writer, C.name AS extra__cateName
+		FROM novel AS N
+		INNER JOIN `member` AS M
+		INNER JOIN category AS C
+		ON N.memberId = M.id
+		AND N.displayStatus = 1
+		AND N.cateId = C.id
+		AND N.id = ${novelId}
+		<if test="searchKeyword != null">AND N.name LIKE CONCAT('%', #{searchKeyword}, '%')</if>
+		AND N.seriesStatus = 1
+		ORDER BY N.id DESC;
+	</select>
+	
+	<select id="getNovelsByIdAndSearchKeywordForPrint" resultMap="novel">
+		SELECT N.*, M.nickname AS extra__writer, C.name AS extra__cateName
+		FROM novel AS N
+		INNER JOIN `member` AS M
+		INNER JOIN category AS C
+		ON N.memberId = M.id
+		AND N.displayStatus = 1
+		AND N.cateId = C.id
+		AND N.id = ${novelId}
+		<if test="searchKeyword != null">AND N.name LIKE CONCAT('%', #{searchKeyword}, '%')</if>
+		AND N.seriesStatus = 1
+		ORDER BY N.id DESC
+		LIMIT #{start}, #{itemsInOnePage};
+	</select>
+	 -->
 	
 	<resultMap type="Novel" id="novel">
 		<id property="id" column="id" />

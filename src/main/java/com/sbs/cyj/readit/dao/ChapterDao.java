@@ -39,4 +39,9 @@ public interface ChapterDao {
 
 	List<Chapter> getChaptersByNovelIdForPrint(int novelId, int start, int itemsInOnePage);
 
+	List<Chapter> getChaptersByWriterIdAndSearchKeywordAndSearchKeywordTypeForPrint(int memberId, String searchKeyword,
+			String searchKeywordType, int start, int itemsInOnePage);
+
+	List<Chapter> getChaptersByWriterIdForPrint(int memberId, int start, int itemsInOnePage);
+
 }

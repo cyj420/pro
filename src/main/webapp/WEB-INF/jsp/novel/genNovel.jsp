@@ -65,7 +65,7 @@
 </script>
 <div class="con">
 	<form method="post" action="doGenNovel" method="post" onsubmit="NovelGenForm__submit(this); return false;" >
-		<input type="hidden" name="redirectUri" value="/usr/novel/${member.nickname}-list">
+		<input type="hidden" name="redirectUri" value="/usr/novel/${member.nickname}-list?mode=novel&page=1">
 		<table>
 			<colgroup>
 				<col width="100">

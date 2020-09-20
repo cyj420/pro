@@ -17,9 +17,9 @@ public class ChapterService {
 
 	public int write(Map<String, Object> param) {
 		chapterDao.write(param);
-		
+
 		int id = Util.getAsInt(param.get("id"));
-		
+
 		return id;
 	}
 
@@ -41,9 +41,9 @@ public class ChapterService {
 
 	public int modifyChapter(Map<String, Object> param) {
 		chapterDao.modifyChapter(param);
-		
+
 		int id = Util.getAsInt(param.get("id"));
-		
+
 		return id;
 	}
 
@@ -55,7 +55,8 @@ public class ChapterService {
 		chapterDao.updateHitByChapterId(id);
 	}
 
-	public List<Chapter> getChaptersBySearchKeywordAndSearchKeywordType(String searchKeyword, String searchKeywordType) {
+	public List<Chapter> getChaptersBySearchKeywordAndSearchKeywordType(String searchKeyword,
+			String searchKeywordType) {
 		return chapterDao.getChaptersBySearchKeywordAndSearchKeywordType(searchKeyword, searchKeywordType);
 	}
 
@@ -63,23 +64,38 @@ public class ChapterService {
 		return chapterDao.getChaptersByWriterId(memberId);
 	}
 
-	public List<Chapter> getChaptersByWriterIdAndSearchKeywordAndSearchKeywordType(int memberId, String searchKeyword, String searchKeywordType) {
-		return chapterDao.getChaptersByWriterIdAndSearchKeywordAndSearchKeywordType(memberId, searchKeyword, searchKeywordType);
+	public List<Chapter> getChaptersByWriterIdAndSearchKeywordAndSearchKeywordType(int memberId, String searchKeyword,
+			String searchKeywordType) {
+		return chapterDao.getChaptersByWriterIdAndSearchKeywordAndSearchKeywordType(memberId, searchKeyword,
+				searchKeywordType);
 	}
 
 	public List<Chapter> getChaptersForPrint(int itemsInOnePage, int page) {
-		int start = itemsInOnePage * ( page - 1 );
+		int start = itemsInOnePage * (page - 1);
 		return chapterDao.getChaptersForPrint(start, itemsInOnePage);
 	}
 
 	public List<Chapter> getChaptersBySearchKeywordAndSearchKeywordTypeForPrint(String searchKeyword,
 			String searchKeywordType, int itemsInOnePage, int page) {
-		int start = itemsInOnePage * ( page - 1 );
-		return chapterDao.getChaptersBySearchKeywordAndSearchKeywordTypeForPrint(searchKeyword,	searchKeywordType, start, itemsInOnePage);
+		int start = itemsInOnePage * (page - 1);
+		return chapterDao.getChaptersBySearchKeywordAndSearchKeywordTypeForPrint(searchKeyword, searchKeywordType,
+				start, itemsInOnePage);
 	}
 
 	public List<Chapter> getChaptersByNovelIdForPrint(int novelId, int itemsInOnePage, int page) {
-		int start = itemsInOnePage * ( page - 1 );
+		int start = itemsInOnePage * (page - 1);
 		return chapterDao.getChaptersByNovelIdForPrint(novelId, start, itemsInOnePage);
+	}
+
+	public List<Chapter> getChaptersByWriterIdAndSearchKeywordAndSearchKeywordTypeForPrint(int memberId,
+			String searchKeyword, String searchKeywordType, int itemsInOnePage, int page) {
+		int start = itemsInOnePage * (page - 1);
+		return chapterDao.getChaptersByWriterIdAndSearchKeywordAndSearchKeywordTypeForPrint(memberId, searchKeyword,
+				searchKeywordType, start, itemsInOnePage);
+	}
+
+	public List<Chapter> getChaptersByWriterIdForPrint(int memberId, int itemsInOnePage, int page) {
+		int start = itemsInOnePage * (page - 1);
+		return chapterDao.getChaptersByWriterIdForPrint(memberId, start, itemsInOnePage);
 	}
 }

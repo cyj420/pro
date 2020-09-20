@@ -56,7 +56,7 @@ img{
 			<tr>
 				<th>닉네임</th>
 				<td>
-				<a href="/usr/novel/${chapter.extra.writer}-list">${chapter.extra.writer}</a>
+				<a href="/usr/novel/${chapter.extra.writer}-list?mode=novel&page=1">${chapter.extra.writer}</a>
 				</td>
 			</tr>
 			<c:if test="${chapter.extra.series == 1}">
