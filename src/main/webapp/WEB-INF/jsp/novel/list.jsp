@@ -51,7 +51,7 @@ font-weight:700;
 				<th>날짜</th>
 				<th>작성자</th>
 				<c:if test="${chapters == null }">
-					<th>카테고리명</th>
+					<th>카테고리</th>
 				</c:if>
 				<th>소설 제목</th>
 				<c:if test="${chapters != null }">
@@ -99,11 +99,6 @@ font-weight:700;
 			</c:if>
 		</tbody>
 	</table>
-	<c:if test="${novel.memberId == loginedMemberId }">
-		<button>
-			<a href="/usr/novel/${nickname}-write?novelId=${novel.id}">챕터 작성</a>
-		</button>
-	</c:if>
 	
 	<!-- 페이징 시작 -->
 	<div class="paging">
@@ -200,5 +195,10 @@ font-weight:700;
 		</c:if>
 	</div>
 	<!-- 검색 끝 -->
+	<c:if test="${novel.memberId == loginedMemberId }">
+		<button>
+			<a href="/usr/novel/${nickname}-write?novelId=${novel.id}">챕터 작성</a>
+		</button>
+	</c:if>
 </div>
 <%@ include file="../part/foot.jspf"%>

@@ -81,6 +81,7 @@ label[for] {
 }
 
 .con {
+	padding: 0 20px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -471,6 +472,7 @@ label[for] {
 		line-height: 1.5;
 		margin: 20px auto;
 		width: 100%;
+		font-family: 'Noto Sans KR', sans-serif;
 	}
 	
 	table thead {
@@ -489,9 +491,118 @@ label[for] {
 		text-align: center;
 	}
 	
+	.table-list a{
+		font-weight: bold;
+	}
+	
+	.table-list a:hover{
+		color: red;
+	}
 }
-
 
 textarea {
 	width:90%; 
+}
+
+.reply-list tr > th{
+	text-align: center;
+}
+.reply-list tr > td{
+	text-align: center; 
+}
+.reply-list .reply-body-td{
+	text-align: left;
+	padding-left: 20px;
+}
+
+
+/* 탑바 시작 */
+.top-bar {
+	height: 120px;
+	color: #000000;
+}
+
+.top-bar .logo {
+	margin-left: 20px;
+}
+
+.top-bar .menu-box>ul>li>a {
+	font-weight: 500;
+	font-size: 1.4rem;
+	font-family: 'Roboto', sans-serif;
+	color: black;
+	padding: 10px 30px;
+	transition: color .3s, border .2s;
+}
+
+.top-bar .menu-box>ul>li:hover>a {
+	color: #4465bd;
+	border-bottom: 3px solid #4465bd;
+}
+
+ul ul {
+	display: none;
+	margin-top: 10px;
+}
+
+ul>li:hover>ul {
+	display: block;
+}
+
+.top-bar .menu-box>ul>li:hover>ul {
+	position:relative;
+	width: 100%;
+	color: #000000;
+	background-color: #ccc;
+}
+
+.top-bar .menu-box li li {
+	display: flex;
+	background-color: #b7c4e6;
+	font-size: 1.2rem;
+	font-weight: 200;
+	justify-content: center;
+	text-align: center;
+	transition: 0.3s;
+}
+
+.top-bar .menu-box li li a {
+	padding: 20px 0;
+	width: 100%;
+}
+
+.top-bar .menu-box li li:hover {
+	color: white;
+    background-color: #4465bd;
+}
+
+.top-bar .menu-box li li:hover>a {
+	display: block;
+}
+
+.member-form {
+	right: 0;
+	z-index: 999;
+}
+
+.top-bar>.member-form {
+	position: absolute;
+}
+
+.member-form>div {
+	display: inline-block;
+	padding-right: 10px;
+	padding-top: 10px;
+}
+
+.member-form a:hover {
+	color: red;
+}
+
+/* 탑바 끝 */
+
+/* 리스팅 */
+.paging{
+	text-align: center;
+	margin-bottom: 20px;
 }

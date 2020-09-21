@@ -9,15 +9,12 @@
 </c:if>
 <%@ include file="../part/head.jspf"%>
 <style>
-.table-list a{
-font-weight: bold;
-}
-.table-list a:hover{
-color: red;
-}
 .selected-page{
 color:red;
 font-weight:700;
+}
+h1{
+font-family: 'Noto Sans KR', sans-serif;
 }
 </style>
 <div class="con">
@@ -48,7 +45,7 @@ font-weight:700;
 				<th>날짜</th>
 				<th>작성자</th>
 				<c:if test="${chapters == null }">
-					<th>카테고리명</th>
+					<th>카테고리</th>
 				</c:if>
 				<th>소설 제목</th>
 				<c:if test="${chapters != null }">

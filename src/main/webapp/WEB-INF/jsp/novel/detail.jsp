@@ -40,6 +40,10 @@ img{
 </style>
 <div class="con">
 	<table>
+		<colgroup>
+			<col width="100" />
+			<col width="600" />
+		</colgroup>
 		<tbody>
 			<tr>
 				<th>번호</th>
@@ -61,7 +65,7 @@ img{
 			</tr>
 			<c:if test="${chapter.extra.series == 1}">
 				<tr>
-					<th>시리즈명</th>
+					<th>소설 제목</th>
 					<td>
 						<a href="/usr/novel/${chapter.extra.writer}-list?novelId=${chapter.novelId}">${chapter.extra.novelName}</a>
 						<c:if test="${novelSize > 1 }">
@@ -71,7 +75,7 @@ img{
 				</tr>
 			</c:if>
 			<tr>
-				<th>제목</th>
+				<th>챕터 제목</th>
 				<td>${chapter.title}</td>
 			</tr>
 			<c:if test="${chapter.memberId == loginedMember.id }">
@@ -237,6 +241,10 @@ img{
 	
 		<form action="" onsubmit="ReplyWriteForm__submit(this); return false;">
 			<table>
+			<colgroup>
+				<col width="100" />
+				<col width="600" />
+			</colgroup>
 				<tbody>
 					<tr>
 						<th>내용</th>

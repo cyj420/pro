@@ -40,11 +40,16 @@ var param = ${paramJson};
 	right:20px;
 	text-align: right;
 }
-.top-bar {
-	background: #B9DEED;
-	border-bottom: 3px solid black;
+ul ul{
+	display: none;
+	position: absolute;
 }
-
+ul li:hover>ul{
+	display: block;
+}
+h1{
+	font-family: 'Noto Sans KR', sans-serif;
+}
 </style>
 </head>
 <body>
@@ -69,10 +74,11 @@ var param = ${paramJson};
 		<nav class="menu-box">
 			<ul class="flex height-100p">
 				<li>
-					<a href="/usr/home/main">[Home]</a>
+					<a href="/usr/home/main">Home</a>
 				</li>
 				<li class="has-list">
-					<ul><a href="#">[Total List]</a>
+					<a href="#">Total List</a>
+					<ul>
 						<li>
 							<a href="/usr/novel/list?mode=totalNovel&page=1">Novel</a>
 						</li>
@@ -83,7 +89,8 @@ var param = ${paramJson};
 				</li>
 				<c:if test="${loginedMember.authStatus == true}">
 					<li class="has-list">
-						<ul><a href="#">[My Novel]</a>
+						<a href="#">My Novel</a>
+						<ul>
 							<li>
 								<a href="/usr/novel/${loginedMember.nickname}-setUp">Set Up</a>
 							</li>
@@ -100,20 +107,9 @@ var param = ${paramJson};
 				</c:if>
 				<c:forEach items="${boards}" var="b">
 					<li>
-						<a href="/usr/article/${b.code}-list">[${b.name }]</a>
+						<a href="/usr/article/${b.code}-list" style="font-family: 'Noto Sans KR', sans-serif;">${b.name }</a>
 					</li>
 				</c:forEach>
-				<%-- 
-				<c:if test="${loginedMember != null }">
-					<li>
-						<c:forEach items="${boards}" var="b">
-							<c:if test="${boardCode == b.code }">
-							<a href="/usr/article/${b.code}-write">[${b.name }-WRITE]</a>
-							</c:if>
-						</c:forEach>
-					</li>
-				</c:if>
-				--%>
 			</ul>
 		</nav>
 	</div>

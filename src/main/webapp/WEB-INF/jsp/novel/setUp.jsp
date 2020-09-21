@@ -100,8 +100,8 @@ font-weight:700;
 	</div>
 	<!-- 페이징 끝 -->
 	
-	<a href="./genNovel">
-		<button>novel 생성</button>
-	</a>
+	<button>
+		<a href="./genNovel">새로운 소설 생성</a>
+	</button>
 </div>
 <%@ include file="../part/foot.jspf"%>

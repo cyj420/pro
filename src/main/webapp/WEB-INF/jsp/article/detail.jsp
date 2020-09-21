@@ -39,6 +39,10 @@ img{
 </style>
 <div class="con">
 	<table>
+		<colgroup>
+			<col width="100" />
+			<col width="600" />
+		</colgroup>
 		<tbody>
 			<tr>
 				<th>번호</th>
@@ -85,28 +89,14 @@ img{
 	
 	<!-- 이전글/다음글 START -->
 	<c:if test="${preCh != null }">
-		<c:if test="${param.memberId > 0 }">
-			<div>
-				이전글 : <a href="/usr/article/${board.code}-detail?id=${preCh}&memberId=${memberId}&searchKeyword=${param.searchKeyword}">${preChName }</a>
-			</div>
-		</c:if>
-		<c:if test="${param.memberId < 1 }">
-			<div>
-				이전글 : <a href="/usr/article/${board.code}-detail?id=${preCh}&searchKeyword=${param.searchKeyword}">${preChName }</a>
-			</div>
-		</c:if>
+		<div>
+			이전글 : <a href="/usr/article/${board.code}-detail?id=${preCh}&memberId=${memberId}&searchKeyword=${param.searchKeyword}">${preChName }</a>
+		</div>
 	</c:if>
 	<c:if test="${nextCh != null }">
-		<c:if test="${param.memberId > 0 }">
-			<div>
-				다음글 : <a href="/usr/article/${board.code}-detail?id=${nextCh}&memberId=${memberId}&searchKeyword=${param.searchKeyword}">${nextChName }</a>
-			</div>
-		</c:if>
-		<c:if test="${param.memberId < 1 }">
-			<div>
-				다음글 : <a href="/usr/article/${board.code}-detail?id=${nextCh}&searchKeyword=${param.searchKeyword}">${nextChName }</a>
-			</div>
-		</c:if>
+		<div>
+			다음글 : <a href="/usr/article/${board.code}-detail?id=${nextCh}&memberId=${memberId}&searchKeyword=${param.searchKeyword}">${nextChName }</a>
+		</div>
 	</c:if>
 	<!-- 이전글/다음글 END -->
 	
@@ -134,8 +124,11 @@ img{
 		</script>
 	
 		<form action="" onsubmit="ReplyWriteForm__submit(this); return false;">
-	
 			<table>
+				<colgroup>
+					<col width="100" />
+					<col width="600" />
+				</colgroup>
 				<tbody>
 					<tr>
 						<th>내용</th>
