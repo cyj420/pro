@@ -15,7 +15,10 @@ img{
 	max-width: 1300px;
 	min-width: 500px;
 }
-
+.reply-list>table{
+	width: 100%;
+	background: rgb(221, 221, 221);
+}
 .reply-list>table>tbody>tr[data-modify-mode="N"] .modify-mode-visible {
 	display: none;
 }
@@ -39,7 +42,7 @@ img{
 
 </style>
 <div class="con">
-	<table>
+	<table class="table-detail">
 		<colgroup>
 			<col width="100" />
 			<col width="600" />
@@ -273,7 +276,7 @@ img{
 	<!-- 댓글 리스트 START -->
 	
 	<h2>댓글 리스트</h2>
-	<div class="reply-list table-box con">
+	<div class="reply-list con">
 		<table>
 			<colgroup>
 				<col width="80">

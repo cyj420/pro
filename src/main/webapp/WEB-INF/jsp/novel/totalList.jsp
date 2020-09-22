@@ -9,24 +9,26 @@
 </c:if>
 <%@ include file="../part/head.jspf"%>
 <style>
-.selected-page{
-color:red;
-font-weight:700;
+.selected-page {
+	color: red;
+	font-weight: 700;
 }
-h1{
-font-family: 'Noto Sans KR', sans-serif;
+
+h1 {
+	margin-left: 30px;
 }
+
 </style>
 <div class="con">
 	<form action="/usr/novel/list">
 		<c:if test="${param.mode != 'totalNovel'}">
-			<input type="hidden" name="mode" value="totalNovel"/>
-			<input type="hidden" name="page" value="1"/>
+			<input type="hidden" name="mode" value="totalNovel" />
+			<input type="hidden" name="page" value="1" />
 			<button type="submit">소설 별 보기</button>
 		</c:if>
 		<c:if test="${param.mode == 'totalNovel'}">
-			<input type="hidden" name="mode" value="totalChapter"/>
-			<input type="hidden" name="page" value="1"/>
+			<input type="hidden" name="mode" value="totalChapter" />
+			<input type="hidden" name="page" value="1" />
 			<button type="submit">챕터 별 보기</button>
 		</c:if>
 	</form>
@@ -60,71 +62,74 @@ font-family: 'Noto Sans KR', sans-serif;
 					<tr>
 						<td>${novel.id}</td>
 						<td>${novel.regDate}</td>
-						<td><a href="/usr/novel/${novel.extra.writer}-list?mode=novel">${novel.extra.writer}</a></td>
+						<td><a
+							href="/usr/novel/${novel.extra.writer}-list?mode=novel">${novel.extra.writer}</a></td>
 						<td>${novel.extra.cateName}</td>
-						<td><a href="/usr/novel/${novel.extra.writer}-list?mode=novel&novelId=${novel.id}">${novel.name} [${novel.totalCh }]</a></td>
+						<td><a
+							href="/usr/novel/${novel.extra.writer}-list?mode=novel&novelId=${novel.id}">${novel.name}
+								[${novel.totalCh }]</a></td>
 						<td>${novel.totalHit }</td>
 					</tr>
 				</c:forEach>
 			</c:if>
-			
+
 			<c:if test="${chapters != null }">
 				<c:forEach items="${chapters}" var="chapter">
 					<tr>
 						<td>${chapter.id}</td>
 						<td>${chapter.regDate}</td>
-						<td><a href="/usr/novel/${chapter.extra.writer}-list?mode=novel">${chapter.extra.writer}</a></td>
-						<td><a href="/usr/novel/${chapter.extra.writer}-list?mode=novel&novelId=${chapter.novelId}">${chapter.extra.novelName}</a></td>
-						<td>
-							<c:if test="${param.searchKeyword == null }">
-								<a href="/usr/novel/${chapter.extra.writer}-detail?id=${chapter.id}&novelId=${chapter.novelId}">${chapter.title}</a>
-							</c:if>
-							<c:if test="${param.searchKeyword != null }">
-								<a href="/usr/novel/${chapter.extra.writer}-detail?id=${chapter.id}&mode=${param.mode}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}">${chapter.title}</a>
-							</c:if>
-						</td>
+						<td><a
+							href="/usr/novel/${chapter.extra.writer}-list?mode=novel">${chapter.extra.writer}</a></td>
+						<td><a
+							href="/usr/novel/${chapter.extra.writer}-list?mode=novel&novelId=${chapter.novelId}">${chapter.extra.novelName}</a></td>
+						<td><c:if test="${param.searchKeyword == null }">
+								<a
+									href="/usr/novel/${chapter.extra.writer}-detail?id=${chapter.id}&novelId=${chapter.novelId}">${chapter.title}</a>
+							</c:if> <c:if test="${param.searchKeyword != null }">
+								<a
+									href="/usr/novel/${chapter.extra.writer}-detail?id=${chapter.id}&mode=${param.mode}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}">${chapter.title}</a>
+							</c:if></td>
 						<td>${chapter.hit}</td>
 					</tr>
 				</c:forEach>
 			</c:if>
 		</tbody>
 	</table>
-	
+
 	<!-- 페이징 시작 -->
 	<div class="paging">
 		<c:if test="${page > 1 }">
-			<a href="?mode=${param.mode}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=${page-1}">
-			◀
-			</a>
+			<a
+				href="?mode=${param.mode}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=${page-1}">
+				◀ </a>
 		</c:if>
 		<c:forEach var="i" begin="1" end="${fullPage}" step="1">
 			<c:if test="${page == i }">
-				<span>
-					<a class="selected-page" 
+				<span> <a class="selected-page"
 					href="?mode=${param.mode}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=${i}">[${i }]
-					</a>
+				</a>
 				</span>
 			</c:if>
 			<c:if test="${page != i }">
-				<span>
-					<a class="not-selected-page" 
+				<span> <a class="not-selected-page"
 					href="?mode=${param.mode}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=${i}">[${i }]
-					</a>
+				</a>
 				</span>
 			</c:if>
 		</c:forEach>
 		<c:if test="${page < fullPage }">
-			<a href="?mode=${param.mode}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=${page + 1}">▶</a>
+			<a
+				href="?mode=${param.mode}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}&page=${page + 1}">▶</a>
 		</c:if>
 	</div>
 	<!-- 페이징 끝 -->
-	
+
 	<!-- 검색 시작 -->
 	<div class="con search-box flex flex-jc-c">
 		<form action="/usr/novel/list">
-			<input type="hidden" name="mode" value="${param.mode }"/>
-			<input type="hidden" name="page" value="1" />
-			<select name="searchKeywordType" type="hidden" >
+			<input type="hidden" name="mode" value="${param.mode }" /> <input
+				type="hidden" name="page" value="1" /> <select
+				name="searchKeywordType" type="hidden">
 				<c:if test="${param.searchKeywordType == null }">
 					<option value="name">소설 제목</option>
 					<c:if test="${chapters != null }">
@@ -144,8 +149,8 @@ font-family: 'Noto Sans KR', sans-serif;
 						</c:if>
 					</c:if>
 				</c:if>
-			</select> 
-			<input type="text" name="searchKeyword" value="${param.searchKeyword}" />
+			</select> <input type="text" name="searchKeyword"
+				value="${param.searchKeyword}" />
 			<button type="submit">검색</button>
 		</form>
 	</div>

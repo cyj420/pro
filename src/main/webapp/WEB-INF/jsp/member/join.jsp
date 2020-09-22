@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:set var="pageTitle" value="회원가입" />
 <%@ include file="../part/head.jspf"%>
-<h1>회원가입</h1>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
 
@@ -156,78 +156,98 @@
 	MemberJoinForm__checkLoginIdDup = _.debounce(MemberJoinForm__checkLoginIdDup, 500);
 	MemberJoinForm__checkNicknameDup = _.debounce(MemberJoinForm__checkNicknameDup, 500);
 </script>
-<form method="POST" action="doJoin"
-	onsubmit="MemberJoinForm__submit(this); return false;">
-	<input name="loginPwReal" hidden="hidden">
-	<table>
-		<colgroup>
-			<col width="100">
-		</colgroup>
-		<tbody>
-			<tr>
-				<th>로그인 아이디</th>
-				<td>
-					<div>
-						<input type="text" placeholder="로그인 아이디 입력해주세요." name="loginId"
-						onkeyup="MemberJoinForm__checkLoginIdDup(this);" maxlength="30" autocomplete="off"/>
-						<div class="message-msg"></div>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>로그인 비번</th>
-				<td>
-					<div>
-						<input type="password" placeholder="로그인 비밀번호를 입력해주세요."
-							name="loginPw" maxlength="30" />
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>로그인 비번 확인</th>
-				<td>
-					<div>
-						<input type="password" placeholder="로그인 비밀번호 확인을 입력해주세요."
-							name="loginPwConfirm" maxlength="30" />
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>이름</th>
-				<td>
-					<div>
-						<input type="text" placeholder="이름을 입력해주세요." name="name"
-							maxlength="20" />
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>닉네임</th>
-				<td>
-					<div>
-						<input type="text" placeholder="닉네임 입력해주세요." name="nickname"
-						onkeyup="MemberJoinForm__checkNicknameDup(this);" maxlength="30" autocomplete="off"/>
-						<div class="message-msg"></div>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>이메일</th>
-				<td>
-					<div>
-						<input type="email" placeholder="이메일 입력해주세요." name="email"
-							maxlength="50" />
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>가입</th>
-				<td>
-					<button type="submit">가입</button>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-</form>
+<style>
+h1{
+	text-align: center;
+}
+.joinArea {
+	width: 450px;
+	margin: 0 auto;
+}
 
+input {
+	width: 85%;
+	height: 30px;
+	padding: 0 10px;
+}
+</style>
+<div class="con">
+	<div class="joinArea">
+		<form method="POST" action="doJoin"
+			onsubmit="MemberJoinForm__submit(this); return false;">
+			<input name="loginPwReal" hidden="hidden" />
+			<table>
+				<colgroup>
+					<col width="150" />
+				</colgroup>
+				<tbody>
+					<tr>
+						<th>아이디</th>
+						<td>
+							<div>
+								<input type="text" placeholder="로그인 아이디 입력해주세요." name="loginId"
+									onkeyup="MemberJoinForm__checkLoginIdDup(this);" maxlength="30"
+									autocomplete="off" />
+								<div class="message-msg"></div>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th>비밀번호</th>
+						<td>
+							<div>
+								<input type="password" placeholder="로그인 비밀번호를 입력해주세요."
+									name="loginPw" maxlength="30" />
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th>비밀번호 확인</th>
+						<td>
+							<div>
+								<input type="password" placeholder="로그인 비밀번호 확인을 입력해주세요."
+									name="loginPwConfirm" maxlength="30" />
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th>이름</th>
+						<td>
+							<div>
+								<input type="text" placeholder="이름을 입력해주세요." name="name"
+									maxlength="20" />
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th>닉네임</th>
+						<td>
+							<div>
+								<input type="text" placeholder="닉네임 입력해주세요." name="nickname"
+									onkeyup="MemberJoinForm__checkNicknameDup(this);"
+									maxlength="30" autocomplete="off" />
+								<div class="message-msg"></div>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th>이메일</th>
+						<td>
+							<div>
+								<input type="email" placeholder="이메일 입력해주세요." name="email"
+									maxlength="50" />
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th>가입</th>
+						<td>
+							<button type="submit">회원가입</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+</div>
 <%@ include file="../part/foot.jspf"%>

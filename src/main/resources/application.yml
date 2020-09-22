@@ -39,7 +39,7 @@ server:
     include-message: always
     include-binding-errors: always
 custom:
-  logoText: readit
+  logoText: Readit
   emailFrom: no-reply@ilcho.site
   emailFromName: ReadIt
 

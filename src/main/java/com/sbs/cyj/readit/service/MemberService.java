@@ -49,7 +49,7 @@ public class MemberService {
 	}
 	
 	public void sendJoinCompleteMail(Map<String, Object> param, String code) {
-		String mailTitle = String.format("[%s] 가입을 축하합니다.", "~사이트 이름~");
+		String mailTitle = String.format("[%s] 가입을 축하합니다.", "Readit");
 		StringBuilder mailBodySb = new StringBuilder();
 		mailBodySb.append("<h1>가입이 완료되었습니다.</h1>");
 		mailBodySb.append(StrAuthCode(code, (String)param.get("nickname")));
@@ -102,7 +102,7 @@ public class MemberService {
 	}
 
 	private void sendResetMail(String email, String name, String tempPw) {
-		String mailTitle = String.format("[%s] 임시 비밀번호입니다.", "~사이트 이름~");
+		String mailTitle = String.format("[%s] 임시 비밀번호입니다.", "Readit");
 
 		StringBuilder mailBodySb = new StringBuilder();
 		
@@ -160,7 +160,7 @@ public class MemberService {
     }
 	
 	public void sendAuthMail(String email, String code, String nickname) {
-		String mailTitle = String.format("[%s] 인증을 위한 메일입니다.", "~사이트 이름~");
+		String mailTitle = String.format("[%s] 인증을 위한 메일입니다.", "Readit");
 		StringBuilder mailBodySb = new StringBuilder();
 		mailBodySb.append(StrAuthCode(code, nickname));
 		mailBodySb.append(siteLink());
@@ -173,13 +173,11 @@ public class MemberService {
 	}
 	
 	private String siteLink() {
-		return String.format("<p><a href=\"%s\" target=\"_blank\">%s</a>로 이동</p>", "readit.ilcho.site", "[사이트 이름]");
-//		return String.format("<p><a href=\"%s\" target=\"_blank\">%s</a>로 이동</p>", "http://localhost:8085/usr/home/main", "[사이트 이름]");
+		return "<p><a href='readit.ilcho.site' target=\"_blank\">[Readit] 사이트로 이동</a></p>";
 	}
 	
 	private String StrAuthCode(String code, String nickname) {
 		return "<a href='readit.ilcho.site/usr/member/doAuthMail?code="+code+"'>["+nickname+"님 메일 인증하기]</a><br><a href='localhost:8085/usr/member/doAuthMail?code="+code+"'>[LOCAL - "+nickname+"님 메일 인증하기]</a>";
-//		return "<a href='readit.ilcho.site/usr/member/doAuthMail?code="+code+"'>["+nickname+"님 메일 인증하기]</a>";
 	}
 	
 	public String genCheckPasswordAuthCode(int actorId) {

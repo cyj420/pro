@@ -466,13 +466,29 @@ label[for] {
 }
 
 @media ( min-width : 800px) {
-	table {
+	.table-detail {
 		border: 3px solid #424242;
 		border-collapse: collapse;
 		line-height: 1.5;
 		margin: 20px auto;
 		width: 100%;
 		font-family: 'Noto Sans KR', sans-serif;
+	}
+	
+	.table-list{
+		border-spacing: 1;
+	    border-collapse: collapse;
+	    background: rgb(221, 221, 221);
+	    border-radius: 10px;
+	    overflow: hidden;
+	    width: 100%;
+	    margin: 20px auto;
+	    position: relative;
+	    font-family: "Noto Sans KR", sans-serif;
+	}
+	
+	.table-list tbody tr:hover {
+		background-color: #adadad4b;
 	}
 	
 	table thead {
@@ -483,7 +499,7 @@ label[for] {
 		padding: 10px 0;
 	}
 	
-	table tr {
+	.table-detail tr {
 		border-bottom: 1px solid #424242;
 	}
 	

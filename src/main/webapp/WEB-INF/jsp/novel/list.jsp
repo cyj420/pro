@@ -24,6 +24,9 @@
 color:red;
 font-weight:700;
 }
+h1 {
+	margin-left: 30px;
+}
 </style>
 <div class="con">
 	<form action="/usr/novel/${nickname}-list">
