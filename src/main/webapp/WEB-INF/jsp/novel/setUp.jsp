@@ -1,11 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:if test="${chapters != null }">
-	<c:set var="pageTitle" value="[${nickname}] ${novel.name } 셋업" />
-</c:if>
 <c:if test="${chapters == null }">
-	<c:set var="pageTitle" value="${nickname} 설정" />
+	<c:set var="pageTitle" value="${nickname} 소설 설정" />
 </c:if>
 <%@ include file="../part/head.jspf"%>
 <style>
@@ -27,7 +24,7 @@ font-weight:700;
 			<col width="150" />
 			<col width="200" />
 			<col width="300" />
-			<col width="200" />
+			<col width="100" />
 		</colgroup>
 		<thead>
 			<tr>

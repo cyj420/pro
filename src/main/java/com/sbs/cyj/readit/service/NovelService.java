@@ -135,5 +135,9 @@ public class NovelService {
 		int start = itemsInOnePage * ( page - 1 );
 		return novelDao.getNovelsByMemberIdForSetupForPrint(memberId, start, itemsInOnePage);
 	}
+
+	public List<Novel> getNovelsByHit() {
+		return novelDao.getNovelsByHit();
+	}
 	
 }

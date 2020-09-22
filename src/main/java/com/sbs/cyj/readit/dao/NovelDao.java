@@ -57,4 +57,6 @@ public interface NovelDao {
 
 	List<Novel> getNovelsByMemberIdForSetupForPrint(int memberId, int start, int itemsInOnePage);
 
+	List<Novel> getNovelsByHit();
+
 }
