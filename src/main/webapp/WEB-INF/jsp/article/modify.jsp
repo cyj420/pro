@@ -31,6 +31,17 @@ function ArticleModifyForm__submit(form) {
 	form.submit();
 }
 </script>
+<style>
+table{
+	width: 100%;
+}
+table > tbody .title input{
+	width: 30%;
+	min-width: 250px;
+	height: 30px;
+	padding-left: 5px;
+}
+</style>
 <div class="con">
 	<form method="post" action="${board.code}-doModify" method="post" onsubmit="ArticleModifyForm__submit(this); return false;" >
 		<input type="hidden" name="body" />
@@ -52,7 +63,7 @@ function ArticleModifyForm__submit(form) {
 				</tr>
 				<tr>
 					<th>제목</th>
-					<td>
+					<td class="title">
 						<div>
 							<input type="text" placeholder="제목을 입력해주세요." name="title" value="${article.title }"/>
 						</div>

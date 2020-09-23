@@ -32,6 +32,17 @@
 		form.submit();
 	}
 </script>
+<style>
+table{
+	width: 100%;
+}
+table > tbody .title input{
+	width: 30%;
+	min-width: 250px;
+	height: 30px;
+	padding-left: 5px;
+}
+</style>
 <div class="con">
 	<form method="post" action="${board.code}-doWrite" method="post" onsubmit="ArticleWriteForm__submit(this); return false;" >
 		<input type="hidden" name="body" />
@@ -44,7 +55,7 @@
 			<tbody>
 				<tr>
 					<th>제목</th>
-					<td>
+					<td class="title">
 						<div>
 							<input type="text" placeholder="제목을 입력해주세요." name="title"/>
 						</div>
@@ -54,7 +65,8 @@
 					<th>내용</th>
 					<td>
 						<div class="form-control-box">
-							<script type="text/x-template">
+							<c:if test="${board.code != 'notice' }">
+								<script type="text/x-template">
 # 이미지 예시
 ![img](https://cdn.pixabay.com/photo/2019/11/08/11/56/cat-4611189_960_720.jpg)
 
@@ -62,7 +74,12 @@
 ```youtube
 https://www.youtube.com/watch?v=mYm7vOHGT-Q
 ```
-                        	</script>
+                        		</script>
+							</c:if>
+							<c:if test="${board.code == 'notice' }">
+								<script type="text/x-template">
+                        		</script>
+							</c:if>
 							<div data-relTypeCode="article" data-relId="0" class="toast-editor input-body"></div>
 						</div>
 					</td>

@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:set var="pageTitle" value="비밀번호 입력" />
 <%@ include file="../part/head.jspf"%>
-<h1>패스워드 입력</h1>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
 
@@ -29,16 +30,66 @@
 		MemberCheckPwForm__submitDone = true;
 	}
 </script>
+<style>
+h1 {
+	text-align: center;
+}
+
+.checkPw {
+	width: 300px;
+	border: 1px solid black;
+	padding: 100px;
+	margin: 0 auto;
+	position: relative;
+}
+
+.checkPwInside {
+	text-align: right;
+	display: inline-block;
+}
+
+.checkPw>form {
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+.checkPwInside input {
+	margin-bottom: 5px;
+	height: 20px;
+	padding-left: 5px;
+}
+
+.button {
+	position: absolute;
+	bottom: 80px;
+	right: 240px;
+}
+
+.cancel {
+	position: absolute;
+	bottom: 80px;
+	right: 180px;
+}
+</style>
 <div class="con">
-	<form action="doCheckPw" method="post" onsubmit="MemberCheckPwForm__submit(this); return false;">
-		<input type="hidden" name="redirectUri" value="${param.redirectUri}">
-		<input name="loginPwReal" hidden="hidden">
-		<div>
-			<label>PW : <input name="loginPw" type="password">
-			</label>
+	<div class="checkPw">
+		<form action="doCheckPw" method="post"
+			onsubmit="MemberCheckPwForm__submit(this); return false;">
+			<div class="checkPwInside">
+				<input type="hidden" name="redirectUri" value="${param.redirectUri}" />
+				<input name="loginPwReal" hidden="hidden" />
+				<div>
+					<label>PW : <input name="loginPw" type="password" />
+					</label>
+				</div>
+			</div>
+			<div class="button">
+				<input type="submit" value="입력" />
+			</div>
+		</form>
+		<div class="cancel">
+			<button onclick="history.back();" type="button">취소</button>
 		</div>
-		<input type="submit" value="입력">
-		<button onclick="history.back();" type="button">취소</button>
-	</form>
+	</div>
 </div>
 <%@ include file="../part/foot.jspf"%>

@@ -180,11 +180,11 @@ font-weight:700;
 				<c:if test="${boardCode == b.code }">
 					<c:if test="${b.code == 'notice' }">
 						<c:if test="${loginedMemberId == 1 }">
-							<a href="/usr/article/${b.code}-write"><button>WRITE</button></a>
+							<a href="/usr/article/${b.code}-write"><button>공지사항 작성</button></a>
 						</c:if>
 					</c:if>
 					<c:if test="${b.code != 'notice' }">
-						<a href="/usr/article/${b.code}-write"><button>WRITE</button></a>
+						<a href="/usr/article/${b.code}-write"><button>새로운 글 작성</button></a>
 					</c:if>
 				</c:if>
 			</c:forEach>

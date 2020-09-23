@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:set var="pageTitle" value="회원정보 수정" />
 <%@ include file="../part/head.jspf"%>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
@@ -13,19 +14,19 @@
 			return;
 		}
 
-		if(form.nickname.value.trim().length == 0){
+		if (form.nickname.value.trim().length == 0) {
 			alert('닉네임 칸은 비울 수 없습니다.');
 			form.nickname.focus();
 			return;
 		}
 
-		if(form.email.value.trim().length == 0){
+		if (form.email.value.trim().length == 0) {
 			alert('이메일 칸은 비울 수 없습니다.');
 			form.email.focus();
 			return;
 		}
 
-		if(form.loginPw.value.trim().length == 0){
+		if (form.loginPw.value.trim().length == 0) {
 			alert('비밀번호 칸은 비울 수 없습니다.');
 			form.loginPw.focus();
 			return;
@@ -34,17 +35,17 @@
 		form.loginPwReal.value = sha256(form.loginPw.value);
 
 		form.newLoginPwReal.value = '';
-		
-		if(form.newLoginPw.value.length != 0){
-			if(form.newLoginPw.value == form.loginPw.value){
+
+		if (form.newLoginPw.value.length != 0) {
+			if (form.newLoginPw.value == form.loginPw.value) {
 				alert('새 비밀번호는 이전 비밀번호와 달라야 합니다.')
 				form.newLoginPw.focus();
 				return;
 			}
-			
+
 			form.newLoginPwReal.value = sha256(form.newLoginPw.value);
 		}
-		
+
 		form.loginPw.value = '';
 		form.newLoginPw.value = '';
 
@@ -52,41 +53,85 @@
 		MemberModifyForm__submitDone = true;
 	}
 </script>
-<h1>회원정보 수정</h1>
+<style>
+h1 {
+	text-align: center;
+}
+
+.modify {
+	width: 300px;
+	margin: 0 auto;
+	position: relative;
+}
+
+.modify>form>div {
+	height: 30px;
+	margin-bottom: 10px;
+}
+
+.modify>form>div input {
+	position: absolute;
+	right: 0;
+	height: 25px;
+}
+
+.button {
+	position: absolute;
+	right: 40px;
+	bottom: -50px;
+}
+
+.withdrawal {
+	position: absolute;
+	right: 40px;
+	bottom: -70px;
+}
+</style>
 <div class="con">
-	<form action="doModify" method="post" onsubmit="MemberModifyForm__submit(this); return false;">
-		<input name="id" value="${loginedMember.id}" hidden="hidden">
-		<input type="hidden" name="redirectUri" value="${param.redirectUri}">
-		<input name="loginPwReal" hidden="hidden">
-		<input name="newLoginPwReal" hidden="hidden">
-		<div>
-			<label>ID : <input name="loginId" value="${loginedMember.loginId}" disabled="disabled">
-			</label>
-		</div>
-		<div>
-			<label>이름 : <input name="name" value="${loginedMember.name}" disabled="disabled">
-			</label>
-		</div>
-		<div>
-			<label>닉네임 : <input name="nickname" value="${loginedMember.nickname}">
-			</label>
-		</div>
-		<div>
-			<label>email : <input name="email" type="email" value="${loginedMember.email}">
-			</label>
-		</div>
-		<div>
-			<label>비밀번호 : <input name="loginPw" type="password">
-			</label>
-		</div>
-		<div>
-			<label>새 비밀번호 : <input name="newLoginPw" type="password">
-			</label>
-		</div>
-		<input type="submit" value="정보 수정">
-	</form>
-	<a href="./withdrawal?id=${loginedMember.id}" onclick="if ( confirm('정말 탈퇴하시겠습니까?') == false ) { return false; }">
-		<button>회원 탈퇴</button>
-	</a>
+	<div class="modify">
+		<form action="doModify" method="post"
+			onsubmit="MemberModifyForm__submit(this); return false;">
+			<input name="id" value="${loginedMember.id}" hidden="hidden" /> <input
+				type="hidden" name="redirectUri" value="${param.redirectUri}" /> <input
+				name="loginPwReal" hidden="hidden" /> <input name="newLoginPwReal"
+				hidden="hidden" />
+			<div>
+				<label>ID : <input name="loginId"
+					value="${loginedMember.loginId}" disabled="disabled" />
+				</label>
+			</div>
+			<div>
+				<label>이름 : <input name="name" value="${loginedMember.name}"
+					disabled="disabled" />
+				</label>
+			</div>
+			<div>
+				<label>닉네임 : <input name="nickname"
+					value="${loginedMember.nickname}" />
+				</label>
+			</div>
+			<div>
+				<label>email : <input name="email" type="email"
+					value="${loginedMember.email}" />
+				</label>
+			</div>
+			<div>
+				<label>비밀번호 : <input name="loginPw" type="password" />
+				</label>
+			</div>
+			<div>
+				<label>새 비밀번호 : <input name="newLoginPw" type="password" />
+				</label>
+			</div>
+			<div class="button">
+				<input type="submit" value="정보 수정" />
+			</div>
+		</form>
+		<button class="withdrawal">
+			<a href="./withdrawal?id=${loginedMember.id}"
+				onclick="if ( confirm('정말 탈퇴하시겠습니까?') == false ) { return false; }">
+				회원 탈퇴 </a>
+		</button>
+	</div>
 </div>
 <%@ include file="../part/foot.jspf"%>
