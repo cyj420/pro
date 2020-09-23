@@ -19,20 +19,18 @@ font-weight:700;
 	<table class="table-list">
 		<colgroup>
 			<col width="100" />
-			<col width="200" />
-			<col width="200" />
-			<col width="150" />
-			<col width="200" />
+			<col width="200" class="mobile-cannot-see"/>
+			<col width="200"/>
+			<col width="150" class="mobile-cannot-see"/>
 			<col width="300" />
-			<col width="100" />
+			<col width="150" />
 		</colgroup>
 		<thead>
 			<tr>
 				<th>번호</th>
-				<th>날짜</th>
+				<th class="mobile-cannot-see">날짜</th>
 				<th>카테고리</th>
-				<th>연작 유무</th>
-				<th>작성자</th>
+				<th class="mobile-cannot-see">연작 유무</th>
 				<th>시리즈명</th>
 				<th>비고</th>
 			</tr>
@@ -41,11 +39,11 @@ font-weight:700;
 			<c:forEach items="${novels}" var="novel">
 				<tr>
 					<td>${novel.id}</td>
-					<td>${novel.regDate}</td>
+					<td class="mobile-cannot-see">${novel.regDate}</td>
 					<td>
 						${novel.extra.cateName}
 					</td>
-					<td>
+					<td class="mobile-cannot-see">
 						<c:if test="${novel.seriesStatus == true}">
 							O
 						</c:if>
@@ -53,7 +51,6 @@ font-weight:700;
 							X
 						</c:if>
 					</td>
-					<td><a href="/usr/novel/${novel.extra.writer}-list">${novel.extra.writer}</a></td>
 					<td>
 						<a href="/usr/novel/${novel.extra.writer}-list?novelId=${novel.id}">${novel.name}</a>
 					</td>

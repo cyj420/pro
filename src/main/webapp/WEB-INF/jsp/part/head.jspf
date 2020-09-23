@@ -51,6 +51,15 @@ ul li:hover>ul{
 h1{
 	font-family: 'Noto Sans KR', sans-serif;
 }
+
+@media(max-width: 800px){
+	.mobile-cannot-see{
+		display: none;
+	}
+	con li>a{
+		font-size: .8rem;
+	}
+}
 </style>
 </head>
 <body>
@@ -74,7 +83,7 @@ h1{
 	<div>
 		<nav class="menu-box">
 			<ul class="flex height-100p">
-				<li>
+				<li class="mobile-cannot-see">
 					<a href="/usr/home/main">Home</a>
 				</li>
 				<li class="has-list">

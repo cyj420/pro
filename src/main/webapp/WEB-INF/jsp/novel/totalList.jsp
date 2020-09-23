@@ -31,25 +31,26 @@
 	<table class="table-list">
 		<colgroup>
 			<col width="100" />
-			<col width="200" />
+			<col width="200" class="mobile-cannot-see"/>
 			<col width="150" />
+			<col width="300" class="mobile-cannot-see"/>
 			<col width="300" />
-			<col width="300" />
-			<col width="100" />
+			<col width="100" class="mobile-cannot-see"/>
 		</colgroup>
 		<thead>
 			<tr>
 				<th>번호</th>
-				<th>날짜</th>
+				<th class="mobile-cannot-see">날짜</th>
 				<th>작성자</th>
 				<c:if test="${chapters == null }">
-					<th>카테고리</th>
+					<th class="mobile-cannot-see">카테고리</th>
+					<th>소설 제목</th>
 				</c:if>
-				<th>소설 제목</th>
 				<c:if test="${chapters != null }">
+					<th class="mobile-cannot-see">소설 제목</th>
 					<th>챕터 제목</th>
 				</c:if>
-				<th>조회수</th>
+				<th class="mobile-cannot-see">조회수</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -57,14 +58,14 @@
 				<c:forEach items="${novels}" var="novel">
 					<tr>
 						<td>${novel.id}</td>
-						<td>${novel.regDate}</td>
+						<td class="mobile-cannot-see">${novel.regDate}</td>
 						<td><a
 							href="/usr/novel/${novel.extra.writer}-list?mode=novel">${novel.extra.writer}</a></td>
-						<td>${novel.extra.cateName}</td>
+						<td class="mobile-cannot-see">${novel.extra.cateName}</td>
 						<td><a
 							href="/usr/novel/${novel.extra.writer}-list?mode=novel&novelId=${novel.id}">${novel.name}
 								[${novel.totalCh }]</a></td>
-						<td>${novel.totalHit }</td>
+						<td class="mobile-cannot-see">${novel.totalHit }</td>
 					</tr>
 				</c:forEach>
 			</c:if>
@@ -73,10 +74,10 @@
 				<c:forEach items="${chapters}" var="chapter">
 					<tr>
 						<td>${chapter.id}</td>
-						<td>${chapter.regDate}</td>
+						<td class="mobile-cannot-see">${chapter.regDate}</td>
 						<td><a
 							href="/usr/novel/${chapter.extra.writer}-list?mode=novel">${chapter.extra.writer}</a></td>
-						<td><a
+						<td class="mobile-cannot-see"><a
 							href="/usr/novel/${chapter.extra.writer}-list?mode=novel&novelId=${chapter.novelId}">${chapter.extra.novelName}</a></td>
 						<td><c:if test="${param.searchKeyword == null }">
 								<a
@@ -85,7 +86,7 @@
 								<a
 									href="/usr/novel/${chapter.extra.writer}-detail?id=${chapter.id}&mode=${param.mode}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}">${chapter.title}</a>
 							</c:if></td>
-						<td>${chapter.hit}</td>
+						<td class="mobile-cannot-see">${chapter.hit}</td>
 					</tr>
 				</c:forEach>
 			</c:if>

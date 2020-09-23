@@ -295,16 +295,16 @@ img{
 		<h2>댓글 리스트</h2>
 			<table>
 				<colgroup>
-					<col width="80">
+					<col width="80" class="mobile-cannot-see">
+					<col width="180" class="mobile-cannot-see">
 					<col width="180">
-					<col width="180">
-					<col>
+					<col width="400">
 					<col width="200">
 				</colgroup>
 				<thead>
 					<tr>
-						<th>번호</th>
-						<th>날짜</th>
+						<th class="mobile-cannot-see">번호</th>
+						<th class="mobile-cannot-see">날짜</th>
 						<th>작성자</th>
 						<th>내용</th>
 						<th>비고</th>
@@ -407,8 +407,8 @@ img{
 				var html = '';
 	
 				html = '<tr data-id="'+reply.id+'" data-modify-mode="N">';
-				html += '<td>' + reply.id + '</td>';
-				html += '<td>' + reply.regDate + '</td>';
+				html += '<td class="mobile-cannot-see">' + reply.id + '</td>';
+				html += '<td class="mobile-cannot-see">' + reply.regDate + '</td>';
 				html += '<td>' + reply.extra.writer + '</td>';
 				html += '<td class="reply-body-td">';
 				if (reply.secretStatus){

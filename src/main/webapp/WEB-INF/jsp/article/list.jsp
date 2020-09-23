@@ -15,30 +15,30 @@ font-weight:700;
 		<table class="table-list">
 			<colgroup>
 				<col width="100" />
-				<col width="200" />
+				<col width="200" class="mobile-cannot-see"/>
 				<col width="200" />
 				<col width="500" />
-				<col width="100" />
+				<col width="100" class="mobile-cannot-see"/>
 			</colgroup>
 			<thead>
 				<tr>
 					<th>번호</th>
-					<th>날짜</th>
+					<th class="mobile-cannot-see">날짜</th>
 					<th>작성자</th>
 					<th>제목</th>
-					<th>조회수</th>
+					<th class="mobile-cannot-see">조회수</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach items="${articles}" var="article">
 					<tr>
 						<td>${article.id}</td>
-						<td>${article.regDate}</td>
+						<td class="mobile-cannot-see">${article.regDate}</td>
 						<td><a href="/usr/article/${board.code}-list?memberId=${article.memberId}">${article.extra.writer}</a></td>
 						<td>
 							<a href="/usr/article/${board.code}-detail?id=${article.id}&memberId=${param.memberId}&searchKeyword=${param.searchKeyword}">${article.title}</a>
 						</td>
-						<td>${article.hit}</td>
+						<td class="mobile-cannot-see">${article.hit}</td>
 					</tr>
 				</c:forEach>
 			</tbody>
