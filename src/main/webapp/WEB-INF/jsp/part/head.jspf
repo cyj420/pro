@@ -59,6 +59,19 @@ h1{
 	con li>a{
 		font-size: .8rem;
 	}
+	ul ul li a{
+		font-size: .7rem;
+	}
+	h1{
+		font-size: 1.2rem;
+	}
+	h2{
+		font-size: 1rem;
+	}
+}
+.boardSection{
+	font-family: 'Noto Sans KR', sans-serif;
+	text-transform: uppercase;
 }
 </style>
 </head>
@@ -71,7 +84,7 @@ h1{
 	</div>
 	<div class="member-info">
 		<c:if test="${loginedMember != null }">
-			<div>안녕하세요, ${loginedMember.nickname}님 </div>
+			<div class="mobile-cannot-see">안녕하세요, ${loginedMember.nickname}님 </div>
 			<a href="/usr/member/checkPw">MyPage</a>
 			<a href="/usr/member/doLogout?redirectUri=${requestUri}">LOGOUT</a>
 		</c:if>
@@ -117,7 +130,7 @@ h1{
 				</c:if>
 				<c:forEach items="${boards}" var="b">
 					<li>
-						<a href="/usr/article/${b.code}-list" style="font-family: 'Noto Sans KR', sans-serif;">${b.name }</a>
+						<a href="/usr/article/${b.code}-list" class="boardSection">${b.code }</a>
 					</li>
 				</c:forEach>
 			</ul>

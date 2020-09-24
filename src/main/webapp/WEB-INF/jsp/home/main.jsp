@@ -6,6 +6,8 @@
 <style>
 .main {
 	max-width: 1100px;
+	margin: 0 auto;
+	text-align: center;
 }
 
 .card {
@@ -82,33 +84,37 @@
 	display: block;
 	text-shadow: -1px 0 red, 0 1px red, 1px 0 red, 0 -1px red;
 }
+
 .card:hover>.writer {
 	color: black;
 	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 </style>
-<div class="main con">
-	<c:forEach items="${novels }" var="novel">
-		<a
-			href="../novel/${novel.extra.writer }-list?mode=novel&novelId=${novel.id }"
-			class="card"> <img alt=""
-			src="https://cdn.pixabay.com/photo/2015/06/08/15/11/typewriter-801921_1280.jpg" />
-			<div class="novelName">
-				<c:if test="${novel.name.length() < 30 }">
-					<p>${novel.name }</p>
-				</c:if>
-				<c:if test="${novel.name.length() >= 30 }">
-					<p style="font-size: 1rem;">${novel.name}</p>
-				</c:if>
-			</div>
-			<div class="writer">
-				<p>w. ${novel.extra.writer }</p>
-			</div>
-			<div class="hit">
-				<p>Hit! ${novel.totalHit }</p>
-			</div>
-		</a>
-	</c:forEach>
+<div class="con">
+	<div class="main">
+		<c:forEach items="${novels }" var="novel">
+			<a
+				href="../novel/${novel.extra.writer }-list?mode=novel&novelId=${novel.id }"
+				class="card"> 
+				<img class="mobile-cannot-see" alt=""
+				src="https://cdn.pixabay.com/photo/2015/06/08/15/11/typewriter-801921_1280.jpg" />
+				<div class="novelName">
+					<c:if test="${novel.name.length() < 30 }">
+						<p>${novel.name }</p>
+					</c:if>
+					<c:if test="${novel.name.length() >= 30 }">
+						<p style="font-size: 1rem;">${novel.name}</p>
+					</c:if>
+				</div>
+				<div class="writer">
+					<p>w. ${novel.extra.writer }</p>
+				</div>
+				<div class="hit">
+					<p>Hit! ${novel.totalHit }</p>
+				</div>
+			</a>
+		</c:forEach>
+	</div>
 </div>
 
 <%@ include file="../part/foot.jspf"%>

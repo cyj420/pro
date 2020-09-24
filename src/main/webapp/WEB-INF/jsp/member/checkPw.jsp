@@ -34,41 +34,52 @@
 h1 {
 	text-align: center;
 }
-
 .checkPw {
-	width: 300px;
+	min-width: 250px;
+	max-width: 300px;
 	border: 1px solid black;
-	padding: 100px;
 	margin: 0 auto;
 	position: relative;
 }
-
 .checkPwInside {
 	text-align: right;
 	display: inline-block;
 }
-
 .checkPw>form {
 	margin-bottom: 20px;
 	text-align: center;
 }
-
 .checkPwInside input {
 	margin-bottom: 5px;
 	height: 20px;
 	padding-left: 5px;
+	max-width: 200px;
 }
 
-.button {
-	position: absolute;
-	bottom: 80px;
-	right: 240px;
+@media ( max-width :800px ) {
+	.checkPw {
+		padding: 30px;
+	}
+	.cancel {
+		position: absolute;
+		bottom: 50px;
+		left: 60%;
+	}
 }
-
-.cancel {
-	position: absolute;
-	bottom: 80px;
-	right: 180px;
+@media ( min-width :801px ) {
+	.checkPw {
+		padding: 100px;
+	}
+	.button {
+		position: absolute;
+		bottom: 80px;
+		right: 240px;
+	}
+	.cancel {
+		position: absolute;
+		bottom: 80px;
+		right: 180px;
+	}
 }
 </style>
 <div class="con">

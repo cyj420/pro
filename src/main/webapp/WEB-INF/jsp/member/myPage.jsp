@@ -11,7 +11,7 @@ h1{
 	text-align: center;
 }
 .myPage {
-	width: 300px;
+	max-width: 300px;
 	margin: 0 auto;
 	position: relative;
 }
@@ -29,8 +29,9 @@ h1{
 
 .mailAuthStatus {
 	position: absolute;
-	right: -130px;
+	left: 310px;
 	top: 123px;
+	width: 110px;
 }
 
 .mailAuthStatus>div {
@@ -44,6 +45,13 @@ h1{
 	position: absolute;
 	right: 40px;
 	bottom: -70px;
+}
+
+@media ( max-width :800px ) {
+	.mailAuthStatus {
+		left: 130px !important;
+		top: 150px;
+	}
 }
 </style>
 <div class="con">

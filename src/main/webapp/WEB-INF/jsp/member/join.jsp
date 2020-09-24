@@ -161,7 +161,7 @@ h1{
 	text-align: center;
 }
 .joinArea {
-	width: 450px;
+	max-width: 450px;
 	margin: 0 auto;
 }
 
@@ -169,6 +169,13 @@ input {
 	width: 85%;
 	height: 30px;
 	padding: 0 10px;
+}
+.message-msg{
+	position: absolute;
+	width: 300px;
+}
+.have-message th, .have-message td{
+	padding-bottom: 20px;
 }
 </style>
 <div class="con">
@@ -178,10 +185,11 @@ input {
 			<input name="loginPwReal" hidden="hidden" />
 			<table>
 				<colgroup>
-					<col width="150" />
+					<col width="130" />
+					<col width="600" />
 				</colgroup>
 				<tbody>
-					<tr>
+					<tr class="have-message">
 						<th>아이디</th>
 						<td>
 							<div>
@@ -219,7 +227,7 @@ input {
 							</div>
 						</td>
 					</tr>
-					<tr>
+					<tr class="have-message">
 						<th>닉네임</th>
 						<td>
 							<div>

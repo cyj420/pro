@@ -221,11 +221,25 @@ public class MemberController {
 	// 닉네임 중복 체크
 	@RequestMapping("/usr/member/getNicknameDup")
 	@ResponseBody
-	public ResultData doGetNicknameDup(@RequestParam String nickname, Model model) {
-		if (memberService.isJoinableNickname(nickname)) {
-			return new ResultData("S-1", String.format("사용할 수 있는 닉네임입니다."), nickname);
-		} else {
-			return new ResultData("F-1", String.format("이미 존재하는 닉네임입니다."), nickname);
+	public ResultData doGetNicknameDup(@RequestParam String nickname, Model model, HttpServletRequest req) {
+		if(req.getAttribute("loginedMemberId") == null) {
+			if (memberService.isJoinableNickname(nickname)) {
+				return new ResultData("S-1", String.format("사용할 수 있는 닉네임입니다."), nickname);
+			} else {
+				return new ResultData("F-1", String.format("이미 존재하는 닉네임입니다."), nickname);
+			}
+		}
+		else {
+			int loginedMemberId = (int) req.getAttribute("loginedMemberId");
+			Member member = memberService.getMemberById(loginedMemberId);
+			
+			if (memberService.isJoinableNickname(nickname)) {
+				return new ResultData("S-1", String.format("사용할 수 있는 닉네임입니다."), nickname);
+			} else if (nickname.equals(member.getNickname())) {
+				return new ResultData("S-2", String.format("현재 닉네임입니다."), nickname);
+			} else {
+				return new ResultData("F-1", String.format("이미 존재하는 닉네임입니다."), nickname);
+			}
 		}
 	}
 	

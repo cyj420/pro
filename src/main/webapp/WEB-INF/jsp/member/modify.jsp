@@ -20,6 +20,12 @@
 			return;
 		}
 
+		if (form.nickname.value != MemberModifyForm__validNickname) {
+			alert('다른 닉네임을 입력해주세요.');
+			form.nickname.focus();
+			return;
+		}
+
 		if (form.email.value.trim().length == 0) {
 			alert('이메일 칸은 비울 수 없습니다.');
 			form.email.focus();
@@ -52,6 +58,40 @@
 		form.submit();
 		MemberModifyForm__submitDone = true;
 	}
+
+	function MemberModifyForm__checkNicknameDup(input){
+		var form = input.form;
+
+		form.nickname.value = form.nickname.value.trim();
+
+		if(form.nickname.value.length == 0){
+			$(form.nickname).next().empty();
+			return;
+		}
+		
+		$.get(
+			'getNicknameDup',
+			{
+				nickname: form.nickname.value
+			},
+			function(data){
+				var $message = $(form.nickname).next();
+
+				if(data.resultCode.substr(0, 2) == 'S-'){
+					$message.empty().append('<div style="color: green;">' + data.msg + '</div>');
+					MemberModifyForm__validNickname = data.body;
+				}
+				else {
+					$message.empty().append('<div style="color: red;">' + data.msg + '</div>');
+					MemberModifyForm__validNickname = '';
+				}
+			}, 
+			'json'
+		);
+	}
+
+	<!-- lodash 라이브러리 (debounce) 를 이용한 딜레이(0.5초) 설정  -->
+	MemberModifyForm__checkNicknameDup = _.debounce(MemberModifyForm__checkNicknameDup, 500);
 </script>
 <style>
 h1 {
@@ -86,6 +126,14 @@ h1 {
 	right: 40px;
 	bottom: -70px;
 }
+.nickname{
+	margin-bottom: 25px !important;
+}
+.message-msg{
+	font-size: .8rem;
+	text-align: right;
+	margin-top: 10px;
+}
 </style>
 <div class="con">
 	<div class="modify">
@@ -105,9 +153,10 @@ h1 {
 					disabled="disabled" />
 				</label>
 			</div>
-			<div>
-				<label>닉네임 : <input name="nickname"
-					value="${loginedMember.nickname}" />
+			<div class="nickname">
+				<label>닉네임 : 
+				<input name="nickname" value="${loginedMember.nickname}" onkeyup="MemberModifyForm__checkNicknameDup(this);" />
+				<div class="message-msg"></div>
 				</label>
 			</div>
 			<div>

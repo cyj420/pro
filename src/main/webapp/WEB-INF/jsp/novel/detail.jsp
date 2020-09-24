@@ -57,7 +57,7 @@ img{
 <div class="con">
 	<table class="table-detail">
 		<colgroup>
-			<col width="100" />
+			<col width="50"/>
 			<col width="600" />
 		</colgroup>
 		<tbody>
@@ -260,7 +260,7 @@ img{
 				<form action="" onsubmit="ReplyWriteForm__submit(this); return false;">
 					<table>
 					<colgroup>
-						<col width="100" />
+						<col width="50" />
 						<col width="600" />
 					</colgroup>
 						<tbody>
@@ -297,9 +297,9 @@ img{
 				<colgroup>
 					<col width="80" class="mobile-cannot-see">
 					<col width="180" class="mobile-cannot-see">
-					<col width="180">
+					<col width="100">
 					<col width="400">
-					<col width="200">
+					<col width="150">
 				</colgroup>
 				<thead>
 					<tr>

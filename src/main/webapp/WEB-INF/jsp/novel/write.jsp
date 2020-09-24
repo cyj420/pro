@@ -82,7 +82,8 @@ h1{
 
 			<table>
 				<colgroup>
-					<col width="100">
+					<col width="50" />
+					<col width="600" />
 				</colgroup>
 				<tbody>
 					<tr>

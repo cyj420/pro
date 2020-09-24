@@ -65,14 +65,14 @@ h1 {
 }
 
 .genNovel {
-	width: 500px;
+	max-width: 500px;
 	margin: 0 auto;
 	padding: 20px;
 	word-break: keep-all;
 }
 
 .novelName input {
-	width: 300px;
+	max-width: 300px;
 }
 
 .seriesStatus {
@@ -82,13 +82,14 @@ h1 {
 .seriesStatus>.seriesStatusNotice {
 	position: absolute;
 	top: 0;
-	right: -20%;
+	left: 35%;
 	font-size: 0.8rem;
 	color: red;
 }
 
 .seriesStatus>.seriesStatusNotice>p {
 	margin: 13px 0;
+	width: 300px;
 }
 
 tbody input {
@@ -131,7 +132,7 @@ tbody select {
 									<option value="0">단편</option>
 								</select>
 							</div>
-							<div class="seriesStatusNotice">
+							<div class="seriesStatusNotice mobile-cannot-see">
 								<p>* 단편을 선택할 경우 소설 리스트에 뜨지 않습니다.</p>
 							</div>
 						</td>

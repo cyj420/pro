@@ -45,16 +45,41 @@ h1{
 	text-align: center;
 }
 .loginArea {
-	width: 500px;
+	min-width: 300px;
+	max-width: 500px;
 	border: 1px solid black;
-	padding: 100px;
+	padding: 20px;
 	margin: 0 auto;
 }
 
-.loginAreaInside {
-	text-align: right;
-	display: inline-block;
-	margin-left: 80px;
+@media ( max-width :800px ) {
+	.loginAreaInside {
+		text-align: right;
+		display: inline-block;
+		margin-left: -100px;
+	}
+	.loginArea form{
+		text-align: center;
+		font-size: .8rem;
+	}
+	.loginAreaInside input {
+		width: 50%;
+	}
+	.findIdOrPw{
+		font-size: .8rem;
+	}
+}
+
+@media ( min-width :801px ) {
+	.loginArea {
+		padding: 100px;
+	}
+	.loginAreaInside {
+		text-align: right;
+		display: inline-block;
+		margin-left: 80px;
+		margin-left: 100px;
+	}
 }
 
 .login-button {
@@ -77,7 +102,7 @@ h1{
 	text-align: center;
 }
 
-.findIdOrPw > a:hover{
+.findIdOrPw a:hover{
 	text-decoration: underline;
 }
 </style>
@@ -102,8 +127,12 @@ h1{
 			<input type="submit" class="login-button" value="로그인" />
 		</form>
 		<div class="findIdOrPw">
-			<label>ID/PW를 잊어버리셨나요?</label> <a href="./findLoginId">ID 찾기</a> | <a
-				href="./findLoginPw">PW 찾기</a>
+			<label>ID/PW를 잊어버리셨나요?</label> 
+			<div>
+			<a href="./findLoginId">ID 찾기</a>
+			 | 
+			<a href="./findLoginPw">PW 찾기</a>
+			</div>
 		</div>
 	</div>
 </div>
