@@ -45,6 +45,9 @@ public class NovelController {
 
 		List<Novel> novels = novelService.getNovelsByMemberId(memberId);
 		model.addAttribute("novels", novels);
+		
+		List<Novel> novelsNotSeries = novelService.getNovelsByMemberIdAndNotSeries(memberId);
+		model.addAttribute("novelsNotSeries", novelsNotSeries);
 
 		if (req.getParameter("novelId") != null) {
 			String strNovelId = req.getParameter("novelId");

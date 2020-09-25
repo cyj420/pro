@@ -5,25 +5,30 @@
 <%@ include file="../part/head.jspf"%>
 <%@ include file="../part/toastuiEditor.jspf"%>
 <style>
-video{
+video {
 	max-width: 500px;
 }
-img{
+
+img {
 	max-width: 500px;
 }
-.toast-editor-viewer{
+
+.toast-editor-viewer {
 	max-width: 1300px;
 	min-width: 500px;
 }
-.reply-list>table{
+
+.reply-list>table {
 	width: 100%;
 	background: rgb(221, 221, 221);
 }
+
 .reply-list>table>tbody>tr[data-modify-mode="N"] .modify-mode-visible {
 	display: none;
 }
 
-.reply-list>table>tbody>tr[data-modify-mode="Y"] .modify-mode-invisible{
+.reply-list>table>tbody>tr[data-modify-mode="Y"] .modify-mode-invisible
+	{
 	display: none;
 }
 
@@ -39,25 +44,53 @@ img{
 	box-sizing: border-box;
 	display: block;
 }
-.reply-list>table{
+
+.reply-list>table {
 	width: 100%;
 	background: rgb(221, 221, 221);
 }
-.reply-write table{
+
+.reply-write table {
 	width: 100%;
 	border: 1px solid #424242;
 }
 
-.reply-total{
+.reply-total {
 	border: 3px solid black;
 	margin: 60px 0;
 	padding: 20px 0;
+}
+/* 시리즈용 이전글/다음글 */
+.preNextSection a:hover {
+	font-weight: 700;
+}
+
+.preNextSection td {
+	font-size: 1rem;
+	padding-left: 10px;
+}
+
+.preNextSection th {
+	color: #8f8f8f;
+	font-size: .8rem;
+}
+
+.preNextSection .seriesName {
+	height: 50px;
+}
+
+.preNextSection .pre {
+	height: 50px;
+}
+
+.preNextSection .next {
+	height: 50px;
 }
 </style>
 <div class="con">
 	<table class="table-detail">
 		<colgroup>
-			<col width="50"/>
+			<col width="50" />
 			<col width="600" />
 		</colgroup>
 		<tbody>
@@ -75,19 +108,18 @@ img{
 			</tr>
 			<tr>
 				<th>닉네임</th>
-				<td>
-				<a href="/usr/novel/${chapter.extra.writer}-list?mode=novel&page=1">${chapter.extra.writer}</a>
+				<td><a
+					href="/usr/novel/${chapter.extra.writer}-list?mode=novel&page=1">${chapter.extra.writer}</a>
 				</td>
 			</tr>
 			<c:if test="${chapter.extra.series == 1}">
 				<tr>
 					<th>소설 제목</th>
-					<td>
-						<a href="/usr/novel/${chapter.extra.writer}-list?novelId=${chapter.novelId}">${chapter.extra.novelName}</a>
+					<td><a
+						href="/usr/novel/${chapter.extra.writer}-list?novelId=${chapter.novelId}">${chapter.extra.novelName}</a>
 						<c:if test="${novelSize > 1 }">
 							[${novelCh}/${novelSize}]
-						</c:if>
-					</td>
+						</c:if></td>
 				</tr>
 			</c:if>
 			<tr>
@@ -97,139 +129,174 @@ img{
 			<c:if test="${chapter.memberId == loginedMember.id }">
 				<tr>
 					<th>비고</th>
-					<td>
-					<a href="/usr/novel/${chapter.extra.writer}-modifyChapter?id=${chapter.id}">수정</a>
-					/
-					<a href="/usr/novel/${chapter.extra.writer}-doDeleteChapter?id=${chapter.id}" onclick="if ( confirm('정말 삭제하시겠습니까?') == false ) { return false; }">삭제</a>
+					<td><a
+						href="/usr/novel/${chapter.extra.writer}-modifyChapter?id=${chapter.id}">수정</a>
+						/ <a
+						href="/usr/novel/${chapter.extra.writer}-doDeleteChapter?id=${chapter.id}"
+						onclick="if ( confirm('정말 삭제하시겠습니까?') == false ) { return false; }">삭제</a>
 					</td>
 				</tr>
 			</c:if>
 			<tr>
 				<script>
-				var synth = window.speechSynthesis;
+					var synth = window.speechSynthesis;
 
-				function SpeakForm__start(form) {
-				  form.body.value = form.body.value.trim();
+					function SpeakForm__start(form) {
+						form.body.value = form.body.value.trim();
 
-				  var bodyBitsOrigin = form.body.value.split('\n');
-				  var bodyBits = [];
+						var bodyBitsOrigin = form.body.value.split('\n');
+						var bodyBits = [];
 
-				  for ( var key in bodyBitsOrigin ) {
-				    var bodyBit = bodyBitsOrigin[key];
-				    bodyBit = bodyBit.trim();
+						for ( var key in bodyBitsOrigin) {
+							var bodyBit = bodyBitsOrigin[key];
+							bodyBit = bodyBit.trim();
 
-				    if ( bodyBit.length == 0 ) {
-				      continue;
-				    }
+							if (bodyBit.length == 0) {
+								continue;
+							}
 
-				    bodyBits.push(bodyBit);
-				  }
+							bodyBits.push(bodyBit);
+						}
 
-				  SpeakEngine__start(bodyBits);
-				}
+						SpeakEngine__start(bodyBits);
+					}
 
-				var SpeakEngine__nowWork = false;
-				var SpeakEngine__bodyBits = [];
-				var SpeakEngine__bodyBitsCurrentIndex = -1;
+					var SpeakEngine__nowWork = false;
+					var SpeakEngine__bodyBits = [];
+					var SpeakEngine__bodyBitsCurrentIndex = -1;
 
-				function SpeakEngine__start(bodyBits) {
-				  if ( SpeakEngine__nowWork ) {
-				    return;
-				  }
+					function SpeakEngine__start(bodyBits) {
+						if (SpeakEngine__nowWork) {
+							return;
+						}
 
-				  SpeakEngine__nowWork = true;
+						SpeakEngine__nowWork = true;
 
-				  SpeakEngine__bodyBits = bodyBits;
-				  SpeakEngine__bodyBitsCurrentIndex = 0;
+						SpeakEngine__bodyBits = bodyBits;
+						SpeakEngine__bodyBitsCurrentIndex = 0;
 
-				  SpeakEngine__startNextPart();
-				}
+						SpeakEngine__startNextPart();
+					}
 
-				function SpeakEngine__startNextPart() {
-				  var utterThis = new SpeechSynthesisUtterance(SpeakEngine__bodyBits[SpeakEngine__bodyBitsCurrentIndex]);
-				  
-				  utterThis.onend = function (event) {
-				    console.log('SpeechSynthesisUtterance.onend');
-				    SpeakEngine__bodyBitsCurrentIndex++;
-				    if ( SpeakEngine__bodyBitsCurrentIndex >= SpeakEngine__bodyBits.length ) {
-				      SpeakEngine__nowWork = false;
-				    }
-				    else {
-				      SpeakEngine__startNextPart();
-				    }
-				  }
-				  
-				  utterThis.onerror = function (event) {
-				    console.error('SpeechSynthesisUtterance.onerror');
-				    SpeakEngine__nowWork = false;
-				  }
-				  
-				  synth.speak(utterThis);
-				}
+					function SpeakEngine__startNextPart() {
+						var utterThis = new SpeechSynthesisUtterance(
+								SpeakEngine__bodyBits[SpeakEngine__bodyBitsCurrentIndex]);
+
+						utterThis.onend = function(event) {
+							console.log('SpeechSynthesisUtterance.onend');
+							SpeakEngine__bodyBitsCurrentIndex++;
+							if (SpeakEngine__bodyBitsCurrentIndex >= SpeakEngine__bodyBits.length) {
+								SpeakEngine__nowWork = false;
+							} else {
+								SpeakEngine__startNextPart();
+							}
+						}
+
+						utterThis.onerror = function(event) {
+							console.error('SpeechSynthesisUtterance.onerror');
+							SpeakEngine__nowWork = false;
+						}
+
+						synth.speak(utterThis);
+					}
 				</script>
-				
+
 				<form action="" onsubmit="SpeakForm__start(this); return false;">
-					<th>내용<br>
-						<input type="submit" value="읽기">
+					<th>내용<br> <input type="submit" value="읽기">
 					</th>
-					<td>
-						<textarea name="body" rows="30" cols="50" readonly="readonly">${chapter.body}</textarea>
-					</td>
+					<td><textarea name="body" rows="30" cols="50"
+							readonly="readonly">${chapter.body}</textarea></td>
 				</form>
 			</tr>
 		</tbody>
 	</table>
 	<!-- 본문 END -->
 	<hr>
-	
+
 	<!-- 동일 시리즈 이전글/다음글 START -->
-	<c:if test="${novelId != null }">
-		<c:if test="${chapter.extra.series == 1 && novelSize > 1 }">
-			<div>시리즈명 : <a href="/usr/novel/${chapter.extra.writer}-list?novelId=${chapter.novelId}">${novel.name}</a></div>
-			<c:if test="${novelPreCh != null }">
-				<div>
-					이전글 : <a href="/usr/novel/${chapter.extra.writer}-detail?id=${novelPreCh}&novelId=${chapter.novelId}">${novelPreChName }</a>
-				</div>
-			</c:if>
-			<c:if test="${novelNextCh != null }">
-				<div>
-					다음글 : <a href="/usr/novel/${chapter.extra.writer}-detail?id=${novelNextCh}&novelId=${chapter.novelId}">${novelNextChName }</a>
-				</div>
-			</c:if>
-		</c:if>
+	<c:if test="${chapter.extra.series == 1 && novelSize > 1 }">
+		<div class="preNextSection">
+			<table style="width: 100%;">
+				<colgroup>
+					<col width="100">
+					<col width="350">
+				</colgroup>
+				<tbody>
+					<tr class="seriesName">
+						<th>소설 제목</th>
+						<td><a
+							href="/usr/novel/${chapter.extra.writer}-list?novelId=${chapter.novelId}">${novel.name}</a></td>
+					</tr>
+					<c:if test="${novelNextCh != null }">
+						<tr class="next">
+							<th>다음글</th>
+							<td><a
+								href="/usr/novel/${chapter.extra.writer}-detail?id=${novelNextCh}&mode=novel&novelId=${chapter.novelId}">${novelNextChName }</a></td>
+						</tr>
+					</c:if>
+					<c:if test="${novelPreCh != null }">
+						<tr class="pre">
+							<th>이전글</th>
+							<td><a
+								href="/usr/novel/${chapter.extra.writer}-detail?id=${novelPreCh}&mode=novel&novelId=${chapter.novelId}">${novelPreChName }</a></td>
+						</tr>
+					</c:if>
+				</tbody>
+			</table>
+		</div>
 		<hr>
 	</c:if>
 	<!-- 동일 시리즈 이전글/다음글 END -->
-	
+
 	<!-- 이전글/다음글 START -->
-	<c:if test="${novelId == null }">
-		<c:if test="${preCh != null }">
-			<c:if test="${searchKeyword == null }">
-				<div>
-					이전글 : <a href="/usr/novel/${chapter.extra.writer}-detail?id=${preCh}">${preChName }</a>
-				</div>
-			</c:if>
-			<c:if test="${searchKeyword != null }">
-				<div>
-					이전글 : <a href="/usr/novel/${chapter.extra.writer}-detail?id=${preCh}&mode=${mode}&searchKeywordType=${searchKeywordType}&searchKeyword=${searchKeyword}">${preChName }</a>
-				</div>
-			</c:if>
-		</c:if>
-		<c:if test="${nextCh != null }">
-			<c:if test="${searchKeyword == null }">
-				<div>
-					다음글 : <a href="/usr/novel/${chapter.extra.writer}-detail?id=${nextCh}">${nextChName }</a>
-				</div>
-			</c:if>
-			<c:if test="${searchKeyword != null }">
-				<div>
-					다음글 : <a href="/usr/novel/${chapter.extra.writer}-detail?id=${nextCh}&mode=${mode}&searchKeywordType=${searchKeywordType}&searchKeyword=${searchKeyword}">${nextChName }</a>
-				</div>
-			</c:if>
-		</c:if>
+	<c:if test="${param.mode != 'novel' }">
+		<div class="preNextSection">
+			<table style="width: 100%;">
+				<colgroup>
+					<col width="100">
+					<col width="350">
+				</colgroup>
+				<tbody>
+					<c:if test="${nextCh != null }">
+						<tr class="next">
+							<c:if test="${searchKeyword == null }">
+								<th>다음글</th>
+								<td><a
+									href="/usr/novel/${chapter.extra.writer}-detail?id=${nextCh}">${nextChName }</a>
+								</td>
+							</c:if>
+							<c:if test="${searchKeyword != null }">
+								<th>다음글</th>
+								<td><a
+									href="/usr/novel/${chapter.extra.writer}-detail?id=${nextCh}&mode=${mode}&searchKeywordType=${searchKeywordType}&searchKeyword=${searchKeyword}">${nextChName }</a>
+								</td>
+							</c:if>
+						</tr>
+					</c:if>
+					<c:if test="${preCh != null }">
+						<tr class="pre">
+							<c:if test="${searchKeyword == null }">
+								<th>이전글</th>
+								<td><a
+									href="/usr/novel/${chapter.extra.writer}-detail?id=${preCh}">${preChName }</a>
+								</td>
+							</c:if>
+							<c:if test="${searchKeyword != null }">
+								<th>이전글</th>
+								<td><a
+									href="/usr/novel/${chapter.extra.writer}-detail?id=${preCh}&mode=${mode}&searchKeywordType=${searchKeywordType}&searchKeyword=${searchKeyword}">${preChName }</a>
+								</td>
+							</c:if>
+						</tr>
+					</c:if>
+				</tbody>
+			</table>
+		</div>
+		<hr>
 	</c:if>
+
 	<!-- 이전글/다음글 END -->
-	
+
 	<div class="reply-total">
 		<!-- 댓글 작성 START -->
 		<c:if test="${loginedMember != null}">
@@ -243,7 +310,7 @@ img{
 							form.body.focus();
 							return;
 						}
-						
+
 						$.post('./../reply/doWriteReplyAjax', {
 							relType : 'novel',
 							relId : param.id,
@@ -252,24 +319,25 @@ img{
 						}, function(data) {
 							alert(data.msg);
 						}, 'json');
-						
+
 						form.body.value = '';
 					}
 				</script>
-			
-				<form action="" onsubmit="ReplyWriteForm__submit(this); return false;">
+
+				<form action=""
+					onsubmit="ReplyWriteForm__submit(this); return false;">
 					<table>
-					<colgroup>
-						<col width="50" />
-						<col width="600" />
-					</colgroup>
+						<colgroup>
+							<col width="50" />
+							<col width="600" />
+						</colgroup>
 						<tbody>
 							<tr>
 								<th>내용</th>
 								<td>
 									<div>
-										<textarea maxlength="300" name="body" placeholder="내용을 입력해주세요."
-											class="height-300"></textarea>
+										<textarea maxlength="3000" name="body"
+											placeholder="내용을 입력해주세요." class="height-100"></textarea>
 									</div>
 								</td>
 							</tr>
@@ -286,20 +354,20 @@ img{
 				</form>
 			</div>
 		</c:if>
-		
+
 		<!-- 댓글 작성 END -->
-		
+
 		<!-- 댓글 리스트 START -->
-		
+
 		<div class="reply-list con">
-		<h2>댓글 리스트</h2>
+			<h2>댓글 리스트</h2>
 			<table>
 				<colgroup>
-					<col width="80" class="mobile-cannot-see">
-					<col width="180" class="mobile-cannot-see">
-					<col width="100">
+					<col width="50" class="mobile-cannot-see">
+					<col width="100" class="mobile-cannot-see">
+					<col width="80">
 					<col width="400">
-					<col width="150">
+					<col width="80">
 				</colgroup>
 				<thead>
 					<tr>
@@ -311,58 +379,65 @@ img{
 					</tr>
 				</thead>
 				<tbody>
-		
+
 				</tbody>
 			</table>
 		</div>
-		
+
 		<script>
 			function Reply__turnOnModifyMode(el) {
 				var $tr = $(el).closest("tr");
-				
-				var body = $tr
-				  .find(">.reply-body-td>.modify-mode-invisible")
-				  .html()
-				  .trim();
-				
-				$tr.find(">.reply-body-td>.modify-mode-visible>form>textarea").val(body);
-				
+
+				var body = $tr.find(">.reply-body-td>.modify-mode-invisible")
+						.html().trim();
+
+				$tr.find(">.reply-body-td>.modify-mode-visible>form>textarea")
+						.val(body);
+
 				$tr.attr("data-modify-mode", "Y");
-				$tr.siblings('[data-modify-mode="Y"]').attr("data-modify-mode", "N");
+				$tr.siblings('[data-modify-mode="Y"]').attr("data-modify-mode",
+						"N");
 			}
-	
+
 			function Reply__turnOffModifyMode(el) {
 				var $tr = $(el).closest("tr");
 				$tr.attr("data-modify-mode", "N");
 			}
-			
+
 			var ReplyList__$box = $('.reply-list');
 			var ReplyList__$tbody = ReplyList__$box.find('tbody');
 			var ReplyList__lastLodedId = 0;
-	
+
 			function ReplyList__loadMore() {
-				$.get('./../reply/getForPrintReplies', {
-					relType : 'novel',
-					relId : param.id,
-					from : ReplyList__lastLodedId + 1
-				}, function(data) {
-					if ( data.body.replies && data.body.replies.length > 0 ) {
-						ReplyList__lastLodedId = data.body.replies[data.body.replies.length - 1].id;
-						ReplyList__drawReplies(data.body.replies, data.body.canViewSecretReply);
-					}
-					setTimeout(ReplyList__loadMore, 2000);
-				}, 'json');
+				$
+						.get(
+								'./../reply/getForPrintReplies',
+								{
+									relType : 'novel',
+									relId : param.id,
+									from : ReplyList__lastLodedId + 1
+								},
+								function(data) {
+									if (data.body.replies
+											&& data.body.replies.length > 0) {
+										ReplyList__lastLodedId = data.body.replies[data.body.replies.length - 1].id;
+										ReplyList__drawReplies(
+												data.body.replies,
+												data.body.canViewSecretReply);
+									}
+									setTimeout(ReplyList__loadMore, 2000);
+								}, 'json');
 			}
-			
+
 			function ReplyList__drawReplies(replies, canViewSecretReply) {
-				for ( var i = 0; i < replies.length; i++ ) {
+				for (var i = 0; i < replies.length; i++) {
 					var reply = replies[i];
 					ReplyList__drawReply(reply, canViewSecretReply);
 				}
 			}
-	
+
 			function ReplyList__submitModifyForm(form) {
-				  
+
 				form.body.value = form.body.value.trim();
 				if (form.body.value.length == 0) {
 					alert("내용을 입력해주세요.");
@@ -371,60 +446,62 @@ img{
 				}
 				var id = form.id.value;
 				var newBody = form.body.value;
-		
-				$.post('./../reply/doModifyReplyAjax',{
+
+				$.post('./../reply/doModifyReplyAjax', {
 					id : id,
 					body : newBody
-				}, function(data){
-					if(data.resultCode && data.resultCode.substr(0,2)=='S-'){
-						var $tr = $('.reply-list tbody > tr[data-id="' + id + '"] .reply-body');
-						$tr.empty().append(newBody);
-						Reply__turnOffModifyMode(form);
-					}
-				}, 'json');
+				},
+						function(data) {
+							if (data.resultCode
+									&& data.resultCode.substr(0, 2) == 'S-') {
+								var $tr = $('.reply-list tbody > tr[data-id="'
+										+ id + '"] .reply-body');
+								$tr.empty().append(newBody);
+								Reply__turnOffModifyMode(form);
+							}
+						}, 'json');
 				var $tr = $(form).closest("tr");
-				$tr
-					.find(">.reply-body-td>.modify-mode-invisible")
-					.empty()
-					.append(newBody);
+				$tr.find(">.reply-body-td>.modify-mode-invisible").empty()
+						.append(newBody);
 			}
-			
+
 			function ReplyList__delete(el) {
 				if (confirm("해당 댓글을 삭제하시겠습니까?") == false) {
-			    	return;
+					return;
 				}
 				var $tr = $(el).closest('tr');
 				var id = $tr.attr('data-id');
-				
-				$.post('./../reply/doDeleteReplyAjax',{
+
+				$.post('./../reply/doDeleteReplyAjax', {
 					id : id
-				}, function(data){
+				}, function(data) {
 					$tr.remove();
 				}, 'json');
 			}
-			
+
 			function ReplyList__drawReply(reply, canViewSecretReply) {
 				var html = '';
-	
+
 				html = '<tr data-id="'+reply.id+'" data-modify-mode="N">';
 				html += '<td class="mobile-cannot-see">' + reply.id + '</td>';
-				html += '<td class="mobile-cannot-see">' + reply.regDate + '</td>';
+				html += '<td class="mobile-cannot-see">' + reply.regDate
+						+ '</td>';
 				html += '<td>' + reply.extra.writer + '</td>';
 				html += '<td class="reply-body-td">';
-				if (reply.secretStatus){
-					if (reply.extra.actorCanDelete || canViewSecretReply){
-						html += '<div class="modify-mode-invisible reply-body">🔒︎ ' + reply.body + '</div>';
-					}
-					else{
+				if (reply.secretStatus) {
+					if (reply.extra.actorCanDelete || canViewSecretReply) {
+						html += '<div class="modify-mode-invisible reply-body">🔒︎ '
+								+ reply.body + '</div>';
+					} else {
 						html += '<div class="modify-mode-invisible reply-body">🔒︎ 소설/댓글 작성자 본인만 볼 수 있습니다.</div>';
 					}
+				} else {
+					html += '<div class="modify-mode-invisible reply-body">'
+							+ reply.body + '</div>';
 				}
-				else{
-					html += '<div class="modify-mode-invisible reply-body">' + reply.body + '</div>';
-				}
-				
+
 				html += '<div class="modify-mode-visible">';
-	
+
 				html += '<form action="" onsubmit="ReplyList__submitModifyForm(this); return false;">';
 				html += '<input type="hidden" name="id" value="' + reply.id + '" />';
 				html += '<textarea maxlength="300" name="body"></textarea>';
@@ -434,23 +511,24 @@ img{
 				html += '</td>';
 				html += '<td>';
 				if (reply.extra.actorCanDelete) {
-				html += '<button onclick="ReplyList__delete(this,'+ reply.id+');">삭제</button>';
+					html += '<button onclick="ReplyList__delete(this,'
+							+ reply.id + ');">삭제</button>';
 					html += '<button onclick="Reply__turnOnModifyMode(this);" class="modify-mode-invisible" href="javascript:;">수정</button>';
 					html += '<button onclick="Reply__turnOffModifyMode(this);" class="modify-mode-visible" href="javascript:;">취소</button>';
 				}
 				html += '</td>';
 				html += '</tr>';
-	
+
 				var $tr = $(html);
 				$tr.data('data-originBody', reply.body);
 				ReplyList__$tbody.prepend($tr);
 			}
-			
+
 			ReplyList__loadMore();
 		</script>
-		
+
 		<!-- 댓글 리스트 END -->
 	</div>
-	
+
 </div>
 <%@ include file="../part/foot.jspf"%>

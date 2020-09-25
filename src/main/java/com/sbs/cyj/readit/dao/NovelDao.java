@@ -14,6 +14,8 @@ public interface NovelDao {
 	List<Category> getCategories();
 	
 	List<Novel> getNovelsByMemberId(int memberId);
+	
+	List<Novel> getNovelsByMemberIdAndNotSeries(int memberId);
 
 	List<Novel> getNovels();
 

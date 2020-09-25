@@ -173,11 +173,11 @@ public class MemberService {
 	}
 	
 	private String siteLink() {
-		return "<p><a href='readit.ilcho.site' target=\"_blank\">[Readit] 사이트로 이동</a></p>";
+		return "<p><a href='https://readit.ilcho.site' target=\"_blank\">[Readit] 사이트로 이동</a></p>";
 	}
 	
 	private String StrAuthCode(String code, String nickname) {
-		return "<a href='readit.ilcho.site/usr/member/doAuthMail?code="+code+"'>["+nickname+"님 메일 인증하기]</a><br><a href='localhost:8085/usr/member/doAuthMail?code="+code+"'>[LOCAL - "+nickname+"님 메일 인증하기]</a>";
+		return "<a href='https://readit.ilcho.site/usr/member/doAuthMail?code="+code+"'>["+nickname+"님 메일 인증하기]</a><br><a href='localhost:8085/usr/member/doAuthMail?code="+code+"'>[LOCAL - "+nickname+"님 메일 인증하기]</a>";
 	}
 	
 	public String genCheckPasswordAuthCode(int actorId) {

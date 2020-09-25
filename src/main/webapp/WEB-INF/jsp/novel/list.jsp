@@ -73,7 +73,9 @@ h1 {
 						<td><a
 							href="/usr/novel/${novel.extra.writer}-list?mode=novel">${novel.extra.writer}</a></td>
 						<td class="mobile-cannot-see">${novel.extra.cateName}</td>
-						<td><a href="/usr/novel/${novel.extra.writer}-list?mode=novel&novelId=${novel.id}">${novel.name} [${novel.totalCh }]</a></td>
+						<td>
+							<a href="/usr/novel/${novel.extra.writer}-list?mode=novel&novelId=${novel.id}">${novel.name} [${novel.totalCh }]</a>
+						</td>
 						<td class="mobile-cannot-see">${novel.totalHit }</td>
 					</tr>
 				</c:forEach>
@@ -91,7 +93,12 @@ h1 {
 						</td>
 						<td>
 							<c:if test="${param.searchKeyword == null }">
-								<a href="/usr/novel/${chapter.extra.writer}-detail?id=${chapter.id}&novelId=${chapter.novelId}">${chapter.title}</a>
+								<c:if test="${param.mode == 'novel' }">
+									<a href="/usr/novel/${chapter.extra.writer}-detail?id=${chapter.id}&mode=novel&novelId=${chapter.novelId}">${chapter.title}</a>
+								</c:if>
+								<c:if test="${param.mode != 'novel' }">
+									<a href="/usr/novel/${chapter.extra.writer}-detail?id=${chapter.id}&novelId=${chapter.novelId}">${chapter.title}</a>
+								</c:if>
 							</c:if>
 							<c:if test="${param.searchKeyword != null }">
 								<a href="/usr/novel/${chapter.extra.writer}-detail?id=${chapter.id}&mode=${param.mode}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}">${chapter.title}</a>

@@ -9,9 +9,8 @@ h1 {
 }
 
 .findArea {
-	width: 500px;
+	max-width: 500px;
 	border: 1px solid black;
-	padding: 100px;
 	margin: 0 auto;
 }
 
@@ -34,10 +33,34 @@ h1 {
 }
 .findIdOrPw{
 	margin-top: 20px;
-	text-align: center;
 }
 .findIdOrPw>a:hover{
 	text-decoration: underline;
+}
+
+@media ( max-width :800px ) {
+	.findArea {
+		padding: 30px 20px;
+		text-align: center;
+		padding-right: 90px;
+	}
+	.findAreaInside{
+		margin-left: 0;
+	}
+	.findAreaInside input {
+		width: 100px;
+	}
+	.findIdOrPw{
+		margin-right: -20%;
+	}
+}
+@media ( min-width :801px ) {
+	.findArea {
+		padding: 100px;
+	}
+	.findIdOrPw{
+		text-align: center;
+	}
 }
 </style>
 <div class="con">

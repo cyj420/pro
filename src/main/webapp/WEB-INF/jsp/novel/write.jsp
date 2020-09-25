@@ -104,6 +104,10 @@ h1{
 										<c:forEach items="${novels}" var="n">
 											<option value="${n.id}">${n.name}</option>
 										</c:forEach>
+										<option disabled>===단편===</option>
+										<c:forEach items="${novelsNotSeries}" var="n">
+											<option value="${n.id}">${n.name}</option>
+										</c:forEach>
 									</c:if>
 									<c:if test="${novel != null }">
 										<c:forEach items="${novels}" var="n">
@@ -113,6 +117,10 @@ h1{
 											<c:if test="${novel.id != n.id }">
 												<option value="${n.id}">${n.name}</option>
 											</c:if>
+										</c:forEach>
+										<option disabled>===단편===</option>
+										<c:forEach items="${novelsNotSeries}" var="n">
+											<option value="${n.id}">${n.name}</option>
 										</c:forEach>
 									</c:if>
 								</select>

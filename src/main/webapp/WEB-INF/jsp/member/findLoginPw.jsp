@@ -39,9 +39,9 @@ h1 {
 }
 
 .findArea {
-	width: 500px;
+	min-width: 250px;
+	max-width: 500px;
 	border: 1px solid black;
-	padding: 100px;
 	margin: 0 auto;
 }
 
@@ -57,21 +57,46 @@ h1 {
 	padding-left: 5px;
 }
 
-.findArea .button {
-	height: 98px;
-	position: absolute;
-	margin-left: 10px;
-}
-
 .findAreaInside>div {
 	margin-bottom: 5px;
 }
 .findIdOrPw{
-	margin-top: 20px;
+	margin-top: 50px;
 	text-align: center;
 }
 .findIdOrPw>a:hover{
 	text-decoration: underline;
+}
+
+@media ( max-width :800px ) {
+	.findArea {
+		padding: 30px 20px;
+		text-align: center;
+		padding-right: 70px;
+		position: relative;
+	}
+	.findAreaInside{
+		margin-left: 0;
+	}
+	.findAreaInside input {
+		width: 150px;
+	}
+	.findArea .button {
+		position: absolute;
+		bottom: 70px;
+		left: 50%;
+		transform: translateX(-85%);
+	}
+}
+@media ( min-width :801px ) {
+	.findArea {
+		padding: 100px;
+	}
+	.findArea .button {
+		height: 98px;
+		position: absolute;
+		margin-left: 10px;
+	}
 }
 </style>
 <div class="con">

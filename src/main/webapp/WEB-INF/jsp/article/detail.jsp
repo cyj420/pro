@@ -173,11 +173,11 @@ img{
 		<h2>댓글 리스트</h2>
 			<table>
 				<colgroup>
-					<col width="80" class="mobile-cannot-see">
-					<col width="180" class="mobile-cannot-see">
-					<col width="100">
+					<col width="50" class="mobile-cannot-see">
+					<col width="100" class="mobile-cannot-see">
+					<col width="80">
 					<col width="400">
-					<col width="150">
+					<col width="80">
 				</colgroup>
 				<thead>
 					<tr>

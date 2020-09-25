@@ -41,10 +41,14 @@ h1{
 	font-size: .9rem;
 }
 
-.button {
+.myPage .button {
 	position: absolute;
 	right: 40px;
 	bottom: -70px;
+}
+
+.myPage .mailAuthStatus button {
+	width: 116px;
 }
 
 @media ( max-width :800px ) {
@@ -52,6 +56,9 @@ h1{
 		left: 130px !important;
 		top: 150px;
 	}
+}
+a{
+	word-break: keep-all;
 }
 </style>
 <div class="con">
@@ -87,7 +94,7 @@ h1{
 		<div class="mailAuthStatus">
 			<c:if test="${loginedMember.authStatus == false}">
 				<button>
-					<a href="./sendAuthMail">인증 메일 보내기</a>
+					<a href="./sendAuthMail">인증메일 보내기</a>
 				</button>
 			</c:if>
 			<c:if test="${loginedMember.authStatus == true}">

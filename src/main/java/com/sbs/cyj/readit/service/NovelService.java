@@ -23,6 +23,10 @@ public class NovelService {
 	public List<Novel> getNovelsByMemberId(int memberId) {
 		return novelDao.getNovelsByMemberId(memberId);
 	}
+	
+	public List<Novel> getNovelsByMemberIdAndNotSeries(int memberId) {
+		return novelDao.getNovelsByMemberIdAndNotSeries(memberId);
+	}
 
 	public List<Novel> getNovels() {
 		return novelDao.getNovels();
