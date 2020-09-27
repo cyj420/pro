@@ -90,7 +90,7 @@ h1{
 						<th>제목</th>
 						<td>
 							<div>
-								<input type="text" placeholder="제목을 입력해주세요." name="title" />
+								<input type="text" placeholder="제목을 입력해주세요." name="title" autocomplete="off"/>
 							</div>
 						</td>
 					</tr>

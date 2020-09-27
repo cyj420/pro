@@ -68,11 +68,11 @@ h1 {
 		<form action="doFindLoginId" method="post">
 			<div class="findAreaInside">
 				<div>
-					<label>이름 : <input name="name" type="text" />
+					<label>이름 : <input name="name" type="text" autocomplete="off"/>
 					</label>
 				</div>
 				<div>
-					<label>email : <input name="email" type="email" />
+					<label>email : <input name="email" type="email" autocomplete="off"/>
 					</label>
 				</div>
 			</div>

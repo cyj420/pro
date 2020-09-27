@@ -83,7 +83,7 @@ h1 {
 						<th>제목</th>
 						<td>
 							<div>
-								<input type="text" value="${chapter.title }" name="title" />
+								<input type="text" value="${chapter.title }" name="title" autocomplete="off"/>
 							</div>
 						</td>
 					</tr>

@@ -47,11 +47,11 @@
 
 			if (data.resultCode.substr(0, 2) == 'S-') {
 				$message.empty().append(
-						'<div style="color: green;">' + data.msg + '</div>');
+						'<div style="color: green; font-size: .8rem;">' + data.msg + '</div>');
 				NovelGenForm__validName = data.name;
 			} else {
 				$message.empty().append(
-						'<div style="color: red;">' + data.msg + '</div>');
+						'<div style="color: red; font-size: .8rem;">' + data.msg + '</div>');
 				NovelGenForm__validName = '';
 			}
 		}, 'json');
@@ -99,6 +99,9 @@ tbody input {
 
 tbody select {
 	height: 25px;
+}
+.message-msg{
+	width: 200px;
 }
 </style>
 <div class="con">

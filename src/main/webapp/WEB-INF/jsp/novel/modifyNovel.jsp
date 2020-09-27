@@ -82,7 +82,7 @@ tbody select {
 						<th>소설 제목</th>
 						<td>
 							<div>
-								<input type="text" value="${novel.name }" name="name" />
+								<input type="text" value="${novel.name }" name="name" autocomplete="off"/>
 							</div>
 						</td>
 					</tr>

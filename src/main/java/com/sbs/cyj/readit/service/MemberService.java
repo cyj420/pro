@@ -49,9 +49,12 @@ public class MemberService {
 	}
 	
 	public void sendJoinCompleteMail(Map<String, Object> param, String code) {
-		String mailTitle = String.format("[%s] 가입을 축하합니다.", "Readit");
+		String mailTitle = String.format("[%s] 가입이 완료되었습니다.", "Readit");
 		StringBuilder mailBodySb = new StringBuilder();
 		mailBodySb.append("<h1>가입이 완료되었습니다.</h1>");
+		mailBodySb.append("<span>소설 - 로그인 후 이용 가능합니다.</span><br>");
+		mailBodySb.append("<span>자신의 소설탭 생성 - 메일 인증 후 이용 가능합니다. (메일 인증은 해당 메일로도 바로 가능하며, 이후 MyPage에서도 가능합니다.)</span><br>");
+		mailBodySb.append("<span>자유게시판/공지사항 - 비로그인 상태여도 이용 가능합니다만, 댓글 기능은 로그인 후 이용 가능합니다.</span><br><br>");
 		mailBodySb.append(StrAuthCode(code, (String)param.get("nickname")));
 		mailBodySb.append(siteLink());
 
@@ -177,7 +180,7 @@ public class MemberService {
 	}
 	
 	private String StrAuthCode(String code, String nickname) {
-		return "<a href='https://readit.ilcho.site/usr/member/doAuthMail?code="+code+"'>["+nickname+"님 메일 인증하기]</a><br><a href='localhost:8085/usr/member/doAuthMail?code="+code+"'>[LOCAL - "+nickname+"님 메일 인증하기]</a>";
+		return "<a href='https://readit.ilcho.site/usr/member/doAuthMail?code="+code+"'>["+nickname+"님 메일 인증하기]</a><br>";
 	}
 	
 	public String genCheckPasswordAuthCode(int actorId) {

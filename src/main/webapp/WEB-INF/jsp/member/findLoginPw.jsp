@@ -105,15 +105,15 @@ h1 {
 			onsubmit="MemberFindPwForm__submit(this); return false;">
 			<div class="findAreaInside">
 				<div>
-					<label>ID : <input name="loginId" type="text" />
+					<label>ID : <input name="loginId" type="text" autocomplete="off"/>
 					</label>
 				</div>
 				<div>
-					<label>이름 : <input name="name" type="text" />
+					<label>이름 : <input name="name" type="text" autocomplete="off"/>
 					</label>
 				</div>
 				<div>
-					<label>email : <input name="email" type="email" />
+					<label>email : <input name="email" type="email" autocomplete="off"/>
 					</label>
 				</div>
 			</div>

@@ -86,6 +86,10 @@ img {
 .preNextSection .next {
 	height: 50px;
 }
+.reply-secret:before{
+	display: inline-block;
+	content: '🔒︎ ';
+}
 </style>
 <div class="con">
 	<table class="table-detail">
@@ -409,24 +413,22 @@ img {
 			var ReplyList__lastLodedId = 0;
 
 			function ReplyList__loadMore() {
-				$
-						.get(
-								'./../reply/getForPrintReplies',
-								{
-									relType : 'novel',
-									relId : param.id,
-									from : ReplyList__lastLodedId + 1
-								},
-								function(data) {
-									if (data.body.replies
-											&& data.body.replies.length > 0) {
-										ReplyList__lastLodedId = data.body.replies[data.body.replies.length - 1].id;
-										ReplyList__drawReplies(
-												data.body.replies,
-												data.body.canViewSecretReply);
-									}
-									setTimeout(ReplyList__loadMore, 2000);
-								}, 'json');
+				$.get('./../reply/getForPrintReplies',
+					{
+						relType : 'novel',
+						relId : param.id,
+						from : ReplyList__lastLodedId + 1
+					},
+					function(data) {
+						if (data.body.replies && data.body.replies.length > 0) {
+							ReplyList__lastLodedId = data.body.replies[data.body.replies.length - 1].id;
+							ReplyList__drawReplies(
+									data.body.replies,
+									data.body.canViewSecretReply);
+						}
+						setTimeout(ReplyList__loadMore, 2000);
+					}, 'json'
+				);
 			}
 
 			function ReplyList__drawReplies(replies, canViewSecretReply) {
@@ -439,6 +441,7 @@ img {
 			function ReplyList__submitModifyForm(form) {
 
 				form.body.value = form.body.value.trim();
+				
 				if (form.body.value.length == 0) {
 					alert("내용을 입력해주세요.");
 					form.body.focus();
@@ -490,7 +493,7 @@ img {
 				html += '<td class="reply-body-td">';
 				if (reply.secretStatus) {
 					if (reply.extra.actorCanDelete || canViewSecretReply) {
-						html += '<div class="modify-mode-invisible reply-body">🔒︎ '
+						html += '<div class="modify-mode-invisible reply-body reply-secret">'
 								+ reply.body + '</div>';
 					} else {
 						html += '<div class="modify-mode-invisible reply-body">🔒︎ 소설/댓글 작성자 본인만 볼 수 있습니다.</div>';

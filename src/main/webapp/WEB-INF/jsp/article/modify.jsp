@@ -65,7 +65,7 @@ table > tbody .title input{
 					<th>제목</th>
 					<td class="title">
 						<div>
-							<input type="text" placeholder="제목을 입력해주세요." name="title" value="${article.title }"/>
+							<input type="text" placeholder="제목을 입력해주세요." name="title" value="${article.title }" autocomplete="off"/>
 						</div>
 					</td>
 				</tr>

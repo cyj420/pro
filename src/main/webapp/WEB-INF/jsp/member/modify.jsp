@@ -62,6 +62,8 @@
 	function MemberModifyForm__checkNicknameDup(input){
 		var form = input.form;
 
+		MemberModifyForm__validNickname = '';
+		
 		form.nickname.value = form.nickname.value.trim();
 
 		if(form.nickname.value.length == 0){
@@ -139,10 +141,10 @@ h1 {
 	<div class="modify">
 		<form action="doModify" method="post"
 			onsubmit="MemberModifyForm__submit(this); return false;">
-			<input name="id" value="${loginedMember.id}" hidden="hidden" /> <input
-				type="hidden" name="redirectUri" value="${param.redirectUri}" /> <input
-				name="loginPwReal" hidden="hidden" /> <input name="newLoginPwReal"
-				hidden="hidden" />
+			<input name="id" value="${loginedMember.id}" hidden="hidden" /> 
+			<input type="hidden" name="redirectUri" value="${param.redirectUri}" /> 
+			<input name="loginPwReal" hidden="hidden" /> 
+			<input name="newLoginPwReal" hidden="hidden" />
 			<div>
 				<label>ID : <input name="loginId"
 					value="${loginedMember.loginId}" disabled="disabled" />
@@ -155,13 +157,13 @@ h1 {
 			</div>
 			<div class="nickname">
 				<label>닉네임 : 
-				<input name="nickname" value="${loginedMember.nickname}" onkeyup="MemberModifyForm__checkNicknameDup(this);" />
+				<input name="nickname" value="${loginedMember.nickname}" onkeyup="MemberModifyForm__checkNicknameDup(this);" autocomplete="off"/>
 				<div class="message-msg"></div>
 				</label>
 			</div>
 			<div>
 				<label>email : <input name="email" type="email"
-					value="${loginedMember.email}" />
+					value="${loginedMember.email}" autocomplete="off"/>
 				</label>
 			</div>
 			<div>

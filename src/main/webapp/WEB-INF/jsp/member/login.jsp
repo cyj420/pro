@@ -115,7 +115,7 @@ h1{
 			<input name="loginPwReal" hidden="hidden" />
 			<div class="loginAreaInside">
 				<div>
-					<label>아이디 : <input name="loginId" type="text" />
+					<label>아이디 : <input name="loginId" type="text" autocomplete="off"/>
 					</label>
 				</div>
 				<div>

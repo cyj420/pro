@@ -551,7 +551,7 @@ table{
 .table-list tbody tr:hover {
 	background-color: #adadad4b;
 }
-.reply-total tbody tr:hover {
+.reply-total .reply-list tbody tr:hover {
 	background-color: #adadad4b;
 }
 

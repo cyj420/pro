@@ -223,7 +223,7 @@ input {
 						<td>
 							<div>
 								<input type="text" placeholder="이름을 입력해주세요." name="name"
-									maxlength="20" />
+									maxlength="20" autocomplete="off"/>
 							</div>
 						</td>
 					</tr>
@@ -243,7 +243,7 @@ input {
 						<td>
 							<div>
 								<input type="email" placeholder="이메일 입력해주세요." name="email"
-									maxlength="50" />
+									maxlength="50" autocomplete="off"/>
 							</div>
 						</td>
 					</tr>
