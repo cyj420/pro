@@ -105,6 +105,9 @@ public class NovelController {
 		if (chapters.size() > 1) {
 			redirectUri = listUrl + "?novelId=" + chapter.getNovelId();
 		}
+		else {
+			redirectUri = listUrl + "?novelId=" + chapter.getNovelId() + "&mode=novel&page=1";
+		}
 
 		if (loginedMemberId == chapter.getMemberId()) {
 			int novelId = chapterService.getChapterById(id).getNovelId();
