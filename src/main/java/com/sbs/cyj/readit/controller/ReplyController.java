@@ -100,10 +100,6 @@ public class ReplyController {
 	@RequestMapping("/usr/reply/doModifyReplyAjax")
 	@ResponseBody
 	public ResultData doReplyModify(@RequestParam int id, String body) {
-//		Reply reply = replyService.getReplyById(id);
-//		if(reply.isSecretStatus()) {
-//			body = body.substring(4);
-//		}
 		replyService.modifyReplyById(""+id, body);
 		return new ResultData("S-1", String.format("%d번 댓글을 수정하였습니다.", id));
 	}

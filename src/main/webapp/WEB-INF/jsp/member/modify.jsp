@@ -20,12 +20,6 @@
 			return;
 		}
 
-		if (form.nickname.value != MemberModifyForm__validNickname) {
-			alert('다른 닉네임을 입력해주세요.');
-			form.nickname.focus();
-			return;
-		}
-
 		if (form.email.value.trim().length == 0) {
 			alert('이메일 칸은 비울 수 없습니다.');
 			form.email.focus();
@@ -54,6 +48,12 @@
 
 		form.loginPw.value = '';
 		form.newLoginPw.value = '';
+
+		if (form.nickname.value != MemberModifyForm__validNickname) {
+			alert('다른 닉네임을 입력해주세요.');
+			form.nickname.focus();
+			return;
+		}
 
 		form.submit();
 		MemberModifyForm__submitDone = true;

@@ -21,7 +21,7 @@ import com.sbs.cyj.readit.service.MemberService;
 import com.sbs.cyj.readit.service.NovelService;
 import com.sbs.cyj.readit.util.Util;
 
-@Component("beforeActionInterceptor") // 컴포넌트 이름 설정
+@Component("beforeActionInterceptor")
 public class BeforeActionInterceptor implements HandlerInterceptor {
 	@Autowired
 	@Value("${custom.logoText}")
