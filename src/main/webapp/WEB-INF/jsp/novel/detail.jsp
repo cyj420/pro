@@ -130,13 +130,15 @@ img {
 				<th>챕터 제목</th>
 				<td>${chapter.title}</td>
 			</tr>
-			<c:if test="${chapter.memberId == loginedMember.id }">
+			<c:if test="${chapter.memberId == loginedMember.id || loginedMember.id == 1}">
 				<tr>
 					<th>비고</th>
-					<td><a
-						href="/usr/novel/${chapter.extra.writer}-modifyChapter?id=${chapter.id}">수정</a>
-						/ <a
-						href="/usr/novel/${chapter.extra.writer}-doDeleteChapter?id=${chapter.id}"
+					<td>
+						<c:if test="${chapter.memberId == loginedMember.id}">
+							<a href="/usr/novel/${chapter.extra.writer}-modifyChapter?id=${chapter.id}">수정</a>
+						/ 
+						</c:if>
+						<a href="/usr/novel/${chapter.extra.writer}-doDeleteChapter?id=${chapter.id}"
 						onclick="if ( confirm('정말 삭제하시겠습니까?') == false ) { return false; }">삭제</a>
 					</td>
 				</tr>
@@ -516,6 +518,8 @@ img {
 				if (reply.extra.actorCanDelete) {
 					html += '<button onclick="ReplyList__delete(this,'
 							+ reply.id + ');">삭제</button>';
+				}
+				if (reply.extra.actorCanUpdate) {
 					html += '<button onclick="Reply__turnOnModifyMode(this);" class="modify-mode-invisible" href="javascript:;">수정</button>';
 					html += '<button onclick="Reply__turnOffModifyMode(this);" class="modify-mode-visible" href="javascript:;">취소</button>';
 				}

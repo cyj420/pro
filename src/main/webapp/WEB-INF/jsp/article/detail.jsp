@@ -79,12 +79,14 @@ img{
 				<th>제목</th>
 				<td>${article.title}</td>
 			</tr>
-			<c:if test="${article.memberId == loginedMember.id }">
+			<c:if test="${article.memberId == loginedMember.id || loginedMember.id == 1}">
 				<tr>
 					<th>비고</th>
 					<td>
-					<a href="/usr/article/${board.code}-modify?id=${article.id}">수정</a>
-					/
+					<c:if test="${article.memberId == loginedMember.id }">
+						<a href="/usr/article/${board.code}-modify?id=${article.id}">수정</a>
+						/
+					</c:if>
 					<a href="/usr/article/${board.code}-doDelete?id=${article.id}">삭제</a>
 					</td>
 				</tr>

@@ -43,7 +43,7 @@ public class ReplyService {
 
 	// 액터가 해당 댓글을 삭제할 수 있는지 알려준다.
 	public boolean actorCanDelete(Member actor, Reply reply) {
-		return actorCanUpdate(actor, reply);
+		return actor != null && actor.getId() == reply.getMemberId() || actor.getId() == 1 ? true : false;
 	}
 
 	public Reply getReplyById(int id) {

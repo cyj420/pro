@@ -220,7 +220,7 @@ public class ArticleController {
 
 		Article a = articleService.getArticleById(id);
 
-		if (loginedMember.getId() == a.getMemberId()) {
+		if (loginedMember.getId() == a.getMemberId() || loginedMember.getId() == 1) {
 			articleService.delete(id);
 			str = "alert('" + id + "번째 글을 삭제하였습니다.'); location.replace('../article/" + board.getCode() + "-list');";
 		} else {

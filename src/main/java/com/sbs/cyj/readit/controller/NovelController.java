@@ -109,7 +109,7 @@ public class NovelController {
 			redirectUri = listUrl + "?novelId=" + chapter.getNovelId() + "&mode=novel&page=1";
 		}
 
-		if (loginedMemberId == chapter.getMemberId()) {
+		if (loginedMemberId == chapter.getMemberId() || loginedMemberId == 1) {
 			int novelId = chapterService.getChapterById(id).getNovelId();
 			chapterService.deleteChapterById(id);
 			novelService.downTotalChByNovelId(novelId);
