@@ -1,3 +1,19 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<!-- 구글 애널리틱스 / local일 때는 작동하지 않도록 -->
+<c:if test="${activeProfile != 'local' }">
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-179718127-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+				
+		gtag('config', 'UA-179718127-1');
+	</script>
+</c:if>
+
 </div>
 </body>
 </html>
